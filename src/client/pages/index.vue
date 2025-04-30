@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const { t } = useI18n()
+definePageMeta({
+  // set custom layout
+  layout: 'default',
+
+})
 </script>
 
 <template>

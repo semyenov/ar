@@ -2,3 +2,6 @@ pages:
   index:
     welcome: Welcome to Your Nuxt.js App
     start: Get started by editing
+  organizations:
+    title: Organizations
+    welcome: Welcome to Organizations Page

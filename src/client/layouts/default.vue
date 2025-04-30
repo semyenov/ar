@@ -6,7 +6,7 @@ const toggleDark = useToggle(isDark)
 <template>
   <div
     id="__layout"
-    class="flex flex-col items-center justify-center w-full h-full text-center grow dark:text-white"
+    class="flex flex-col items-center justify-center w-full h-full grow dark:text-white"
   >
     <ClientOnly>
       <Button
@@ -19,8 +19,30 @@ const toggleDark = useToggle(isDark)
         <Icon v-if="isDark" name="tabler:sun" />
         <Icon v-else name="tabler:moon" />
       </Button>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">
+            <!-- <SidebarTrigger class="-ml-1" /> -->
+            <!-- <Separator orientation="vertical" class="h-4 mr-2" /> -->
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem class="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator class="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <slot />
+        </SidebarInset>
+      </SidebarProvider>
     </ClientOnly>
-    <slot />
   </div>
 </template>
 
