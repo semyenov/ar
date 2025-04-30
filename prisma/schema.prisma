@@ -1,0 +1,344 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String       @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  members       Member[]
+  invitations   Invitation[]
+
+  // Связи для форм
+  createdForms  Form[]        @relation("FormCreator")
+  assignedForms Form[]        @relation("FormExecutor")
+  comments      Comment[]
+  formHistory   FormHistory[]
+
+  // Файловые связи
+  uploadedFiles  File[]       @relation("FileUploader")
+  sharedFiles    FileShare[]
+  createdFolders FileFolder[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id                   String   @id
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime
+  updatedAt            DateTime
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Organization {
+  id            String         @id
+  name          String
+  slug          String?
+  logo          String?
+  createdAt     DateTime
+  metadata      String?
+  members       Member[]
+  invitations   Invitation[]
+  forms         Form[]
+  formTemplates FormTemplate[]
+  files         File[]
+  folders       FileFolder[]
+  reviewFlows   ReviewFlow[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+enum MemberRole {
+  ADMIN
+  REVIEWER
+  EXECUTOR
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           MemberRole
+  createdAt      DateTime     @default(now())
+
+  // Добавленные связи
+  comments    Comment[]
+  formHistory FormHistory[]
+
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitation")
+}
+
+enum FormStatus {
+  DRAFT
+  UNDER_REVIEW
+  NEEDS_CHANGES
+  APPROVED
+  REJECTED
+}
+
+enum FieldType {
+  TEXT
+  TEXTAREA
+  NUMBER
+  DATE
+  SELECT
+  CHECKBOX
+  RADIO
+  FILE
+}
+
+model Form {
+  id             String        @id
+  title          String
+  description    String?
+  status         FormStatus    @default(DRAFT)
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creatorId      String
+  creator        User          @relation("FormCreator", fields: [creatorId], references: [id])
+  executorId     String?
+  executor       User?         @relation("FormExecutor", fields: [executorId], references: [id])
+  templateId     String?
+  template       FormTemplate? @relation(fields: [templateId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  fields         FormField[]
+  reviewFlow     ReviewFlow?
+  history        FormHistory[]
+
+  @@index([organizationId, status])
+  @@map("form")
+}
+
+model FormField {
+  id              String          @id
+  formId          String
+  form            Form            @relation(fields: [formId], references: [id], onDelete: Cascade)
+  name            String
+  type            FieldType
+  value           String?
+  required        Boolean         @default(false)
+  validationRules String? // Новое поле: правила валидации
+  order           Int
+  options         String?
+  files           FormFieldFile[]
+
+  @@map("form_field")
+}
+
+model FormTemplate {
+  id             String              @id
+  name           String
+  description    String?
+  organizationId String
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  fields         FormTemplateField[]
+  forms          Form[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@map("form_template")
+}
+
+model FormTemplateField {
+  id           String       @id
+  templateId   String
+  template     FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  name         String
+  type         FieldType
+  defaultValue String?
+  required     Boolean      @default(false)
+  order        Int
+  options      String?
+
+  @@map("form_template_field")
+}
+
+model FormHistory {
+  id        String     @id
+  formId    String
+  form      Form       @relation(fields: [formId], references: [id], onDelete: Cascade)
+  status    FormStatus
+  memberId  String // Связь с Member вместо User
+  member    Member     @relation(fields: [memberId], references: [id])
+  userId    String // Добавлено поле для связи с User
+  user      User       @relation(fields: [userId], references: [id]) // Добавлена связь с User
+  data      String?
+  createdAt DateTime   @default(now())
+
+  @@map("form_history")
+}
+
+enum ReviewFlowStatus {
+  OPEN
+  CLOSED
+}
+
+model ReviewFlow {
+  id             String           @id
+  formId         String           @unique
+  form           Form             @relation(fields: [formId], references: [id], onDelete: Cascade)
+  organizationId String // Добавлена связь с организацией
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  status         ReviewFlowStatus @default(OPEN)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  comments       Comment[]
+
+  @@map("review_flow")
+}
+
+model Comment {
+  id             String     @id
+  reviewFlowId   String
+  reviewFlow     ReviewFlow @relation(fields: [reviewFlowId], references: [id], onDelete: Cascade)
+  memberId       String // Связь с Member вместо User
+  member         Member     @relation(fields: [memberId], references: [id])
+  userId         String // Добавлено поле для связи с User
+  user           User       @relation(fields: [userId], references: [id]) // Добавлена связь с User
+  content        String
+  fieldReference String?
+  createdAt      DateTime   @default(now())
+
+  @@map("comment")
+}
+
+// Файловые модели (без изменений)
+
+enum FileAccess {
+  PRIVATE
+  ORGANIZATION
+  PUBLIC
+}
+
+model File {
+  id             String          @id
+  filename       String
+  originalName   String
+  path           String
+  mimeType       String
+  size           Int
+  accessLevel    FileAccess      @default(ORGANIZATION)
+  description    String?
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploaderId     String
+  uploader       User            @relation("FileUploader", fields: [uploaderId], references: [id])
+  folderId       String?
+  folder         FileFolder?     @relation(fields: [folderId], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  formFields     FormFieldFile[]
+  sharedWith     FileShare[]
+
+  @@map("file")
+}
+
+model FileFolder {
+  id             String       @id
+  name           String
+  description    String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creatorId      String
+  creator        User         @relation(fields: [creatorId], references: [id])
+  parentId       String?
+  parent         FileFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children       FileFolder[] @relation("FolderHierarchy")
+  files          File[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("file_folder")
+}
+
+model FileShare {
+  id        String    @id
+  fileId    String
+  file      File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  @@map("file_share")
+}
+
+model FormFieldFile {
+  id          String    @id
+  formFieldId String
+  formField   FormField @relation(fields: [formFieldId], references: [id], onDelete: Cascade)
+  fileId      String
+  file        File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
+
+  @@map("form_field_file")
+}
