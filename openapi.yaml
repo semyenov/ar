@@ -25,6 +25,72 @@ components:
           type: string
         data:
           type: object
+          
+    FormHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        formId:
+          type: string
+        status:
+          type: string
+          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+        memberId:
+          type: string
+        data:
+          type: object
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        member:
+          type: object
+          properties:
+            id:
+              type: string
+            role:
+              type: string
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                image:
+                  type: string
+                  nullable: true
+      required:
+        - id
+        - formId
+        - status
+        - memberId
+        - createdAt
+        
+    FormHistoryList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormHistory'
+        meta:
+          type: object
+          properties:
+            page:
+              type: integer
+            limit:
+              type: integer
+            total:
+              type: integer
+            totalPages:
+              type: integer
+      required:
+        - data
+        - meta
 
     FormTemplateField:
       type: object
@@ -1381,6 +1447,118 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: Поле формы не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /form-history:
+    get:
+      summary: Получение истории формы
+      operationId: listFormHistory
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: formId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: История формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormHistoryList'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет доступа к форме
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /form-history/{id}:
+    get:
+      summary: Получение записи истории формы
+      operationId: getFormHistoryRecord
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Запись истории формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormHistory'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет доступа к форме
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Запись истории не найдена
           content:
             application/json:
               schema:
