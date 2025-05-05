@@ -1,82 +1,80 @@
-# Недостающие CRUD API
+# API Structure Mapping
 
-## Формы и шаблоны
+## Формы и шаблоны (Forms and Templates)
 
-### Управление формами
-- `/forms/create`: Создание новой формы
-- `/forms/get/{id}`: Получение формы по ID
-- `/forms/update/{id}`: Обновление формы
-- `/forms/delete/{id}`: Удаление формы
-- `/forms/list`: Получение списка форм (с фильтрацией по статусу, организации)
-- `/forms/change-status/{id}`: Изменение статуса формы
+### Управление формами (`forms`)
+- **POST /forms** -> `forms/index.post.ts` (Original: `/forms/create`)
+- **GET /forms** -> `forms/index.get.ts` (Original: `/forms/list`)
+- **GET /forms/{id}** -> `forms/[id]/index.get.ts` (Original: `/forms/get/{id}`)
+- **PATCH /forms/{id}** -> `forms/[id]/index.update.ts` (Original: `/forms/update/{id}`, `/forms/change-status/{id}`)
+- **DELETE /forms/{id}** -> `forms/[id]/index.delete.ts` (Original: `/forms/delete/{id}`)
 
-### Поля форм
-- `/form-fields/create`: Создание поля для формы
-- `/form-fields/get/{id}`: Получение поля формы
-- `/form-fields/update/{id}`: Обновление поля формы
-- `/form-fields/delete/{id}`: Удаление поля формы
-- `/form-fields/list/{formId}`: Получение списка полей для формы
+### Поля форм (`form-fields`)
+- **POST /form-fields** -> `form-fields/index.post.ts` (Original: `/form-fields/create`)
+- **GET /form-fields?formId={formId}** -> `form-fields/index.get.ts` (Original: `/form-fields/list/{formId}`)
+- **GET /form-fields/{id}** -> `form-fields/[id]/index.get.ts` (Original: `/form-fields/get/{id}`)
+- **PATCH /form-fields/{id}** -> `form-fields/[id]/index.update.ts` (Original: `/form-fields/update/{id}`)
+- **DELETE /form-fields/{id}** -> `form-fields/[id]/index.delete.ts` (Original: `/form-fields/delete/{id}`)
 
-### Шаблоны форм
-- `/form-templates/create`: Создание шаблона формы
-- `/form-templates/get/{id}`: Получение шаблона формы
-- `/form-templates/update/{id}`: Обновление шаблона формы
-- `/form-templates/delete/{id}`: Удаление шаблона формы
-- `/form-templates/list`: Получение списка шаблонов форм
+### Шаблоны форм (`form-templates`)
+- **POST /form-templates** -> `form-templates/index.post.ts` (Original: `/form-templates/create`)
+- **GET /form-templates** -> `form-templates/index.get.ts` (Original: `/form-templates/list`)
+- **GET /form-templates/{id}** -> `form-templates/[id]/index.get.ts` (Original: `/form-templates/get/{id}`)
+- **PATCH /form-templates/{id}** -> `form-templates/[id]/index.update.ts` (Original: `/form-templates/update/{id}`)
+- **DELETE /form-templates/{id}** -> `form-templates/[id]/index.delete.ts` (Original: `/form-templates/delete/{id}`)
 
-### Поля шаблонов
-- `/form-template-fields/create`: Создание поля для шаблона
-- `/form-template-fields/get/{id}`: Получение поля шаблона
-- `/form-template-fields/update/{id}`: Обновление поля шаблона
-- `/form-template-fields/delete/{id}`: Удаление поля шаблона
-- `/form-template-fields/list/{templateId}`: Получение списка полей для шаблона
+### Поля шаблонов (`form-template-fields`)
+- **POST /form-template-fields** -> `form-template-fields/index.post.ts` (Original: `/form-template-fields/create`)
+- **GET /form-template-fields?templateId={templateId}** -> `form-template-fields/index.get.ts` (Original: `/form-template-fields/list/{templateId}`)
+- **GET /form-template-fields/{id}** -> `form-template-fields/[id]/index.get.ts` (Original: `/form-template-fields/get/{id}`)
+- **PATCH /form-template-fields/{id}** -> `form-template-fields/[id]/index.update.ts` (Original: `/form-template-fields/update/{id}`)
+- **DELETE /form-template-fields/{id}** -> `form-template-fields/[id]/index.delete.ts` (Original: `/form-template-fields/delete/{id}`)
 
-### История форм
-- `/form-history/get/{id}`: Получение записи истории
-- `/form-history/list/{formId}`: Получение истории для формы
+### История форм (`form-history`)
+- **GET /form-history?formId={formId}** -> `form-history/index.get.ts` (Original: `/form-history/list/{formId}`)
+- **GET /form-history/{id}** -> `form-history/[id]/index.get.ts` (Original: `/form-history/get/{id}`)
 
-## Процесс рассмотрения
+## Процесс рассмотрения (Review Process)
 
-### Управление рассмотрением
-- `/review-flow/create`: Создание процесса рассмотрения
-- `/review-flow/get/{id}`: Получение процесса рассмотрения
-- `/review-flow/update/{id}`: Обновление процесса рассмотрения
-- `/review-flow/delete/{id}`: Удаление процесса рассмотрения
-- `/review-flow/list`: Получение списка процессов рассмотрения
-- `/review-flow/change-status/{id}`: Изменение статуса рассмотрения
+### Управление рассмотрением (`review-flows`)
+- **POST /review-flows** -> `review-flows/index.post.ts` (Original: `/review-flow/create`)
+- **GET /review-flows** -> `review-flows/index.get.ts` (Original: `/review-flow/list`)
+- **GET /review-flows/{id}** -> `review-flows/[id]/index.get.ts` (Original: `/review-flow/get/{id}`)
+- **PATCH /review-flows/{id}** -> `review-flows/[id]/index.update.ts` (Original: `/review-flow/update/{id}`, `/review-flow/change-status/{id}`)
+- **DELETE /review-flows/{id}** -> `review-flows/[id]/index.delete.ts` (Original: `/review-flow/delete/{id}`)
 
-### Комментарии
-- `/comments/create`: Создание комментария
-- `/comments/get/{id}`: Получение комментария
-- `/comments/update/{id}`: Обновление комментария
-- `/comments/delete/{id}`: Удаление комментария
-- `/comments/list/{reviewFlowId}`: Получение комментариев для процесса рассмотрения
+### Комментарии (`comments`)
+- **POST /comments** -> `comments/index.post.ts` (Original: `/comments/create`)
+- **GET /comments?reviewFlowId={reviewFlowId}** -> `comments/index.get.ts` (Original: `/comments/list/{reviewFlowId}`)
+- **GET /comments/{id}** -> `comments/[id]/index.get.ts` (Original: `/comments/get/{id}`)
+- **PATCH /comments/{id}** -> `comments/[id]/index.update.ts` (Original: `/comments/update/{id}`)
+- **DELETE /comments/{id}** -> `comments/[id]/index.delete.ts` (Original: `/comments/delete/{id}`)
 
-## Файловая система
+## Файловая система (File System)
 
-### Управление файлами
-- `/files/upload`: Загрузка файла
-- `/files/get/{id}`: Получение метаданных файла
-- `/files/download/{id}`: Скачивание файла
-- `/files/update/{id}`: Обновление метаданных файла
-- `/files/delete/{id}`: Удаление файла (маркировка как удаленного)
-- `/files/list`: Получение списка файлов (с фильтрацией)
+### Управление файлами (`files`)
+- **POST /files** -> `files/index.post.ts` (Original: `/files/upload`)
+- **GET /files** -> `files/index.get.ts` (Original: `/files/list`)
+- **GET /files/{id}** -> `files/[id]/index.get.ts` (Original: `/files/get/{id}` - metadata)
+- **GET /files/{id}/download** -> `files/[id]/download.get.ts` (Original: `/files/download/{id}`)
+- **PATCH /files/{id}** -> `files/[id]/index.update.ts` (Original: `/files/update/{id}` - metadata)
+- **DELETE /files/{id}** -> `files/[id]/index.delete.ts` (Original: `/files/delete/{id}`)
 
-### Управление папками
-- `/folders/create`: Создание папки
-- `/folders/get/{id}`: Получение папки
-- `/folders/update/{id}`: Обновление папки
-- `/folders/delete/{id}`: Удаление папки
-- `/folders/list/{parentId?}`: Получение содержимого папки
-- `/folders/get-path/{id}`: Получение полного пути к папке
+### Управление папками (`folders`)
+- **POST /folders** -> `folders/index.post.ts` (Original: `/folders/create`)
+- **GET /folders?parentId={parentId}** -> `folders/index.get.ts` (Original: `/folders/list/{parentId?}`)
+- **GET /folders/{id}** -> `folders/[id]/index.get.ts` (Original: `/folders/get/{id}`)
+- **GET /folders/{id}/path** -> `folders/[id]/path.get.ts` (Original: `/folders/get-path/{id}`)
+- **PATCH /folders/{id}** -> `folders/[id]/index.update.ts` (Original: `/folders/update/{id}`)
+- **DELETE /folders/{id}** -> `folders/[id]/index.delete.ts` (Original: `/folders/delete/{id}`)
 
-### Доступ к файлам
-- `/file-shares/create`: Предоставление доступа к файлу
-- `/file-shares/list/{fileId}`: Получение списка доступов к файлу
-- `/file-shares/delete/{id}`: Отзыв доступа к файлу
-- `/file-shares/list-shared-with-me`: Получение списка файлов с доступом для текущего пользователя
+### Доступ к файлам (`file-shares`)
+- **POST /file-shares** -> `file-shares/index.post.ts` (Original: `/file-shares/create`)
+- **GET /file-shares?fileId={fileId}** -> `file-shares/index.get.ts` (Original: `/file-shares/list/{fileId}`)
+- **GET /file-shares?filter=sharedWithMe** -> `file-shares/index.get.ts` (Original: `/file-shares/list-shared-with-me`)
+- **DELETE /file-shares/{id}** -> `file-shares/[id]/index.delete.ts` (Original: `/file-shares/delete/{id}`)
 
-### Файлы в полях форм
-- `/form-field-files/attach`: Привязка файла к полю формы
-- `/form-field-files/detach/{id}`: Отвязка файла от поля формы
-- `/form-field-files/list/{formFieldId}`: Получение списка файлов для поля формы
+### Файлы в полях форм (`form-field-files`)
+- **POST /form-field-files** -> `form-field-files/index.post.ts` (Original: `/form-field-files/attach`)
+- **GET /form-field-files?formFieldId={formFieldId}** -> `form-field-files/index.get.ts` (Original: `/form-field-files/list/{formFieldId}`)
+- **DELETE /form-field-files/{id}** -> `form-field-files/[id]/index.delete.ts` (Original: `/form-field-files/detach/{id}`)
