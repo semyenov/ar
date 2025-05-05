@@ -16,6 +16,9 @@ import {
 
 const props = defineProps<SidebarProps>()
 
+const isDark = useDark()
+  const toggleDark = useToggle(isDark)
+
 // This is sample data.
 const data = {
   navMain: [
@@ -95,6 +98,16 @@ const data = {
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
+    <SidebarFooter>
+      <Button
+      size="icon"
+      variant="ghost"
+      @click="toggleDark()"
+    >
+      <Icon v-if="isDark" name="tabler:sun" />
+      <Icon v-else name="tabler:moon" />
+    </Button>
+    </SidebarFooter>
     <SidebarRail />
   </Sidebar>
 </template>

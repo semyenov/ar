@@ -1,6 +1,9 @@
 <script setup lang="ts">
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+
+
+
+
+
 </script>
 
 <template>
@@ -9,16 +12,7 @@ const toggleDark = useToggle(isDark)
     class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white"
   >
     <ClientOnly>
-      <Button
-        class="absolute border border-gray-300 border-dashed rounded-full dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 top-4 right-4 z-9999"
-        type="menu"
-        size="icon"
-        variant="outline"
-        @click="toggleDark()"
-      >
-        <Icon v-if="isDark" name="tabler:sun" />
-        <Icon v-else name="tabler:moon" />
-      </Button>
+
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
