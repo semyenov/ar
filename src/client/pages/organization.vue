@@ -9,15 +9,7 @@ import {
 } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+
 import { Button } from "../components/ui/button";
 import {
   Accordion,
@@ -25,6 +17,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
 const { t } = useI18n();
 </script>
 
@@ -273,6 +274,27 @@ const { t } = useI18n();
                 >
               </CardHeader></Card
             >
+            <Dialog>
+              <DialogTrigger as-child>
+                <Button
+                  class="gap-1 py-2 px-4 text-accent.foreground hover:text-white bg-[#ffffff]"
+                  ><Icon name="lucide:plus-circle" />Добавить документ</Button
+                >
+              </DialogTrigger>
+
+              <DialogContent class="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Загрузка документов</DialogTitle>
+                  <DialogDescription>
+                    Выберите документы для добавления:
+                  </DialogDescription>
+                </DialogHeader>
+                <Input
+                  id="document"
+                  type="file"
+                  multiple
+                  class="cursor-pointer" /></DialogContent
+            ></Dialog>
           </div>
         </CardContent>
       </Card>
