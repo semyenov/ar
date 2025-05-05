@@ -190,6 +190,228 @@ components:
         - limit
         - offset
 
+    Form:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+        organizationId:
+          type: string
+        creatorMemberId:
+          type: string
+        executorMemberId:
+          type: string
+          nullable: true
+        templateId:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lastModifiedBy:
+          type: string
+          nullable: true
+        version:
+          type: integer
+        creator:
+          type: object
+        executor:
+          type: object
+          nullable: true
+        organization:
+          type: object
+        template:
+          type: object
+          nullable: true
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormField'
+        history:
+          type: array
+          items:
+            type: object
+        reviewFlow:
+          type: object
+          nullable: true
+      required:
+        - id
+        - title
+        - status
+        - organizationId
+        - creatorMemberId
+        - createdAt
+        - updatedAt
+        - version
+
+    FormCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+        templateId:
+          type: string
+          nullable: true
+        executorMemberId:
+          type: string
+          nullable: true
+      required:
+        - title
+        - organizationId
+
+    FormUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+        executorMemberId:
+          type: string
+          nullable: true
+
+    FormList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Form'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+      required:
+        - items
+        - total
+        - limit
+        - offset
+
+    FormField:
+      type: object
+      properties:
+        id:
+          type: string
+        formId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+        value:
+          type: string
+          nullable: true
+        required:
+          type: boolean
+        validationRules:
+          type: string
+          nullable: true
+        order:
+          type: integer
+        options:
+          type: string
+          nullable: true
+        files:
+          type: array
+          items:
+            type: object
+      required:
+        - id
+        - formId
+        - name
+        - type
+        - order
+
+    FormFieldCreate:
+      type: object
+      properties:
+        formId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+        value:
+          type: string
+          nullable: true
+        required:
+          type: boolean
+        validationRules:
+          type: string
+          nullable: true
+        order:
+          type: integer
+        options:
+          type: string
+          nullable: true
+      required:
+        - formId
+        - name
+        - type
+        - order
+
+    FormFieldUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+          nullable: true
+        required:
+          type: boolean
+        validationRules:
+          type: string
+          nullable: true
+        order:
+          type: integer
+        options:
+          type: string
+          nullable: true
+
+    FormFieldList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormField'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+      required:
+        - items
+        - total
+        - limit
+        - offset
+
     SuccessResponse:
       type: object
       properties:
@@ -645,6 +867,520 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: Шаблон формы не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /forms:
+    post:
+      summary: Создание формы
+      operationId: createForm
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormCreate'
+      responses:
+        '200':
+          description: Форма успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          description: Неверные данные запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет доступа к организации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Шаблон или исполнитель не найдены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Получение списка форм
+      operationId: listForms
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Список форм
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormList'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет доступа к организации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /forms/{id}:
+    get:
+      summary: Получение информации о форме
+      operationId: getForm
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Информация о форме
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма не найдена или нет доступа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Обновление формы
+      operationId: updateForm
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormUpdate'
+      responses:
+        '200':
+          description: Форма успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          description: Неверные данные запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет прав на изменение формы или ее статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма или исполнитель не найдены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Удаление формы
+      operationId: deleteForm
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Форма успешно удалена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет прав на удаление формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /form-fields:
+    post:
+      summary: Создание поля формы
+      operationId: createFormField
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormFieldCreate'
+      responses:
+        '200':
+          description: Поле формы успешно создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormField'
+        '400':
+          description: Неверные данные запроса или форма не в статусе DRAFT/NEEDS_CHANGES
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет прав на изменение формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Получение списка полей формы
+      operationId: listFormFields
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: formId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Список полей формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormFieldList'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Форма не найдена или нет доступа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /form-fields/{id}:
+    get:
+      summary: Получение информации о поле формы
+      operationId: getFormField
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Информация о поле формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormField'
+        '400':
+          description: Неверные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет доступа к полю формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Поле формы не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Обновление поля формы
+      operationId: updateFormField
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormFieldUpdate'
+      responses:
+        '200':
+          description: Поле формы успешно обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormField'
+        '400':
+          description: Неверные данные запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет прав на редактирование поля формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Поле формы не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Удаление поля формы
+      operationId: deleteFormField
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Поле формы успешно удалено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Неверные параметры запроса или форма не в статусе DRAFT/NEEDS_CHANGES
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Нет прав на удаление поля формы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Поле формы не найдено
           content:
             application/json:
               schema:

@@ -1,6 +1,6 @@
-import { z } from 'zod'
 import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
+import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -9,8 +9,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -18,21 +18,31 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
+    limit: z.string()
+      .transform(Number)
+      .pipe(z.number()
+        .int()
+        .positive())
+      .optional(),
+    offset: z.string()
+      .transform(Number)
+      .pipe(z.number()
+        .int()
+        .nonnegative())
+      .optional(),
     templateId: z.string(),
-    limit: z.string().transform(Number).pipe(z.number().int().positive()).optional(),
-    offset: z.string().transform(Number).pipe(z.number().int().nonnegative()).optional(),
   })
 
   const validationResult = schema.safeParse(query)
   if (!validationResult.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid query parameters',
       data: validationResult.error.format(),
+      message: 'Invalid query parameters',
+      statusCode: 400,
     })
   }
 
-  const { templateId, limit = 50, offset = 0 } = validationResult.data
+  const { limit = 50, offset = 0, templateId } = validationResult.data
 
   try {
     // Проверка существования шаблона
@@ -42,18 +52,18 @@ export default defineEventHandler(async (event) => {
 
     if (!template) {
       throw createError({
-        statusCode: 404,
         message: 'Form template not found',
+        statusCode: 404,
       })
     }
 
     // Получение полей шаблона
     const [formTemplateFields, total] = await Promise.all([
       prisma.formTemplateField.findMany({
-        where: { templateId },
         orderBy: { order: 'asc' },
-        take: limit,
         skip: offset,
+        take: limit,
+        where: { templateId },
       }),
       prisma.formTemplateField.count({
         where: { templateId },
@@ -62,15 +72,16 @@ export default defineEventHandler(async (event) => {
 
     return {
       items: formTemplateFields,
-      total,
       limit,
       offset,
+      total,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to list form template fields:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to list form template fields',
+      statusCode: 500,
     })
   }
 })

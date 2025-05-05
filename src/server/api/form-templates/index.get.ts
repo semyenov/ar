@@ -1,6 +1,6 @@
-import { z } from 'zod'
 import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
+import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -9,27 +9,37 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
   // Получение параметров запроса
   const query = getQuery(event)
 
-
   const schema = z.object({
-    limit: z.string().transform(Number).pipe(z.number().int().positive()).optional(),
-    offset: z.string().transform(Number).pipe(z.number().int().nonnegative()).optional(),
-    search: z.string().optional(),
+    limit: z.string()
+      .transform(Number)
+      .pipe(z.number()
+        .int()
+        .positive())
+      .optional(),
+    offset: z.string()
+      .transform(Number)
+      .pipe(z.number()
+        .int()
+        .nonnegative())
+      .optional(),
+    search: z.string()
+      .optional(),
   })
 
   const validationResult = schema.safeParse(query)
   if (!validationResult.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid query parameters',
       data: validationResult.error.format(),
+      message: 'Invalid query parameters',
+      statusCode: 400,
     })
   }
 
@@ -49,10 +59,10 @@ export default defineEventHandler(async (event) => {
     // Получение шаблонов форм
     const [formTemplates, total] = await Promise.all([
       prisma.formTemplate.findMany({
-        where,
         orderBy: { updatedAt: 'desc' },
-        take: limit,
         skip: offset,
+        take: limit,
+        where,
       }),
       prisma.formTemplate.count({
         where,
@@ -61,15 +71,16 @@ export default defineEventHandler(async (event) => {
 
     return {
       items: formTemplates,
-      total,
       limit,
       offset,
+      total,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to list form templates:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to list form templates',
+      statusCode: 500,
     })
   }
 })

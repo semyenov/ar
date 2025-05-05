@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/client/lib/utils'
+
 import { AvatarRoot } from 'reka-ui'
+
+import { cn } from '@/client/lib/utils'
+
 import { avatarVariant, type AvatarVariants } from '.'
 
 const props = withDefaults(defineProps<{
@@ -9,8 +12,8 @@ const props = withDefaults(defineProps<{
   size?: AvatarVariants['size']
   shape?: AvatarVariants['shape']
 }>(), {
-  size: 'sm',
   shape: 'circle',
+  size: 'sm',
 })
 </script>
 

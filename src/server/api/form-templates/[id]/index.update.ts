@@ -1,6 +1,6 @@
-import { z } from 'zod'
 import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
+import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -9,8 +9,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -18,28 +18,32 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   if (!id) {
     throw createError({
-      statusCode: 400,
       message: 'Template ID is required',
+      statusCode: 400,
     })
   }
 
   // Проверка данных запроса
   const body = await readBody(event)
   const schema = z.object({
-    name: z.string().min(1).optional(),
-    description: z.string().optional().nullable(),
+    description: z.string()
+      .optional()
+      .nullable(),
+    name: z.string()
+      .min(1)
+      .optional(),
   })
 
   const validationResult = schema.safeParse(body)
   if (!validationResult.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid request data',
       data: validationResult.error.format(),
+      message: 'Invalid request data',
+      statusCode: 400,
     })
   }
 
-  const data = validationResult.data
+  const { data } = validationResult
 
   try {
     // Проверка существования шаблона формы
@@ -49,28 +53,29 @@ export default defineEventHandler(async (event) => {
 
     if (!existingTemplate) {
       throw createError({
-        statusCode: 404,
         message: 'Form template not found',
+        statusCode: 404,
       })
     }
 
     // Обновление шаблона формы
     const formTemplate = await prisma.formTemplate.update({
-      where: { id },
       data: {
         ...data,
-        version: { increment: 1 },
-        updatedAt: new Date(),
         lastModifiedBy: session.user.id,
+        updatedAt: new Date(),
+        version: { increment: 1 },
       },
+      where: { id },
     })
 
     return formTemplate
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to update form template:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to update form template',
+      statusCode: 500,
     })
   }
 })

@@ -1,7 +1,6 @@
 import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
 
-
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
   const session = await auth.api.getSession({
@@ -9,8 +8,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
   // Получение ID поля из параметров запроса
@@ -18,24 +17,24 @@ export default defineEventHandler(async (event) => {
 
   if (!id) {
     throw createError({
-      statusCode: 400,
       message: 'Field ID is required',
+      statusCode: 400,
     })
   }
 
   try {
     // Проверка существования поля шаблона
     const existingField = await prisma.formTemplateField.findUnique({
-      where: { id },
       include: {
         template: true,
       },
+      where: { id },
     })
 
     if (!existingField) {
       throw createError({
-        statusCode: 404,
         message: 'Form template field not found',
+        statusCode: 404,
       })
     }
 
@@ -48,21 +47,22 @@ export default defineEventHandler(async (event) => {
 
       // Обновление версии шаблона
       prisma.formTemplate.update({
-        where: { id: existingField.templateId },
         data: {
-          version: { increment: 1 },
-          updatedAt: new Date(),
           lastModifiedBy: session.user.id,
+          updatedAt: new Date(),
+          version: { increment: 1 },
         },
+        where: { id: existingField.templateId },
       }),
     ])
 
-    return { success: true, message: 'Form template field deleted successfully' }
-  } catch (error) {
+    return { message: 'Form template field deleted successfully', success: true }
+  }
+  catch (error) {
     console.error('Failed to delete form template field:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to delete form template field',
+      statusCode: 500,
     })
   }
 })

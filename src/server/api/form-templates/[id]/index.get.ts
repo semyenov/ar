@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -17,15 +17,14 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   if (!id) {
     throw createError({
-      statusCode: 400,
       message: 'Template ID is required',
+      statusCode: 400,
     })
   }
 
   try {
     // Получение шаблона формы с полями
     const formTemplate = await prisma.formTemplate.findUnique({
-      where: { id },
       include: {
         fields: {
           orderBy: {
@@ -33,21 +32,23 @@ export default defineEventHandler(async (event) => {
           },
         },
       },
+      where: { id },
     })
 
     if (!formTemplate) {
       throw createError({
-        statusCode: 404,
         message: 'Form template not found',
+        statusCode: 404,
       })
     }
 
     return formTemplate
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to get form template:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to get form template',
+      statusCode: 500,
     })
   }
 })

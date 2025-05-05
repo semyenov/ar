@@ -1,4 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
+
 import { createContext } from 'reka-ui'
 
 export const SIDEBAR_COOKIE_NAME = 'sidebar:state'
@@ -9,7 +10,7 @@ export const SIDEBAR_WIDTH_ICON = '3rem'
 export const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
 export const [useSidebar, provideSidebarContext] = createContext<{
-  state: ComputedRef<'expanded' | 'collapsed'>
+  state: ComputedRef<'collapsed' | 'expanded'>
   open: Ref<boolean>
   setOpen: (value: boolean) => void
   isMobile: Ref<boolean>

@@ -1,7 +1,7 @@
-import { z } from 'zod'
-import { generateId } from '~/lib/utils'
 import { auth } from '~/lib/auth'
+import { generateId } from '~/lib/utils'
 import prisma from '~~/lib/prisma'
+import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -9,10 +9,10 @@ export default defineEventHandler(async (event) => {
     headers: event.headers,
   })
 
-    if (!session) {
+  if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -20,41 +20,44 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   const schema = z.object({
-    name: z.string().min(1),
-    description: z.string().optional(),
+    description: z.string()
+      .optional(),
+    name: z.string()
+      .min(1),
   })
   console.log('before validation')
   const validationResult = schema.safeParse(body)
   if (!validationResult.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid request data',
       data: validationResult.error.format(),
+      message: 'Invalid request data',
+      statusCode: 400,
     })
   }
   console.log('after validation')
-  const data = validationResult.data
+  const { data } = validationResult
 
   try {
     // Создание шаблона формы
     const formTemplate = await prisma.formTemplate.create({
       data: {
-        id: generateId(),
-        name: data.name,
-        description: data.description,
-        version: 1,
-        lastModifiedBy: session.user.id,
         createdAt: new Date(),
+        description: data.description,
+        id: generateId(),
+        lastModifiedBy: session.user.id,
+        name: data.name,
         updatedAt: new Date(),
+        version: 1,
       },
     })
 
     return formTemplate
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to create form template:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to create form template',
+      statusCode: 500,
     })
   }
 })

@@ -1,7 +1,8 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-import DropdownAction from '@/client/components/organizations/DataTableDropDown.vue'
 
 import { h } from 'vue'
+
+import DropdownAction from '@/client/components/organizations/DataTableDropDown.vue'
 
 export interface Payment {
   amount: number

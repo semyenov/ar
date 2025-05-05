@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -17,33 +17,33 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   if (!id) {
     throw createError({
-      statusCode: 400,
       message: 'Template ID is required',
+      statusCode: 400,
     })
   }
 
   try {
     // Проверка существования шаблона формы
     const existingTemplate = await prisma.formTemplate.findUnique({
-      where: { id },
       include: {
         fields: true,
         forms: true,
       },
+      where: { id },
     })
 
     if (!existingTemplate) {
       throw createError({
-        statusCode: 404,
         message: 'Form template not found',
+        statusCode: 404,
       })
     }
 
     // Проверка использования шаблона в формах
     if (existingTemplate.forms.length > 0) {
       throw createError({
-        statusCode: 400,
         message: 'Cannot delete template that is used by forms',
+        statusCode: 400,
       })
     }
 
@@ -60,12 +60,13 @@ export default defineEventHandler(async (event) => {
       }),
     ])
 
-    return { success: true, message: 'Form template deleted successfully' }
-  } catch (error) {
+    return { message: 'Form template deleted successfully', success: true }
+  }
+  catch (error) {
     console.error('Failed to delete form template:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to delete form template',
+      statusCode: 500,
     })
   }
 })

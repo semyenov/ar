@@ -2,28 +2,28 @@
 
 ## Формы и шаблоны (Forms and Templates)
 
-### Управление формами (`forms`)
+### Управление формами (`forms`) + 
 - **POST /forms** -> `forms/index.post.ts` (Original: `/forms/create`)
 - **GET /forms** -> `forms/index.get.ts` (Original: `/forms/list`)
 - **GET /forms/{id}** -> `forms/[id]/index.get.ts` (Original: `/forms/get/{id}`)
 - **PATCH /forms/{id}** -> `forms/[id]/index.update.ts` (Original: `/forms/update/{id}`, `/forms/change-status/{id}`)
 - **DELETE /forms/{id}** -> `forms/[id]/index.delete.ts` (Original: `/forms/delete/{id}`)
 
-### Поля форм (`form-fields`)
+### Поля форм (`form-fields`) +
 - **POST /form-fields** -> `form-fields/index.post.ts` (Original: `/form-fields/create`)
 - **GET /form-fields?formId={formId}** -> `form-fields/index.get.ts` (Original: `/form-fields/list/{formId}`)
 - **GET /form-fields/{id}** -> `form-fields/[id]/index.get.ts` (Original: `/form-fields/get/{id}`)
 - **PATCH /form-fields/{id}** -> `form-fields/[id]/index.update.ts` (Original: `/form-fields/update/{id}`)
 - **DELETE /form-fields/{id}** -> `form-fields/[id]/index.delete.ts` (Original: `/form-fields/delete/{id}`)
 
-### Шаблоны форм (`form-templates`)
+### Шаблоны форм (`form-templates`) +
 - **POST /form-templates** -> `form-templates/index.post.ts` (Original: `/form-templates/create`)
 - **GET /form-templates** -> `form-templates/index.get.ts` (Original: `/form-templates/list`)
 - **GET /form-templates/{id}** -> `form-templates/[id]/index.get.ts` (Original: `/form-templates/get/{id}`)
 - **PATCH /form-templates/{id}** -> `form-templates/[id]/index.update.ts` (Original: `/form-templates/update/{id}`)
 - **DELETE /form-templates/{id}** -> `form-templates/[id]/index.delete.ts` (Original: `/form-templates/delete/{id}`)
 
-### Поля шаблонов (`form-template-fields`)
+### Поля шаблонов (`form-template-fields`) +
 - **POST /form-template-fields** -> `form-template-fields/index.post.ts` (Original: `/form-template-fields/create`)
 - **GET /form-template-fields?templateId={templateId}** -> `form-template-fields/index.get.ts` (Original: `/form-template-fields/list/{templateId}`)
 - **GET /form-template-fields/{id}** -> `form-template-fields/[id]/index.get.ts` (Original: `/form-template-fields/get/{id}`)

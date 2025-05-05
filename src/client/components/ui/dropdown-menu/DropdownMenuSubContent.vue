@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import {
   DropdownMenuSubContent,
   type DropdownMenuSubContentEmits,
@@ -8,7 +7,9 @@ import {
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<DropdownMenuSubContentProps & { class?: HTMLAttributes['class'] }>()
+import { cn } from '@/client/lib/utils'
+
+const props = defineProps<{ class?: HTMLAttributes['class'] } & DropdownMenuSubContentProps>()
 const emits = defineEmits<DropdownMenuSubContentEmits>()
 
 const delegatedProps = computed(() => {

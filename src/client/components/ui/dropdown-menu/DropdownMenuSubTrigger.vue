@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import { ChevronRightIcon } from '@radix-icons/vue'
 import {
   DropdownMenuSubTrigger,
@@ -8,7 +7,9 @@ import {
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<DropdownMenuSubTriggerProps & { class?: HTMLAttributes['class'] }>()
+import { cn } from '@/client/lib/utils'
+
+const props = defineProps<{ class?: HTMLAttributes['class'] } & DropdownMenuSubTriggerProps>()
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props

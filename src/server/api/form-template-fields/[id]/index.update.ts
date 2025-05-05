@@ -1,7 +1,6 @@
-import { z } from 'zod'
 import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
-
+import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -10,8 +9,8 @@ export default defineEventHandler(async (event) => {
   })
   if (!session) {
     throw createError({
-      statusCode: 401,
       message: 'Unauthorized',
+      statusCode: 401,
     })
   }
 
@@ -23,69 +22,90 @@ export default defineEventHandler(async (event) => {
 
   if (!id) {
     throw createError({
-      statusCode: 400,
       message: 'Field ID is required',
+      statusCode: 400,
     })
   }
 
   const schema = z.object({
-    name: z.string().min(1).optional(),
-    type: z.enum(['TEXT', 'TEXTAREA', 'NUMBER', 'DATE', 'SELECT', 'CHECKBOX', 'RADIO', 'FILE']).optional(),
-    defaultValue: z.string().optional().nullable(),
-    required: z.boolean().optional(),
-    order: z.number().int().positive().optional(),
-    options: z.string().optional().nullable(),
+    defaultValue: z.string()
+      .optional()
+      .nullable(),
+    name: z.string()
+      .min(1)
+      .optional(),
+    options: z.string()
+      .optional()
+      .nullable(),
+    order: z.number()
+      .int()
+      .positive()
+      .optional(),
+    required: z.boolean()
+      .optional(),
+    type: z.enum([
+      'TEXT',
+      'TEXTAREA',
+      'NUMBER',
+      'DATE',
+      'SELECT',
+      'CHECKBOX',
+      'RADIO',
+      'FILE',
+    ])
+      .optional(),
   })
 
   const validationResult = schema.safeParse(body)
   if (!validationResult.success) {
     throw createError({
-      statusCode: 400,
-      message: 'Invalid request data',
       data: validationResult.error.format(),
+      message: 'Invalid request data',
+      statusCode: 400,
     })
   }
 
-  const data = validationResult.data
+  const { data } = validationResult
 
   try {
     // Проверка существования поля шаблона
     const existingField = await prisma.formTemplateField.findUnique({
-      where: { id },
       include: {
         template: true,
       },
+      where: { id },
     })
 
     if (!existingField) {
       throw createError({
-        statusCode: 404,
         message: 'Form template field not found',
+        statusCode: 404,
       })
     }
 
     // Обновление поля шаблона
     const formTemplateField = await prisma.formTemplateField.update({
-      where: { id },
       data,
+      where: { id },
     })
 
     // Обновление версии шаблона
     await prisma.formTemplate.update({
-      where: { id: existingField.templateId },
       data: {
-        version: { increment: 1 },
-        updatedAt: new Date(),
         lastModifiedBy: session.user.id,
+        updatedAt: new Date(),
+        version: { increment: 1 },
       },
+      where: { id: existingField.templateId },
     })
 
     return formTemplateField
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to update form template field:', error)
     throw createError({
-      statusCode: 500,
       message: 'Failed to update form template field',
+      statusCode: 500,
     })
   }
 })
