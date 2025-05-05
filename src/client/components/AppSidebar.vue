@@ -19,137 +19,52 @@ const props = defineProps<SidebarProps>()
 // This is sample data.
 const data = {
   navMain: [
+    // {
+    //   items: [
+    //     {
+    //       title: 'Главная',
+    //       url: '/',
+    //     },
+    //   ],
+    //   title: 'Getting Started',
+    //   url: '#',
+    // },
     {
       items: [
-        {
-          title: 'Installation',
-          url: '#',
-        },
-        {
-          title: 'Project Structure',
-          url: '#',
-        },
-      ],
-      title: 'Getting Started',
-      url: '#',
-    },
-    {
-      items: [
-        {
-          title: 'Routing',
-          url: '#',
-        },
         {
           isActive: true,
-          title: 'Data Fetching',
-          url: '#',
+          title: 'Организации',
+          url: '/organizations#',
         },
+
         {
-          title: 'Rendering',
-          url: '#',
-        },
-        {
-          title: 'Caching',
-          url: '#',
-        },
-        {
-          title: 'Styling',
-          url: '#',
-        },
-        {
-          title: 'Optimizing',
-          url: '#',
-        },
-        {
-          title: 'Configuring',
-          url: '#',
-        },
-        {
-          title: 'Testing',
-          url: '#',
-        },
-        {
-          title: 'Authentication',
-          url: '#',
-        },
-        {
-          title: 'Deploying',
-          url: '#',
-        },
-        {
-          title: 'Upgrading',
-          url: '#',
-        },
-        {
-          title: 'Examples',
-          url: '#',
+          title: 'Статусы',
+          url: '/statuses',
         },
       ],
-      title: 'Building Your Application',
+      title: 'Главное меню',
       url: '#',
     },
     {
       items: [
-        {
-          title: 'Components',
-          url: '#',
+      {
+          title: 'Пользователи',
+          url: '/users',
         },
         {
-          title: 'File Conventions',
-          url: '#',
-        },
-        {
-          title: 'Functions',
-          url: '#',
-        },
-        {
-          title: 'next.config.js Options',
-          url: '#',
-        },
-        {
-          title: 'CLI',
-          url: '#',
-        },
-        {
-          title: 'Edge Runtime',
+          title: 'База данных',
           url: '#',
         },
       ],
-      title: 'API Reference',
-      url: '#',
-    },
-    {
-      items: [
-        {
-          title: 'Accessibility',
-          url: '#',
-        },
-        {
-          title: 'Fast Refresh',
-          url: '#',
-        },
-        {
-          title: 'Next.js Compiler',
-          url: '#',
-        },
-        {
-          title: 'Supported Browsers',
-          url: '#',
-        },
-        {
-          title: 'Turbopack',
-          url: '#',
-        },
-      ],
-      title: 'Architecture',
+      title: 'Администрирование',
       url: '#',
     },
   ],
-  versions: [
-    '1.0.1',
-    '1.1.0-alpha',
-    '2.0.0-beta1',
-  ],
+  // versions: [
+  //   '1.0.1',
+  //   '1.1.0-alpha',
+  //   '2.0.0-beta1',
+  // ],
 }
 </script>
 
@@ -162,13 +77,13 @@ const data = {
       /> -->
       <!-- <SearchForm /> -->
       <Avatar>
-        <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-        <AvatarFallback>CN</AvatarFallback>
+        <!-- <AvatarImage src="https://github.com/unovue.png" alt="@unovue" /> -->
+        <AvatarFallback>R</AvatarFallback>
       </Avatar>
     </SidebarHeader>
     <SidebarContent>
       <SidebarGroup v-for="item in data.navMain" :key="item.title">
-        <SidebarGroupLabel>{{ item.title }}</SidebarGroupLabel>
+        <SidebarGroupLabel v-if="item.title">{{ item.title }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem v-for="childItem in item.items" :key="childItem.title">

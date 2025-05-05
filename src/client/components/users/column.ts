@@ -2,15 +2,15 @@ import { Icon, NuxtLink } from '#components'
 // import tasks from '@/client/data/tasks.json'
 import { faker,fakerRU} from '@faker-js/faker';
 import type { ColumnDef } from '@tanstack/vue-table'
-import { organizationStatuses } from '~/client/data/data'
+import { userStatuses } from '~/client/data/data'
 
 // import { columns } from '@/client/components/organizations/column'
-import type { Organization, Task } from '~/client/data/schema'
-import DataTableColumnHeader from '@/client/components/organizations/ColumnHeader.vue'
-import DataTableRowActions from '@/client/components/organizations/RowActions.vue'
+import type { User, Task } from '~/client/data/schema'
+import DataTableColumnHeader from '@/client/components/users/ColumnHeader.vue'
+import DataTableRowActions from '@/client/components/users/RowActions.vue'
 import { Checkbox } from '@/client/components/ui/checkbox'
 
-export const columns = (t:any):ColumnDef<Organization>[] => ([
+export const columns = (t:any):ColumnDef<User>[] => ([
   {
     id: 'select',
     header: ({ table }) => h(Checkbox, {
@@ -31,64 +31,57 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
   //   enableHiding: false,
   // },
   {
-    accessorKey: 'name',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.name') }),
+    accessorKey: 'last_name',
+
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.users.last_name') }),
 
     cell: ({ row }) => {
       console.log(row)
       return h('div', { class: 'flex space-x-2' }, [
-        h(NuxtLink, { to: `/organizations/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate font-medium' }, row.getValue('name')),
+        h(NuxtLink, { to: `/users/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, `${row.getValue('last_name')}`),
       ])
     },
   },
   {
-    accessorKey: 'inn',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.inn') }),
+    accessorKey: 'first_name',
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.users.first_name') }),
+
+    cell: ({ row }) => {
+      console.log(row)
+      return h('div', { class: 'flex space-x-2' }, [
+        h(NuxtLink, { to: `/users/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, `${row.getValue('first_name')}`),
+      ])
+    },
+  },
+
+  {
+    accessorKey: 'email',
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.users.email') }),
 
     cell: ({ row }) => {
       return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('inn')),
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('email')),
+      ])
+    },
+    enableSorting: true,
+  },
+  {
+    accessorKey: 'phone',
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.users.phone') }),
+
+    cell: ({ row }) => {
+      return h('div', { class: 'flex space-x-2' }, [
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('phone')),
       ])
     },
     enableSorting: false,
-  },
-  {
-    accessorKey: 'kpp',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.kpp') }),
-
-    cell: ({ row }) => {
-      return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('kpp')),
-      ])
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'district',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.district') }),
-
-    cell: ({ row }) => {
-      return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('district')),
-      ])
-    },
-  },
-  {
-    accessorKey: 'address',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.address') }),
-
-    cell: ({ row }) => {
-      return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('address')),
-      ])
-    },
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.status') }),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.users.status') }),
 
     cell: ({ row }) => {
-      const status = organizationStatuses.find(
+      const status = userStatuses.find(
         status => status.value === row.getValue('status'),
       )
 
@@ -100,6 +93,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
         h('span', {class:'whitespace-nowrap'},status.label),
       ])
     },
+    enableSorting: false,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

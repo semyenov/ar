@@ -6,11 +6,11 @@ const toggleDark = useToggle(isDark)
 <template>
   <div
     id="__layout"
-    class="flex flex-col items-center justify-center w-full h-full grow dark:text-white"
+    class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white"
   >
     <ClientOnly>
       <Button
-        class="absolute border border-gray-300 border-dashed rounded-full dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 top-4 right-4"
+        class="absolute border border-gray-300 border-dashed rounded-full dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 top-4 right-4 z-9999"
         type="menu"
         size="icon"
         variant="outline"
@@ -29,7 +29,7 @@ const toggleDark = useToggle(isDark)
               <BreadcrumbList>
                 <BreadcrumbItem class="hidden md:block">
                   <BreadcrumbLink href="#">
-                    Building Your Application
+                    Регионы
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator class="hidden md:block" />

@@ -22,7 +22,7 @@ const toggleDark = useToggle(isDark)
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">
+          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">            
             <!-- <SidebarTrigger class="-ml-1" /> -->
             <!-- <Separator orientation="vertical" class="h-4 mr-2" /> -->
             <Breadcrumb>

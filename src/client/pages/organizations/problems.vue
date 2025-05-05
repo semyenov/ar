@@ -4,7 +4,6 @@ import { Icon, NuxtLink } from '#components'
 import { faker,fakerRU} from '@faker-js/faker';
 import type { ColumnDef } from '@tanstack/vue-table'
 import { organizationStatuses } from '~/client/data/data'
-
 import {columns} from '@/client/components/organizations/column'
 
 // import { columns } from '@/client/components/organizations/column'
@@ -20,12 +19,10 @@ definePageMeta({
   layout: 'admin',
 })
 const data = ref<Organization[]>([])
-const dataProblem = ref<Organization[]>([])
-
 
 async function getData(): Promise<Organization[]> {
   const res:Organization[] = []
-  for (let index = 0; index < 10000; index++) {
+  for (let index = 0; index < 15; index++) {
     // const n = faker.number.int({ min: 0, max: 6 })
     // console.log(organizationStatuses[n].value);
 
@@ -45,7 +42,7 @@ async function getData(): Promise<Organization[]> {
 onMounted(async () => {
 
   data.value = await getData()
-  dataProblem.value = await getDataProblem()
+  console.log(data.value);
 
 })
 // const columns: ColumnDef<Organization>[] = [
@@ -73,6 +70,7 @@ onMounted(async () => {
 //     header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.name') }),
 
 //     cell: ({ row }) => {
+//       console.log(row)
 //       return h('div', { class: 'flex space-x-2' }, [
 //         h(NuxtLink, { to: `/organizations/${row.id}` ,class: 'max-w-[500px] truncate font-medium' }, row.getValue('name')),
 //       ])
@@ -166,50 +164,19 @@ onMounted(async () => {
 //     cell: ({ row }) => h(DataTableRowActions, { row }),
 //   },
 // ]
-
-async function getDataProblem(): Promise<Organization[]> {
-  const res:Organization[] = []
-  for (let index = 0; index < 15; index++) {
-    // const n = faker.number.int({ min: 0, max: 6 })
-    // console.log(organizationStatuses[n].value);
-
-    res.push({
-      id: faker.string.nanoid(),
-      status: organizationStatuses[faker.number.int({ min: 0, max: organizationStatuses.length-1 })].value,
-      name: fakerRU.company.name(),
-      inn: faker.string.numeric(10),
-      kpp: faker.string.numeric(8),
-      district: fakerRU.location.state(),
-      address: ''
-    })
-  }
-  return res
-}
-
 </script>
 
 <template>
-  <div class="grid grid-cols-12 p-4 space-y-4">
-    <Alert class="flex items-start col-span-12 gap-4 p-6">
-      <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
-      <div class="flex flex-col">
-        <AlertTitle class="text-base">Внимание</AlertTitle>
-        <AlertDescription class="text-muted-foreground">
-          Обнаружено {{dataProblem.length}} организаций без пользователя. Рекомендуется назначить пользователей, прежде чем продолжать работу.
-        </AlertDescription>
-        <NuxtLink class="flex items-center gap-2 mt-2" to="/organizations/problems">Перейти к редактированию <Icon name="tabler:arrow-narrow-right"/></NuxtLink>
-      </div>
-    </Alert>
-    <Card class="col-span-12 ">
+  <div class="grid grid-cols-12 p-4">
+    <Card class="col-span-12">
       <CardHeader>
         <CardTitle class="text-xl">
-          {{ t('pages.organizations.title') }}
+          {{ t('pages.organizations.problems.title') }}
         </CardTitle>
-        <CardDescription> {{ t('pages.organizations.welcome') }}</CardDescription>
+        <CardDescription> {{ t('pages.organizations.problems.welcome') }}</CardDescription>
       </CardHeader>
       <CardContent class="grid gap-4">
         <OrganizationsDataTable :data="data" :columns="columns(t)" />
-
       </CardContent>
     </Card>
     <!-- <Card class="col-span-4">

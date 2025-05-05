@@ -8,14 +8,9 @@ const props = defineProps<{
 </script>
 
 <template>
-  <td
-    :class="
-      cn(
-        'py-2 px-3 align-middle',
-        props.class,
-      )
-    "
+  <div
+    :class="cn('flex flex-col gap-y-1.5 text-center sm:text-left', props.class)"
   >
     <slot />
-  </td>
+  </div>
 </template>

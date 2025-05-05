@@ -2,20 +2,18 @@
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/client/lib/utils'
 
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps<{ class?: HTMLAttributes['class'] }>()
 </script>
 
 <template>
-  <td
+  <div
     :class="
       cn(
-        'py-2 px-3 align-middle',
+        'flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-x-2',
         props.class,
       )
     "
   >
     <slot />
-  </td>
+  </div>
 </template>

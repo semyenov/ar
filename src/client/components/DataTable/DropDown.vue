@@ -20,7 +20,9 @@ function copy(id: string) {
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="w-8 h-8 p-0">
         <span class="sr-only">Open menu</span>
-        <Icon name="tabler:dots " class="w-5 h-5 text-black" />
+        <Icon name="tabler:dots" class="w-5 h-5 text-black" />
+
+        <!-- <Icon  name="tabler:moon" /> -->
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
