@@ -17,10 +17,11 @@ export default defineEventHandler(async (event) => {
   // Получение параметров запроса
   const query = getQuery(event)
 
+
   const schema = z.object({
-    templateId: z.string(),
     limit: z.string().transform(Number).pipe(z.number().int().positive()).optional(),
     offset: z.string().transform(Number).pipe(z.number().int().nonnegative()).optional(),
+    search: z.string().optional(),
   })
 
   const validationResult = schema.safeParse(query)
@@ -32,45 +33,43 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { templateId, limit = 50, offset = 0 } = validationResult.data
+  const { limit = 50, offset = 0, search } = validationResult.data
 
   try {
-    // Проверка существования шаблона
-    const template = await prisma.formTemplate.findUnique({
-      where: { id: templateId },
-    })
+    // Формирование условий поиска
+    const where = search
+      ? {
+          OR: [
+            { name: { contains: search } },
+            { description: { contains: search } },
+          ],
+        }
+      : {}
 
-    if (!template) {
-      throw createError({
-        statusCode: 404,
-        message: 'Form template not found',
-      })
-    }
-
-    // Получение полей шаблона
-    const [formTemplateFields, total] = await Promise.all([
-      prisma.formTemplateField.findMany({
-        where: { templateId },
-        orderBy: { order: 'asc' },
+    // Получение шаблонов форм
+    const [formTemplates, total] = await Promise.all([
+      prisma.formTemplate.findMany({
+        where,
+        orderBy: { updatedAt: 'desc' },
         take: limit,
         skip: offset,
       }),
-      prisma.formTemplateField.count({
-        where: { templateId },
+      prisma.formTemplate.count({
+        where,
       }),
     ])
 
     return {
-      items: formTemplateFields,
+      items: formTemplates,
       total,
       limit,
       offset,
     }
   } catch (error) {
-    console.error('Failed to list form template fields:', error)
+    console.error('Failed to list form templates:', error)
     throw createError({
       statusCode: 500,
-      message: 'Failed to list form template fields',
+      message: 'Failed to list form templates',
     })
   }
 })

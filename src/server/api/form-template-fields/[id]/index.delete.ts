@@ -4,16 +4,18 @@ import prisma from '~~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
-  const session = await auth.api.getSession(toWebRequest(event))
+  const session = await auth.api.getSession({
+    headers: event.headers,
+  })
   if (!session) {
     throw createError({
       statusCode: 401,
       message: 'Unauthorized',
     })
   }
-
   // Получение ID поля из параметров запроса
   const id = getRouterParam(event, 'id')
+
   if (!id) {
     throw createError({
       statusCode: 400,

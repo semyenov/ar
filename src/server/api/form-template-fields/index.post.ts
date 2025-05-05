@@ -5,7 +5,10 @@ import prisma from '~~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
-  const session = await auth.api.getSession(toWebRequest(event))
+  const session = await auth.api.getSession({
+    headers: event.headers,
+  })
+
   if (!session) {
     throw createError({
       statusCode: 401,
@@ -13,8 +16,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Проверка данных запроса
   const body = await readBody(event)
+
+
+  // Проверка данных запроса
   const schema = z.object({
     templateId: z.string(),
     name: z.string().min(1),

@@ -13,44 +13,41 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-
-  // Получение ID поля из параметров запроса
+  // Получение ID шаблона из параметров запроса
   const id = getRouterParam(event, 'id')
-
   if (!id) {
     throw createError({
       statusCode: 400,
-      message: 'Field ID is required',
+      message: 'Template ID is required',
     })
   }
 
   try {
-    // Получение поля шаблона
-    const formTemplateField = await prisma.formTemplateField.findUnique({
+    // Получение шаблона формы с полями
+    const formTemplate = await prisma.formTemplate.findUnique({
       where: { id },
       include: {
-        template: {
-          select: {
-            id: true,
-            name: true,
+        fields: {
+          orderBy: {
+            order: 'asc',
           },
         },
       },
     })
 
-    if (!formTemplateField) {
+    if (!formTemplate) {
       throw createError({
         statusCode: 404,
-        message: 'Form template field not found',
+        message: 'Form template not found',
       })
     }
 
-    return formTemplateField
+    return formTemplate
   } catch (error) {
-    console.error('Failed to get form template field:', error)
+    console.error('Failed to get form template:', error)
     throw createError({
       statusCode: 500,
-      message: 'Failed to get form template field',
+      message: 'Failed to get form template',
     })
   }
 })
