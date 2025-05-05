@@ -30,3 +30,5 @@ dbschema/queries.*
 dbschema/query-builder
 dbschema/interfaces.ts
 queries/*.query.ts
+
+**/.claude/settings.local.json

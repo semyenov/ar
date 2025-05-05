@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       typescriptBundlerResolution: true,
       wasm: true,
       websocket: true,
+      openAPI: true,
     },
     logging: {
       buildSuccess: true,
@@ -84,35 +85,10 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@prisma/nuxt',
-    'better-auth-nuxt',
 
     '@nuxt/icon',
     'nuxt-echarts',
   ],
-
-  betterAuth: {
-    // Configure auth endpoints (default: '/api/auth/**')
-    endpoint: '/api/auth/**',
-
-    // Configure redirect paths
-    redirectOptions: {
-      redirectGuestTo: '/auth/login',
-      redirectUnauthorizedTo: '/401',
-      redirectUserTo: '/',
-    },
-
-    // Configure client and server options
-    options: {
-      client: {
-        basePath: '/api/auth',
-        // Optional: baseURL, disableDefaultFetchPlugins
-      },
-      server: {
-        appName: 'My Nuxt App',
-        // Optional: baseURL, basePath, secret
-      },
-    },
-  },
 
   content: {
     experimental: {

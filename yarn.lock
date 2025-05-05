@@ -12144,7 +12144,6 @@ __metadata:
     "@vitest/ui": "npm:^2.1.9"
     "@vueuse/core": "npm:^13.1.0"
     "@vueuse/nuxt": "npm:^11.3.0"
-    add: "npm:^2.0.6"
     better-auth: "npm:^1.2.7"
     better-auth-nuxt: "npm:^0.0.8"
     class-variance-authority: "npm:^0.7.1"

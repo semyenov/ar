@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -21,19 +21,9 @@ model User {
   members       Member[]
   invitations   Invitation[]
 
-  // Связи для форм
-  createdForms  Form[]        @relation("FormCreator")
-  assignedForms Form[]        @relation("FormExecutor")
-  comments      Comment[]
-  formHistory   FormHistory[]
-
-  // Файловые связи
-  uploadedFiles  File[]       @relation("FileUploader")
-  sharedFiles    FileShare[]
-  createdFolders FileFolder[]
-
   @@unique([email])
   @@map("user")
+  @@index([email])
 }
 
 model Session {
@@ -50,6 +40,7 @@ model Session {
 
   @@unique([token])
   @@map("session")
+  @@index([userId])
 }
 
 model Account {
@@ -69,6 +60,7 @@ model Account {
   updatedAt             DateTime
 
   @@map("account")
+  @@index([userId])
 }
 
 model Verification {
@@ -83,22 +75,23 @@ model Verification {
 }
 
 model Organization {
-  id            String         @id
-  name          String
-  slug          String?
-  logo          String?
-  createdAt     DateTime
-  metadata      String?
-  members       Member[]
-  invitations   Invitation[]
-  forms         Form[]
-  formTemplates FormTemplate[]
-  files         File[]
-  folders       FileFolder[]
-  reviewFlows   ReviewFlow[]
+  id          String       @id
+  name        String
+  slug        String?
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+  forms       Form[]
+  files       File[]
+  folders     FileFolder[]
+  reviewFlows ReviewFlow[]
 
   @@unique([slug])
   @@map("organization")
+  @@index([name])
+  @@index([slug])
 }
 
 enum MemberRole {
@@ -108,19 +101,26 @@ enum MemberRole {
 }
 
 model Member {
-  id             String       @id
+  id             String        @id
   organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   role           MemberRole
-  createdAt      DateTime     @default(now())
-
-  // Добавленные связи
-  comments    Comment[]
-  formHistory FormHistory[]
+  createdAt      DateTime      @default(now())
+  createdForms   Form[]        @relation("FormCreator")
+  assignedForms  Form[]        @relation("FormExecutor")
+  comments       Comment[]
+  formHistory    FormHistory[]
+  uploadedFiles  File[]        @relation("FileUploader")
+  sharedFiles    FileShare[]
+  createdFolders FileFolder[]
+  lastModifiedBy String?
+  version        Int           @default(1)
 
   @@map("member")
+  @@index([organizationId])
+  @@index([userId])
 }
 
 model Invitation {
@@ -135,6 +135,8 @@ model Invitation {
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@map("invitation")
+  @@index([organizationId])
+  @@index([email])
 }
 
 enum FormStatus {
@@ -157,25 +159,29 @@ enum FieldType {
 }
 
 model Form {
-  id             String        @id
-  title          String
-  description    String?
-  status         FormStatus    @default(DRAFT)
-  organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  creatorId      String
-  creator        User          @relation("FormCreator", fields: [creatorId], references: [id])
-  executorId     String?
-  executor       User?         @relation("FormExecutor", fields: [executorId], references: [id])
-  templateId     String?
-  template       FormTemplate? @relation(fields: [templateId], references: [id])
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  fields         FormField[]
-  reviewFlow     ReviewFlow?
-  history        FormHistory[]
+  id               String        @id
+  title            String
+  description      String?
+  status           FormStatus    @default(DRAFT)
+  organizationId   String
+  organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creatorMemberId  String
+  creator          Member        @relation("FormCreator", fields: [creatorMemberId], references: [id])
+  executorMemberId String?
+  executor         Member?       @relation("FormExecutor", fields: [executorMemberId], references: [id])
+  templateId       String?
+  template         FormTemplate? @relation(fields: [templateId], references: [id])
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  fields           FormField[]
+  reviewFlow       ReviewFlow?
+  history          FormHistory[]
+  lastModifiedBy   String?
+  version          Int           @default(1)
 
   @@index([organizationId, status])
+  @@index([creatorMemberId])
+  @@index([executorMemberId])
   @@map("form")
 }
 
@@ -187,24 +193,25 @@ model FormField {
   type            FieldType
   value           String?
   required        Boolean         @default(false)
-  validationRules String? // Новое поле: правила валидации
+  validationRules String?
   order           Int
   options         String?
   files           FormFieldFile[]
 
   @@map("form_field")
+  @@index([formId])
 }
 
 model FormTemplate {
   id             String              @id
   name           String
   description    String?
-  organizationId String
-  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   fields         FormTemplateField[]
   forms          Form[]
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
+  lastModifiedBy String?
+  version        Int                 @default(1)
 
   @@map("form_template")
 }
@@ -221,6 +228,7 @@ model FormTemplateField {
   options      String?
 
   @@map("form_template_field")
+  @@index([templateId])
 }
 
 model FormHistory {
@@ -228,14 +236,14 @@ model FormHistory {
   formId    String
   form      Form       @relation(fields: [formId], references: [id], onDelete: Cascade)
   status    FormStatus
-  memberId  String // Связь с Member вместо User
+  memberId  String
   member    Member     @relation(fields: [memberId], references: [id])
-  userId    String // Добавлено поле для связи с User
-  user      User       @relation(fields: [userId], references: [id]) // Добавлена связь с User
   data      String?
   createdAt DateTime   @default(now())
 
   @@map("form_history")
+  @@index([formId])
+  @@index([memberId])
 }
 
 enum ReviewFlowStatus {
@@ -247,32 +255,34 @@ model ReviewFlow {
   id             String           @id
   formId         String           @unique
   form           Form             @relation(fields: [formId], references: [id], onDelete: Cascade)
-  organizationId String // Добавлена связь с организацией
+  organizationId String
   organization   Organization     @relation(fields: [organizationId], references: [id])
   status         ReviewFlowStatus @default(OPEN)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   comments       Comment[]
+  lastModifiedBy String?
+  version        Int              @default(1)
 
   @@map("review_flow")
+  @@index([organizationId])
+  @@index([status])
 }
 
 model Comment {
   id             String     @id
   reviewFlowId   String
   reviewFlow     ReviewFlow @relation(fields: [reviewFlowId], references: [id], onDelete: Cascade)
-  memberId       String // Связь с Member вместо User
+  memberId       String
   member         Member     @relation(fields: [memberId], references: [id])
-  userId         String // Добавлено поле для связи с User
-  user           User       @relation(fields: [userId], references: [id]) // Добавлена связь с User
   content        String
   fieldReference String?
   createdAt      DateTime   @default(now())
 
   @@map("comment")
+  @@index([reviewFlowId])
+  @@index([memberId])
 }
-
-// Файловые модели (без изменений)
 
 enum FileAccess {
   PRIVATE
@@ -281,56 +291,72 @@ enum FileAccess {
 }
 
 model File {
-  id             String          @id
-  filename       String
-  originalName   String
-  path           String
-  mimeType       String
-  size           Int
-  accessLevel    FileAccess      @default(ORGANIZATION)
-  description    String?
-  organizationId String
-  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  uploaderId     String
-  uploader       User            @relation("FileUploader", fields: [uploaderId], references: [id])
-  folderId       String?
-  folder         FileFolder?     @relation(fields: [folderId], references: [id])
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  formFields     FormFieldFile[]
-  sharedWith     FileShare[]
+  id               String          @id
+  filename         String
+  originalName     String
+  path             String
+  mimeType         String
+  size             Int
+  accessLevel      FileAccess      @default(ORGANIZATION)
+  description      String?
+  organizationId   String
+  organization     Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploaderMemberId String
+  uploader         Member          @relation("FileUploader", fields: [uploaderMemberId], references: [id])
+  folderId         String?
+  folder           FileFolder?     @relation(fields: [folderId], references: [id])
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  formFields       FormFieldFile[]
+  sharedWith       FileShare[]
+  accessedAt       DateTime?
+  deleted          Boolean         @default(false)
+  lastModifiedBy   String?
+  version          Int             @default(1)
 
   @@map("file")
+  @@index([organizationId])
+  @@index([folderId])
+  @@index([accessLevel])
 }
 
 model FileFolder {
-  id             String       @id
-  name           String
-  description    String?
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  creatorId      String
-  creator        User         @relation(fields: [creatorId], references: [id])
-  parentId       String?
-  parent         FileFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
-  children       FileFolder[] @relation("FolderHierarchy")
-  files          File[]
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id              String       @id
+  name            String
+  description     String?
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creatorMemberId String
+  creator         Member       @relation(fields: [creatorMemberId], references: [id])
+  parentId        String?
+  parent          FileFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children        FileFolder[] @relation("FolderHierarchy")
+  files           File[]
+  path            String?
+  level           Int
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  lastModifiedBy  String?
+  version         Int          @default(1)
 
   @@map("file_folder")
+  @@index([organizationId])
+  @@index([parentId])
+  @@index([level])
 }
 
 model FileShare {
   id        String    @id
   fileId    String
   file      File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memberId  String
+  member    Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now())
   expiresAt DateTime?
 
   @@map("file_share")
+  @@index([fileId])
+  @@index([memberId])
 }
 
 model FormFieldFile {
@@ -341,4 +367,6 @@ model FormFieldFile {
   file        File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
 
   @@map("form_field_file")
+  @@index([formFieldId])
+  @@index([fileId])
 }
