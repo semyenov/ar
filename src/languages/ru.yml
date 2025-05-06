@@ -8,3 +8,37 @@ pages:
   users:
     title: Пользователи
     welcome: Добро пожаловать на страницу пользователей
+  forms:
+    title: Формы
+    welcome: Управление формами
+common:
+  loading: Загрузка...
+  error: Ошибка
+  retry: Повторить
+  refresh: Обновить
+  all: Все
+  view: Просмотр
+  edit: Редактировать
+  delete: Удалить
+  open: Открыть
+forms:
+  title: Формы
+  description: Управление и отслеживание форм
+  noForms: Формы не найдены
+  filterByStatus: Фильтр по статусу
+  search: Поиск форм...
+  showing: Показано
+  of: из
+  perPage: На странице
+  fields:
+    title: Название
+    status: Статус
+    createdAt: Создано
+    updatedAt: Обновлено
+    actions: Действия
+  status:
+    draft: Черновик
+    underReview: На рассмотрении
+    needsChanges: Требует изменений
+    approved: Одобрено
+    rejected: Отклонено

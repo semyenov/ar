@@ -305,7 +305,6 @@ components:
           type: string
           format: uuid
           nullable: true
-      required: []
 
     FileUpdate:
       type: object
@@ -321,7 +320,6 @@ components:
           type: string
           format: uuid
           nullable: true
-      required: []
 
     FileList:
       type: object
@@ -448,7 +446,6 @@ components:
           type: string
           format: uuid
           nullable: true
-      required: []
 
     FileFolderList:
       type: object
@@ -1814,6 +1811,7 @@ paths:
           type: string
           format: uuid
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2146,6 +2144,7 @@ paths:
           type: string
           format: uuid
       requestBody:
+        required: true
         content:
           application/json:
             schema:

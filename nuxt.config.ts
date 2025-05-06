@@ -33,7 +33,7 @@ export default defineNuxtConfig({
 
   dir: {
     public: join(srcDir, 'public'),
-    // plugins: join(srcDir, 'plugins'),
+    plugins: join(clientDir, 'plugins'),
 
     app: join(clientDir, 'app'),
     assets: join(clientDir, 'assets'),
