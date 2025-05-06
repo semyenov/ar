@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   // Валидация параметров запроса
   const query = getQuery(event)
   const schema = z.object({
-    formId: z.string().uuid(),
+    formId: z.string().min(24),
     page: z.coerce.number().int().positive().optional().default(1),
     limit: z.coerce.number().int().positive().max(100).optional().default(20),
   })

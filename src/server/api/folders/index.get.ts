@@ -18,8 +18,8 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
-    organizationId: z.string().uuid().optional(),
-    parentId: z.string().uuid().optional().nullable(),
+    organizationId: z.string().min(24).optional(),
+    parentId: z.string().min(24).optional().nullable(),
     search: z.string().optional(),
     page: z.coerce.number().int().positive().optional().default(1),
     limit: z.coerce.number().int().positive().max(100).optional().default(50),

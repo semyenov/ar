@@ -20,8 +20,8 @@ export default defineEventHandler(async (event) => {
 
   // Проверка данных запроса
   const schema = z.object({
-    fileId: z.string().uuid(),
-    memberId: z.string().uuid(),
+    fileId: z.string().min(24),
+    memberId: z.string().min(24),
     expiresAt: z.string().datetime().optional().nullable(),
   })
 

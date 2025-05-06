@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
-    formFieldId: z.string().uuid(),
+    formFieldId: z.string().min(24),
     page: z.coerce.number().int().positive().optional().default(1),
     limit: z.coerce.number().int().positive().max(50).optional().default(20),
   })

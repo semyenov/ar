@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
   const schema = z.object({
     name: z.string().min(1).optional(),
     description: z.string().optional(),
-    parentId: z.string().uuid().optional().nullable(),
+    parentId: z.string().min(24).optional().nullable(),
   })
 
   const validationResult = schema.safeParse(body)

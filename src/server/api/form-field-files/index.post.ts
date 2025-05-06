@@ -20,8 +20,8 @@ export default defineEventHandler(async (event) => {
 
   // Проверка данных запроса
   const schema = z.object({
-    formFieldId: z.string().uuid(),
-    fileId: z.string().uuid(),
+    formFieldId: z.string().min(24),
+    fileId: z.string().min(24),
   })
 
   const validationResult = schema.safeParse(body)
@@ -138,13 +138,13 @@ export default defineEventHandler(async (event) => {
     const isUserOrganizationMember = file.organization.members.length > 0
     const isFilePublic = file.accessLevel === 'PUBLIC'
     const isUserFileUploader = file.uploader.userId === session.user.id
-    const isFileSharedWithUser = file.sharedWith.some(share => 
-      share.member.userId === session.user.id && 
+    const isFileSharedWithUser = file.sharedWith.some(share =>
+      share.member.userId === session.user.id &&
       (!share.expiresAt || share.expiresAt > new Date())
     )
 
-    const hasAccess = isFilePublic || 
-                     (file.accessLevel === 'ORGANIZATION' && isUserOrganizationMember) || 
+    const hasAccess = isFilePublic ||
+                     (file.accessLevel === 'ORGANIZATION' && isUserOrganizationMember) ||
                      (file.accessLevel === 'PRIVATE' && isUserFileUploader) ||
                      isFileSharedWithUser
 

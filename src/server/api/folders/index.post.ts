@@ -22,8 +22,8 @@ export default defineEventHandler(async (event) => {
   const schema = z.object({
     name: z.string().min(1),
     description: z.string().optional(),
-    organizationId: z.string().uuid(),
-    parentId: z.string().uuid().optional().nullable(),
+    organizationId: z.string().min(24),
+    parentId: z.string().min(24).optional().nullable(),
   })
 
   const validationResult = schema.safeParse(body)

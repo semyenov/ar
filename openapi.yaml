@@ -5,8 +5,8 @@ info:
   version: 1.0.0
 
 servers:
-  - url: /api
-    description: API сервер
+- url: /api
+  description: API сервер
 
 components:
   securitySchemes:
@@ -25,7 +25,7 @@ components:
           type: string
         data:
           type: object
-          
+
     ReviewFlow:
       type: object
       properties:
@@ -40,7 +40,7 @@ components:
           format: uuid
         status:
           type: string
-          enum: ["OPEN", "CLOSED"]
+          enum: [ "OPEN", "CLOSED" ]
         createdAt:
           type: string
           format: date-time
@@ -64,14 +64,14 @@ components:
           items:
             $ref: '#/components/schemas/Comment'
       required:
-        - id
-        - formId
-        - organizationId
-        - status
-        - createdAt
-        - updatedAt
-        - version
-    
+      - id
+      - formId
+      - organizationId
+      - status
+      - createdAt
+      - updatedAt
+      - version
+
     ReviewFlowCreate:
       type: object
       properties:
@@ -80,20 +80,20 @@ components:
           format: uuid
         status:
           type: string
-          enum: ["OPEN", "CLOSED"]
+          enum: [ "OPEN", "CLOSED" ]
           default: "OPEN"
       required:
-        - formId
-    
+      - formId
+
     ReviewFlowUpdate:
       type: object
       properties:
         status:
           type: string
-          enum: ["OPEN", "CLOSED"]
+          enum: [ "OPEN", "CLOSED" ]
       required:
-        - status
-    
+      - status
+
     ReviewFlowList:
       type: object
       properties:
@@ -113,8 +113,8 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
+      - data
+      - meta
 
     Comment:
       type: object
@@ -143,6 +143,7 @@ components:
               type: string
             role:
               type: string
+              enum: [ "owner", "admin", "reviewer", "executor", "member" ]
             user:
               type: object
               properties:
@@ -156,12 +157,12 @@ components:
                   type: string
                   nullable: true
       required:
-        - id
-        - reviewFlowId
-        - memberId
-        - content
-        - createdAt
-    
+      - id
+      - reviewFlowId
+      - memberId
+      - content
+      - createdAt
+
     CommentCreate:
       type: object
       properties:
@@ -174,17 +175,17 @@ components:
           type: string
           nullable: true
       required:
-        - reviewFlowId
-        - content
-    
+      - reviewFlowId
+      - content
+
     CommentUpdate:
       type: object
       properties:
         content:
           type: string
       required:
-        - content
-    
+      - content
+
     CommentList:
       type: object
       properties:
@@ -204,9 +205,9 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
-    
+      - data
+      - meta
+
     File:
       type: object
       properties:
@@ -223,7 +224,7 @@ components:
           type: integer
         accessLevel:
           type: string
-          enum: ["PRIVATE", "ORGANIZATION", "PUBLIC"]
+          enum: [ "PRIVATE", "ORGANIZATION", "PUBLIC" ]
           default: "ORGANIZATION"
         description:
           type: string
@@ -263,6 +264,7 @@ components:
               type: string
             role:
               type: string
+              enum: [ "owner", "admin", "reviewer", "executor", "member" ]
             user:
               type: object
               properties:
@@ -279,18 +281,18 @@ components:
           type: object
           nullable: true
       required:
-        - id
-        - filename
-        - originalName
-        - mimeType
-        - size
-        - accessLevel
-        - organizationId
-        - uploaderMemberId
-        - createdAt
-        - updatedAt
-        - version
-    
+      - id
+      - filename
+      - originalName
+      - mimeType
+      - size
+      - accessLevel
+      - organizationId
+      - uploaderMemberId
+      - createdAt
+      - updatedAt
+      - version
+
     FileCreate:
       type: object
       properties:
@@ -298,13 +300,13 @@ components:
           type: string
         accessLevel:
           type: string
-          enum: ["PRIVATE", "ORGANIZATION", "PUBLIC"]
+          enum: [ "PRIVATE", "ORGANIZATION", "PUBLIC" ]
         folderId:
           type: string
           format: uuid
           nullable: true
       required: []
-    
+
     FileUpdate:
       type: object
       properties:
@@ -314,13 +316,13 @@ components:
           type: string
         accessLevel:
           type: string
-          enum: ["PRIVATE", "ORGANIZATION", "PUBLIC"]
+          enum: [ "PRIVATE", "ORGANIZATION", "PUBLIC" ]
         folderId:
           type: string
           format: uuid
           nullable: true
       required: []
-    
+
     FileList:
       type: object
       properties:
@@ -340,9 +342,9 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
-    
+      - data
+      - meta
+
     FileFolder:
       type: object
       properties:
@@ -387,6 +389,7 @@ components:
               type: string
             role:
               type: string
+              enum: [ "owner", "admin", "reviewer", "executor", "member" ]
             user:
               type: object
               properties:
@@ -409,15 +412,15 @@ components:
           type: integer
           nullable: true
       required:
-        - id
-        - name
-        - organizationId
-        - creatorMemberId
-        - level
-        - createdAt
-        - updatedAt
-        - version
-    
+      - id
+      - name
+      - organizationId
+      - creatorMemberId
+      - level
+      - createdAt
+      - updatedAt
+      - version
+
     FileFolderCreate:
       type: object
       properties:
@@ -431,8 +434,8 @@ components:
           format: uuid
           nullable: true
       required:
-        - name
-    
+      - name
+
     FileFolderUpdate:
       type: object
       properties:
@@ -446,7 +449,7 @@ components:
           format: uuid
           nullable: true
       required: []
-    
+
     FileFolderList:
       type: object
       properties:
@@ -466,9 +469,9 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
-    
+      - data
+      - meta
+
     FileFolderPath:
       type: object
       properties:
@@ -483,11 +486,11 @@ components:
               name:
                 type: string
             required:
-              - id
-              - name
+            - id
+            - name
       required:
-        - path
-    
+      - path
+
     FileShare:
       type: object
       properties:
@@ -516,6 +519,7 @@ components:
               type: string
             role:
               type: string
+              enum: [ "owner", "admin", "reviewer", "executor", "member" ]
             user:
               type: object
               properties:
@@ -529,11 +533,11 @@ components:
                   type: string
                   nullable: true
       required:
-        - id
-        - fileId
-        - memberId
-        - createdAt
-    
+      - id
+      - fileId
+      - memberId
+      - createdAt
+
     FileShareCreate:
       type: object
       properties:
@@ -548,9 +552,9 @@ components:
           format: date-time
           nullable: true
       required:
-        - fileId
-        - memberId
-    
+      - fileId
+      - memberId
+
     FileShareList:
       type: object
       properties:
@@ -570,9 +574,9 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
-    
+      - data
+      - meta
+
     FormFieldFile:
       type: object
       properties:
@@ -588,10 +592,10 @@ components:
         file:
           $ref: '#/components/schemas/File'
       required:
-        - id
-        - formFieldId
-        - fileId
-    
+      - id
+      - formFieldId
+      - fileId
+
     FormFieldFileCreate:
       type: object
       properties:
@@ -602,9 +606,9 @@ components:
           type: string
           format: uuid
       required:
-        - formFieldId
-        - fileId
-    
+      - formFieldId
+      - fileId
+
     FormFieldFileList:
       type: object
       properties:
@@ -624,9 +628,9 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
-    
+      - data
+      - meta
+
     FormHistory:
       type: object
       properties:
@@ -636,7 +640,7 @@ components:
           type: string
         status:
           type: string
-          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+          enum: [ "DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED" ]
         memberId:
           type: string
         data:
@@ -652,6 +656,7 @@ components:
               type: string
             role:
               type: string
+              enum: [ "owner", "admin", "reviewer", "executor", "member" ]
             user:
               type: object
               properties:
@@ -665,12 +670,12 @@ components:
                   type: string
                   nullable: true
       required:
-        - id
-        - formId
-        - status
-        - memberId
-        - createdAt
-        
+      - id
+      - formId
+      - status
+      - memberId
+      - createdAt
+
     FormHistoryList:
       type: object
       properties:
@@ -690,8 +695,8 @@ components:
             totalPages:
               type: integer
       required:
-        - data
-        - meta
+      - data
+      - meta
 
     FormTemplateField:
       type: object
@@ -704,23 +709,26 @@ components:
           type: string
         type:
           type: string
-          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+          enum: [ "TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE" ]
         defaultValue:
           type: string
           nullable: true
         required:
           type: boolean
+        validationRules:
+          type: string
+          nullable: true
         order:
           type: integer
         options:
           type: string
           nullable: true
       required:
-        - id
-        - templateId
-        - name
-        - type
-        - order
+      - id
+      - templateId
+      - name
+      - type
+      - order
 
     FormTemplateFieldCreate:
       type: object
@@ -731,22 +739,25 @@ components:
           type: string
         type:
           type: string
-          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+          enum: [ "TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE" ]
         defaultValue:
           type: string
           nullable: true
         required:
           type: boolean
+        validationRules:
+          type: string
+          nullable: true
         order:
           type: integer
         options:
           type: string
           nullable: true
       required:
-        - templateId
-        - name
-        - type
-        - order
+      - templateId
+      - name
+      - type
+      - order
 
     FormTemplateFieldUpdate:
       type: object
@@ -755,12 +766,15 @@ components:
           type: string
         type:
           type: string
-          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+          enum: [ "TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE" ]
         defaultValue:
           type: string
           nullable: true
         required:
           type: boolean
+        validationRules:
+          type: string
+          nullable: true
         order:
           type: integer
         options:
@@ -781,10 +795,10 @@ components:
         offset:
           type: integer
       required:
-        - items
-        - total
-        - limit
-        - offset
+      - items
+      - total
+      - limit
+      - offset
 
     FormTemplate:
       type: object
@@ -812,11 +826,11 @@ components:
           items:
             $ref: '#/components/schemas/FormTemplateField'
       required:
-        - id
-        - name
-        - createdAt
-        - updatedAt
-        - version
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      - version
 
     FormTemplateCreate:
       type: object
@@ -827,7 +841,7 @@ components:
           type: string
           nullable: true
       required:
-        - name
+      - name
 
     FormTemplateUpdate:
       type: object
@@ -852,10 +866,10 @@ components:
         offset:
           type: integer
       required:
-        - items
-        - total
-        - limit
-        - offset
+      - items
+      - total
+      - limit
+      - offset
 
     Form:
       type: object
@@ -869,7 +883,7 @@ components:
           nullable: true
         status:
           type: string
-          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+          enum: [ "DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED" ]
         organizationId:
           type: string
         creatorMemberId:
@@ -913,14 +927,14 @@ components:
           type: object
           nullable: true
       required:
-        - id
-        - title
-        - status
-        - organizationId
-        - creatorMemberId
-        - createdAt
-        - updatedAt
-        - version
+      - id
+      - title
+      - status
+      - organizationId
+      - creatorMemberId
+      - createdAt
+      - updatedAt
+      - version
 
     FormCreate:
       type: object
@@ -939,8 +953,8 @@ components:
           type: string
           nullable: true
       required:
-        - title
-        - organizationId
+      - title
+      - organizationId
 
     FormUpdate:
       type: object
@@ -952,7 +966,7 @@ components:
           nullable: true
         status:
           type: string
-          enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
+          enum: [ "DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED" ]
         executorMemberId:
           type: string
           nullable: true
@@ -971,10 +985,10 @@ components:
         offset:
           type: integer
       required:
-        - items
-        - total
-        - limit
-        - offset
+      - items
+      - total
+      - limit
+      - offset
 
     FormField:
       type: object
@@ -987,7 +1001,7 @@ components:
           type: string
         type:
           type: string
-          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
+          enum: [ "TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE" ]
         value:
           type: string
           nullable: true
@@ -1006,40 +1020,27 @@ components:
           items:
             type: object
       required:
-        - id
-        - formId
-        - name
-        - type
-        - order
+      - id
+      - formId
+      - name
+      - type
+      - order
 
     FormFieldCreate:
       type: object
       properties:
         formId:
           type: string
-        name:
+        formTemplateFieldId:
           type: string
-        type:
-          type: string
-          enum: ["TEXT", "TEXTAREA", "NUMBER", "DATE", "SELECT", "CHECKBOX", "RADIO", "FILE"]
         value:
           type: string
           nullable: true
-        required:
-          type: boolean
-        validationRules:
-          type: string
-          nullable: true
-        order:
-          type: integer
-        options:
-          type: string
-          nullable: true
       required:
-        - formId
-        - name
-        - type
-        - order
+      - formId
+      - name
+      - type
+      - order
 
     FormFieldUpdate:
       type: object
@@ -1074,10 +1075,10 @@ components:
         offset:
           type: integer
       required:
-        - items
-        - total
-        - limit
-        - offset
+      - items
+      - total
+      - limit
+      - offset
 
     SuccessResponse:
       type: object
@@ -1087,8 +1088,8 @@ components:
         message:
           type: string
       required:
-        - success
-        - message
+      - success
+      - message
 
 paths:
   /review-flows:
@@ -1096,7 +1097,7 @@ paths:
       summary: Создание процесса рассмотрения
       operationId: createReviewFlow
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -1139,43 +1140,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка процессов рассмотрения
       operationId: listReviewFlows
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 10
-        - name: status
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: ["OPEN", "CLOSED"]
-        - name: formId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
-        - name: organizationId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [ "OPEN", "CLOSED" ]
+      - name: formId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Список процессов рассмотрения
@@ -1207,14 +1208,14 @@ paths:
       summary: Получение информации о процессе рассмотрения
       operationId: getReviewFlow
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Информация о процессе рассмотрения
@@ -1257,14 +1258,14 @@ paths:
       summary: Обновление процесса рассмотрения
       operationId: updateReviewFlow
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         content:
           application/json:
@@ -1312,14 +1313,14 @@ paths:
       summary: Удаление процесса рассмотрения
       operationId: deleteReviewFlow
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Процесс рассмотрения успешно удален
@@ -1363,7 +1364,7 @@ paths:
       summary: Создание комментария
       operationId: createComment
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -1406,31 +1407,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка комментариев
       operationId: listComments
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: reviewFlowId
-          in: query
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
+      - name: reviewFlowId
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
       responses:
         '200':
           description: Список комментариев
@@ -1474,14 +1475,14 @@ paths:
       summary: Получение информации о комментарии
       operationId: getComment
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Информация о комментарии
@@ -1524,14 +1525,14 @@ paths:
       summary: Обновление комментария
       operationId: updateComment
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         content:
           application/json:
@@ -1579,14 +1580,14 @@ paths:
       summary: Удаление комментария
       operationId: deleteComment
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Комментарий успешно удален
@@ -1630,7 +1631,7 @@ paths:
       summary: Загрузка файла
       operationId: uploadFile
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           multipart/form-data:
@@ -1644,12 +1645,12 @@ paths:
                   type: string
                 accessLevel:
                   type: string
-                  enum: ["PRIVATE", "ORGANIZATION", "PUBLIC"]
+                  enum: [ "PRIVATE", "ORGANIZATION", "PUBLIC" ]
                 folderId:
                   type: string
                   format: uuid
               required:
-                - file
+              - file
       responses:
         '200':
           description: Файл успешно загружен
@@ -1681,42 +1682,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка файлов
       operationId: listFiles
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: folderId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
-        - name: search
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: organizationId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: folderId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Список файлов
@@ -1754,14 +1755,14 @@ paths:
       summary: Получение информации о файле
       operationId: getFile
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Информация о файле
@@ -1799,19 +1800,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     patch:
       summary: Обновление информации о файле
       operationId: updateFile
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         content:
           application/json:
@@ -1854,19 +1855,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     delete:
       summary: Удаление файла
       operationId: deleteFile
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Файл успешно удален
@@ -1910,14 +1911,14 @@ paths:
       summary: Скачивание файла
       operationId: downloadFile
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Содержимое файла
@@ -1969,7 +1970,7 @@ paths:
       summary: Создание папки
       operationId: createFolder
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -2018,37 +2019,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка папок
       operationId: listFolders
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: parentId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: organizationId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
+      - name: parentId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Список папок
@@ -2086,14 +2087,14 @@ paths:
       summary: Получение информации о папке
       operationId: getFolder
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Информация о папке
@@ -2131,19 +2132,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     patch:
       summary: Обновление папки
       operationId: updateFolder
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         content:
           application/json:
@@ -2192,19 +2193,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     delete:
       summary: Удаление папки
       operationId: deleteFolder
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Папка успешно удалена
@@ -2248,14 +2249,14 @@ paths:
       summary: Получение пути к папке
       operationId: getFolderPath
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Путь к папке
@@ -2299,7 +2300,7 @@ paths:
       summary: Создание общего доступа к файлу
       operationId: createFileShare
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -2348,37 +2349,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка общих доступов к файлу
       operationId: listFileShares
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: fileId
-          in: query
-          required: false
-          schema:
-            type: string
-            format: uuid
-        - name: filter
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: ["sharedWithMe"]
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
+      - name: fileId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: filter
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [ "sharedWithMe" ]
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
       responses:
         '200':
           description: Список общих доступов к файлу
@@ -2416,14 +2417,14 @@ paths:
       summary: Удаление общего доступа к файлу
       operationId: deleteFileShare
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Общий доступ к файлу успешно удален
@@ -2461,13 +2462,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
   /form-field-files:
     post:
       summary: Прикрепление файла к полю формы
       operationId: attachFileToFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -2516,31 +2517,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
+
     get:
       summary: Получение списка файлов, прикрепленных к полю формы
       operationId: listFormFieldFiles
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: formFieldId
-          in: query
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
+      - name: formFieldId
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
       responses:
         '200':
           description: Список файлов, прикрепленных к полю формы
@@ -2584,14 +2585,14 @@ paths:
       summary: Открепление файла от поля формы
       operationId: detachFileFromFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
           description: Файл успешно откреплен от поля формы
@@ -2635,7 +2636,7 @@ paths:
       summary: Создание поля шаблона формы
       operationId: createFormTemplateField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -2677,25 +2678,25 @@ paths:
       summary: Получение списка полей шаблона формы
       operationId: listFormTemplateFields
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: templateId
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
+      - name: templateId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
       responses:
         '200':
           description: Список полей шаблона формы
@@ -2733,13 +2734,13 @@ paths:
       summary: Получение информации о поле шаблона формы
       operationId: getFormTemplateField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Информация о поле шаблона формы
@@ -2776,13 +2777,13 @@ paths:
       summary: Обновление поля шаблона формы
       operationId: updateFormTemplateField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -2824,13 +2825,13 @@ paths:
       summary: Удаление поля шаблона формы
       operationId: deleteFormTemplateField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Поле шаблона формы успешно удалено
@@ -2868,7 +2869,7 @@ paths:
       summary: Создание шаблона формы
       operationId: createFormTemplate
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -2904,25 +2905,25 @@ paths:
       summary: Получение списка шаблонов форм
       operationId: listFormTemplates
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-        - name: search
-          in: query
-          required: false
-          schema:
-            type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Список шаблонов форм
@@ -2954,13 +2955,13 @@ paths:
       summary: Получение информации о шаблоне формы
       operationId: getFormTemplate
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Информация о шаблоне формы
@@ -2997,13 +2998,13 @@ paths:
       summary: Обновление шаблона формы
       operationId: updateFormTemplate
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -3045,13 +3046,13 @@ paths:
       summary: Удаление шаблона формы
       operationId: deleteFormTemplate
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Шаблон формы успешно удален
@@ -3089,7 +3090,7 @@ paths:
       summary: Создание формы
       operationId: createForm
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -3137,31 +3138,31 @@ paths:
       summary: Получение списка форм
       operationId: listForms
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: organizationId
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: status
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: ["DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED"]
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
+      - name: organizationId
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [ "DRAFT", "UNDER_REVIEW", "NEEDS_CHANGES", "APPROVED", "REJECTED" ]
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
       responses:
         '200':
           description: Список форм
@@ -3199,13 +3200,13 @@ paths:
       summary: Получение информации о форме
       operationId: getForm
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Информация о форме
@@ -3242,13 +3243,13 @@ paths:
       summary: Обновление формы
       operationId: updateForm
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -3296,13 +3297,13 @@ paths:
       summary: Удаление формы
       operationId: deleteForm
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Форма успешно удалена
@@ -3346,7 +3347,7 @@ paths:
       summary: Создание поля формы
       operationId: createFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       requestBody:
         content:
           application/json:
@@ -3394,25 +3395,25 @@ paths:
       summary: Получение списка полей формы
       operationId: listFormFields
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: formId
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 100
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
+      - name: formId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
       responses:
         '200':
           description: Список полей формы
@@ -3450,13 +3451,13 @@ paths:
       summary: Получение информации о поле формы
       operationId: getFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Информация о поле формы
@@ -3499,13 +3500,13 @@ paths:
       summary: Обновление поля формы
       operationId: updateFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -3553,13 +3554,13 @@ paths:
       summary: Удаление поля формы
       operationId: deleteFormField
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Поле формы успешно удалено
@@ -3597,31 +3598,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-                
+
   /form-history:
     get:
       summary: Получение истории формы
       operationId: listFormHistory
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: formId
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
+      - name: formId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
       responses:
         '200':
           description: История формы
@@ -3659,19 +3660,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-                
+
   /form-history/{id}:
     get:
       summary: Получение записи истории формы
       operationId: getFormHistoryRecord
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Запись истории формы

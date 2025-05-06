@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
   // Проверка данных запроса
   const schema = z.object({
     description: z.string().optional(),
-    folderId: z.string().uuid().optional().nullable(),
+    folderId: z.string().min(24).optional().nullable(),
     accessLevel: z.enum(['PRIVATE', 'ORGANIZATION', 'PUBLIC']).optional(),
   })
 
