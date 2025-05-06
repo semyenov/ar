@@ -59,7 +59,9 @@ export default defineNuxtConfig({
       wasm: true,
       websocket: true,
       openAPI: true,
+
     },
+
     logging: {
       buildSuccess: true,
       compressedSizes: true,

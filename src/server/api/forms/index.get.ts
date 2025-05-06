@@ -2,7 +2,17 @@ import { auth } from '~/lib/auth'
 import prisma from '~~/lib/prisma'
 import { z } from 'zod'
 
+defineRouteMeta({
+  openAPI: {
+    tags: ["test"],
+    description: "Test route description",
+    parameters: [{ in: "query", name: "test", required: true }],
+  },
+});
+
 export default defineEventHandler(async (event) => {
+
+
   // Проверка авторизации пользователя
   const session = await auth.api.getSession({
     headers: event.headers,
