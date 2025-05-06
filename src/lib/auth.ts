@@ -11,5 +11,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  plugins: [organization(), openAPI()],
+  plugins: [
+    organization({
+      allowUserToCreateOrganization(user) {
+        return true
+      },
+    }),
+    openAPI(),
+  ],
 })

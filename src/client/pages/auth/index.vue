@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSession } from '~/lib/auth-client'
+import authClient from '~/lib/auth-client'
 
 definePageMeta({
   layout: 'default',
@@ -16,7 +16,7 @@ const features = [
   'Rate Limiting',
   'Session Management',
 ]
-const { data: session } = await useSession(useFetch)
+const { data: session } = await authClient.getSession()
 </script>
 
 <template>

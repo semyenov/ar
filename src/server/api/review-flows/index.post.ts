@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   // Проверка данных запроса
   const schema = z.object({
-    formId: z.string().uuid(),
+    formId: z.string(),
     status: z.enum(['OPEN', 'CLOSED']).default('OPEN').optional(),
   })
 

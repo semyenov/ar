@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
-    reviewFlowId: z.string().uuid(),
+    reviewFlowId: z.string(),
     page: z.coerce.number().int().positive().optional().default(1),
     limit: z.coerce.number().int().positive().max(100).optional().default(50),
   })

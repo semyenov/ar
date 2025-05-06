@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { signOut, useSession } from '~/lib/auth-client'
+import authClient from '~/lib/auth-client'
 
-const { data: session } = await useSession(useFetch)
+const { data: session } = await authClient.getSession()
 const router = useRouter()
 </script>
 
@@ -32,7 +32,7 @@ const router = useRouter()
       <CardFooter>
         <Button
           variant="secondary" @click="async () => {
-            await signOut()
+            await authClient.signOut()
             router.push('/auth/sign-in')
           }"
         >

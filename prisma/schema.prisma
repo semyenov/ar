@@ -95,9 +95,11 @@ model Organization {
 }
 
 enum MemberRole {
-  ADMIN
-  REVIEWER
-  EXECUTOR
+  owner
+  admin
+  reviewer
+  executor
+  member
 }
 
 model Member {
@@ -222,6 +224,7 @@ model FormTemplateField {
   template     FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
   name         String
   type         FieldType
+  validationRules String?
   defaultValue String?
   required     Boolean      @default(false)
   order        Int

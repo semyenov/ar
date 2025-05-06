@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { signUp } from '~/lib/auth-client.js'
+import authClient from '~/lib/auth-client'
 
 const firstName = ref('')
 const lastName = ref('')
@@ -7,13 +7,15 @@ const email = ref('')
 const password = ref('')
 
 async function handleSignUp() {
+
   const user = {
     email: email.value,
     firstName: firstName.value,
     lastName: lastName.value,
     password: password.value,
   }
-  await signUp.email({
+
+  await authClient.signUp.email({
     callbackURL: '/auth/dashboard',
     email: user.email,
     fetchOptions: {

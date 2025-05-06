@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { signIn } from '~/lib/auth-client.js'
+import authClient from '~/lib/auth-client'
 
 const email = ref('')
 const password = ref('')
 
 async function handleSignIn() {
-  await signIn.email(
+  await authClient.signIn.email(
     {
       callbackURL: '/auth/dashboard',
       email: email.value,
@@ -51,7 +51,7 @@ async function handleSignIn() {
           </Button>
           <Button
             variant="outline" class="w-full" @click="async () => {
-              await signIn.social({
+              await authClient.signIn.social({
                 provider: 'google',
                 callbackURL: '/auth/dashboard',
               })

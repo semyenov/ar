@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   // Проверка данных запроса
   const schema = z.object({
-    reviewFlowId: z.string().uuid(),
+    reviewFlowId: z.string(),
     content: z.string().min(1),
     fieldReference: z.string().optional(),
   })
