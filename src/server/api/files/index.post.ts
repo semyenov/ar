@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
 import { generateId } from '~/lib/utils'
-import prisma from '~~/lib/prisma'
+import prisma from '~/lib/prisma'
 import { z } from 'zod'
 import { createReadStream, readFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'

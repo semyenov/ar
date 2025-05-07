@@ -6,21 +6,19 @@ export default defineConfig({
       target: './openapi.yaml',
     },
     output: {
-      mode: 'tags-split',
-      target: './src/client/lib/api',
+      mode: 'split',
+      target: './src/client/api/generated/index.ts',
       client: 'vue-query',
-      prettier: true,
+      namingConvention: 'kebab-case',
+      tslint: true,
+      indexFiles: true,
+      tsconfig: './tsconfig.json',
       override: {
         mutator: {
-          path: './src/client/lib/api/mutator/custom-instance.ts',
+          path: 'src/client/api/mutator/instance.ts',
           name: 'customInstance',
         },
-        operations: {
-          // Convert operationId to camelCase
-          getFormHistoryRecord: {
-            operationId: 'getFormHistory'
-          }
-        },
+        enumGenerationType: 'const',
         query: {
           useQuery: true,
           useInfinite: true,
@@ -29,12 +27,11 @@ export default defineConfig({
             staleTime: 10000,
           },
         },
-        mock: false,
       },
-      schemas: './src/client/lib/api/model',
-      hooks: {
-        afterAllFilesWrite: 'prettier --write',
-      },
+      schemas: './src/client/api/generated/model',
+    },
+    hooks: {
+      afterAllFilesWrite: 'prettier --write',
     },
   },
 });

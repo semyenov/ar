@@ -1,5 +1,5 @@
 import { auth } from '~/lib/auth'
-import prisma from '~~/lib/prisma'
+import prisma from '~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -57,10 +57,10 @@ export default defineEventHandler(async (event) => {
     // 1. Тот, кто загрузил файл
     // 2. Администратор организации
     // 3. Пользователь, которому был предоставлен доступ (отказаться от доступа)
-    
+
     const isFileUploader = fileShare.file.uploader.userId === session.user.id
     const isSharedWithUser = fileShare.member.userId === session.user.id
-    
+
     // Проверка, является ли пользователь администратором организации
     const membership = await prisma.member.findFirst({
       where: {
@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
         role: 'ADMIN',
       },
     })
-    
+
     const isAdmin = !!membership
 
     if (!isFileUploader && !isAdmin && !isSharedWithUser) {

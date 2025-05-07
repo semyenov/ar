@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
 import { generateId } from '~/lib/utils'
-import prisma from '~~/lib/prisma'
+import prisma from '~/lib/prisma'
 import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
@@ -117,7 +117,7 @@ export default defineEventHandler(async (event) => {
       // Если указан статус формы, обновляем форму и добавляем запись в историю
       if (formStatus && formStatus !== reviewFlow.form.status) {
         const oldStatus = reviewFlow.form.status
-        
+
         // Обновление статуса формы
         await tx.form.update({
           data: {
@@ -144,10 +144,10 @@ export default defineEventHandler(async (event) => {
           },
         })
 
-        // Если процесс рассмотрения закрывается и форма одобрена/отклонена, 
+        // Если процесс рассмотрения закрывается и форма одобрена/отклонена,
         // автоматически закрываем процесс рассмотрения
         if (
-          (formStatus === 'APPROVED' || formStatus === 'REJECTED') && 
+          (formStatus === 'APPROVED' || formStatus === 'REJECTED') &&
           (!status || status === 'OPEN')
         ) {
           await tx.reviewFlow.update({
@@ -157,7 +157,7 @@ export default defineEventHandler(async (event) => {
             },
             where: { id },
           })
-          
+
           updated.status = 'CLOSED'
         }
       }

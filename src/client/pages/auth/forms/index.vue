@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useListForms } from '@/client/lib/api/default/default';
-import type { FormStatus } from '@/client/lib/api/model/formStatus';
-import type { ListFormsParams } from '@/client/lib/api/model/listFormsParams';
+import { useListForms } from '@/client/api';
+import type { FormStatus, ListFormsParams } from '@/client/api'
 
 // Define page meta with admin layout
 definePageMeta({

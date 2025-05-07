@@ -13,11 +13,11 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   // Get the token from localStorage
   const token = localStorage.getItem('auth.token');
-  
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
   return config;
 });
 
@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
       // Unauthorized - redirect to login
       window.location.href = '/auth/sign-in';
     }
-    
+
     return Promise.reject(error);
   }
 );

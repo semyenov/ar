@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
 import { generateId } from '~/lib/utils'
-import prisma from '~~/lib/prisma'
+import prisma from '~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя

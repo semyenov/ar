@@ -1,5 +1,5 @@
 import { auth } from '~/lib/auth'
-import prisma from '~~/lib/prisma'
+import prisma from '~/lib/prisma'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -116,13 +116,13 @@ export default defineEventHandler(async (event) => {
     const isUserOrganizationMember = file.organization.members.length > 0
     const isFilePublic = file.accessLevel === 'PUBLIC'
     const isUserFileUploader = file.uploader.user.id === session.user.id
-    const isFileSharedWithUser = file.sharedWith.some(share => 
-      share.member.user.id === session.user.id && 
+    const isFileSharedWithUser = file.sharedWith.some(share =>
+      share.member.user.id === session.user.id &&
       (!share.expiresAt || share.expiresAt > new Date())
     )
 
-    const hasAccess = isFilePublic || 
-                     (file.accessLevel === 'ORGANIZATION' && isUserOrganizationMember) || 
+    const hasAccess = isFilePublic ||
+                     (file.accessLevel === 'ORGANIZATION' && isUserOrganizationMember) ||
                      (file.accessLevel === 'PRIVATE' && isUserFileUploader) ||
                      isFileSharedWithUser
 

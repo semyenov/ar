@@ -31,4 +31,7 @@ dbschema/query-builder
 dbschema/interfaces.ts
 queries/*.query.ts
 
+# Orval
+src/client/api/generated/*
+
 **/.claude/settings.local.json

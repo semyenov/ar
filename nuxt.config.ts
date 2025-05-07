@@ -10,7 +10,6 @@ const componentsDir = join(clientDir, 'components')
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-08-15',
-
   rootDir,
   serverDir,
   srcDir,
