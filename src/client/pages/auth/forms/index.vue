@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useListForms } from '@/client/api';
 import type { FormStatus, ListFormsParams } from '@/client/api'
-
+import { authClient } from "~/lib/auth-client";
 // Define page meta with admin layout
 definePageMeta({
   layout: 'admin',
@@ -42,6 +42,9 @@ const queryParams = computed<ListFormsParams>(() => {
 // Get forms using the generated API client with params
 const { data: formsResponse, isLoading, error, refetch } = useListForms(queryParams);
 
+
+const { data: session } = await authClient.getSession();
+console.log(session);
 // Computed property to get forms array
 const forms = computed(() => formsResponse.value?.items || []);
 
