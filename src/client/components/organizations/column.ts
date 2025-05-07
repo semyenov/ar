@@ -34,10 +34,11 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
     accessorKey: 'name',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: t('schemas.organizations.name') }),
 
-    cell: ({ row }) => {
+    cell: ({ row  }) => {
+
       console.log(row)
       return h('div', { class: 'flex space-x-2' }, [
-        h(NuxtLink, { to: `/organizations/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, row.getValue('name')),
+        h(NuxtLink, { to: `/organizations/${row.original.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, row.getValue('name')),
       ])
     },
   },

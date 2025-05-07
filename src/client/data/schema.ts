@@ -22,6 +22,7 @@ export const organizationSchema = z.object({
   district: z.string(),
   address: z.string(),
   status: z.string(),
+  slug: z.string(),
 })
 
 export type Organization = z.infer<typeof organizationSchema>

@@ -22,5 +22,3 @@ export const {
   updateMemberRole: useOrgUpdateMemberRole
 } = authClient.organization
 
-
-

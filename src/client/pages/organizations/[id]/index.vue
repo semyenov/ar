@@ -1,31 +1,17 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/client/components/ui/card";
-import { Progress } from "@/client/components/ui/progress";
-import { Avatar, AvatarFallback, AvatarImage } from "@/client/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/client/components/ui/select";
-import { Button } from "@/client/components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/client/components/ui/accordion";
+import { useOrgGetActiveMember, useOrgGetFullOrganization, useOrgList } from '~/client/api'
+
 const { t } = useI18n();
+const route = useRoute()
+
+const { data: organization } = await useOrgGetFullOrganization({
+  query: {
+    organizationId: route.params.id as string
+  }
+})
+
+
+console.log(organization)
 </script>
 
 <template>
@@ -36,7 +22,7 @@ const { t } = useI18n();
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <CardTitle class="text-2xl">
-                  ООО «Рога и копыта»
+                  {{ organization?.name }}
                 </CardTitle>
               <CardDescription>
                 <div class="flex flex-row items-center gap-2">
@@ -180,7 +166,7 @@ const { t } = useI18n();
         </CardHeader>
         <CardContent>
           <div class="flex flex-col gap-4">
-            <div v-for="(item, index) in Array(3).fill()" :key="index">
+            <div v-for="(item, index) in organization?.members" :key="index">
               <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <Avatar class="h-9 w-9">
@@ -188,14 +174,14 @@ const { t } = useI18n();
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col">
-                    <p class="text-sm font-medium">Operator 1</p>
+                    <p class="text-sm font-medium">{{ item.user.name }}</p>
                     <p class="font-normal text-sm  text-[#64748B]">
-                      m@example.com
+                      {{ item.user.email }}
                     </p>
                   </div>
                 </div>
                 <div class="flex flex-row items-center gap-4 max-w-[260px] w-full">
-                  <Input disabled type="email" placeholder="Оператор ОИВ/ОМСУ" />
+                  <Input disabled type="email" :placeholder="item.user.email" />
                 </div>
               </div>
             </div>

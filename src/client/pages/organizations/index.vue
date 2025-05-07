@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon, NuxtLink } from '#components'
+import { useOrgList } from '~/client/api'
 // import tasks from '@/client/data/tasks.json'
 import { faker,fakerRU} from '@faker-js/faker';
 import type { ColumnDef } from '@tanstack/vue-table'
@@ -25,20 +26,37 @@ const dataProblem = ref<Organization[]>([])
 
 async function getData(): Promise<Organization[]> {
   const res:Organization[] = []
-  for (let index = 0; index < 10000; index++) {
-    // const n = faker.number.int({ min: 0, max: 6 })
-    // console.log(organizationStatuses[n].value);
 
+  const { data: organizations } = await useOrgList()
+  if (!organizations) return []
+
+  for (const org of organizations) {
     res.push({
-      id: faker.string.nanoid(),
+      id: org.id,
       status: organizationStatuses[faker.number.int({ min: 0, max: organizationStatuses.length-1 })].value,
-      name: fakerRU.company.name(),
+      name: org.name,
       inn: faker.string.numeric(10),
       kpp: faker.string.numeric(8),
       district: fakerRU.location.state(),
+      slug: org.slug,
       address: ''
     })
   }
+  // for (let index = 0; index < 10000; index++) {
+  //   // const n = faker.number.int({ min: 0, max: 6 })
+  //   // console.log(organizationStatuses[n].value);
+
+  //   res.push({
+  //     id: faker.string.nanoid(),
+  //     status: organizationStatuses[faker.number.int({ min: 0, max: organizationStatuses.length-1 })].value,
+  //     name: fakerRU.company.name(),
+  //     inn: faker.string.numeric(10),
+  //     kpp: faker.string.numeric(8),
+  //     district: fakerRU.location.state(),
+  //     address: ''
+  //   })
+  // }
+
   return res
 }
 
@@ -180,6 +198,7 @@ async function getDataProblem(): Promise<Organization[]> {
       inn: faker.string.numeric(10),
       kpp: faker.string.numeric(8),
       district: fakerRU.location.state(),
+      slug: faker.string.nanoid(),
       address: ''
     })
   }
@@ -209,7 +228,6 @@ async function getDataProblem(): Promise<Organization[]> {
       </CardHeader>
       <CardContent class="grid gap-4">
         <OrganizationsDataTable :data="data" :columns="columns(t)" />
-
       </CardContent>
     </Card>
     <!-- <Card class="col-span-4">

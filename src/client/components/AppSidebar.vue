@@ -1,41 +1,17 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/client/components/ui/avatar'
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   type SidebarProps,
-  SidebarRail,
 } from '@/client/components/ui/sidebar'
 
 const props = defineProps<SidebarProps>()
 
-const isDark = useDark()
-  const toggleDark = useToggle(isDark)
-
-// This is sample data.
 const data = {
   navMain: [
-    // {
-    //   items: [
-    //     {
-    //       title: 'Главная',
-    //       url: '/',
-    //     },
-    //   ],
-    //   title: 'Getting Started',
-    //   url: '#',
-    // },
     {
+      icon: 'tabler:database',
+      isActive: true,
       items: [
         {
-          isActive: true,
           title: 'Организации',
           url: '/organizations#',
         },
@@ -49,6 +25,7 @@ const data = {
       url: '#',
     },
     {
+      icon: 'tabler:users',
       items: [
       {
           title: 'Пользователи',
@@ -63,51 +40,239 @@ const data = {
       url: '#',
     },
   ],
-  // versions: [
-  //   '1.0.1',
-  //   '1.1.0-alpha',
-  //   '2.0.0-beta1',
-  // ],
+  projects: [
+    {
+      icon: 'tabler:frame',
+      name: 'Регионы',
+      url: '#',
+    },
+  ],
+
+  user: {
+    avatar: '/avatars/shadcn.jpg',
+    email: 'root@root.ru',
+    name: 'root',
+  }
 }
+
+const router = useRouter()
+
+const breadcrumbs = computed(() => {
+  const currentPath = router.currentRoute.value.path
+  const paths = currentPath.split('/')
+  const breadcrumbs: any[] = []
+  let path = ''
+  for (const p of paths) {
+    if (!p) {
+      continue
+    }
+    path += `/${p}`
+    const route = router.options.routes.find((route) => {
+      return route.path === path
+    })
+    if (route) {
+      breadcrumbs.push({
+        href: route.path,
+        label: route.name,
+      })
+    }
+  }
+
+  return breadcrumbs.sort((a, b) => {
+    return a.href.length - b.href.length
+  })
+})
+
+const activeTeam = ref({
+  logo: 'tabler:database',
+  name: 'Регионы',
+  plan: 'Созвездие',
+})
+
+const isDark = useDark()
+  const toggleDark = useToggle(isDark)
+
+// This is sample data.
+// const data = {
+//   navMain: [
+//     // {
+//     //   items: [
+//     //     {
+//     //       title: 'Главная',
+//     //       url: '/',
+//     //     },
+//     //   ],
+//     //   title: 'Getting Started',
+//     //   url: '#',
+//     // },
+//     {
+//       items: [
+//         {
+//           isActive: true,
+//           title: 'Организации',
+//           url: '/organizations#',
+//         },
+
+//         {
+//           title: 'Статусы',
+//           url: '/statuses',
+//         },
+//       ],
+//       title: 'Главное меню',
+//       url: '#',
+//     },
+//     {
+//       items: [
+//       {
+//           title: 'Пользователи',
+//           url: '/users',
+//         },
+//         {
+//           title: 'База данных',
+//           url: '#',
+//         },
+//       ],
+//       title: 'Администрирование',
+//       url: '#',
+//     },
+//   ],
+//   // versions: [
+//   //   '1.0.1',
+//   //   '1.1.0-alpha',
+//   //   '2.0.0-beta1',
+//   // ],
+// }
 </script>
 
 <template>
-  <Sidebar v-bind="props">
-    <SidebarHeader>
-      <!-- <VersionSwitcher
-        :versions="data.versions"
-        :default-version="data.versions[0]"
-      /> -->
-      <!-- <SearchForm /> -->
-      <Avatar>
-        <!-- <AvatarImage src="https://github.com/unovue.png" alt="@unovue" /> -->
-        <AvatarFallback>R</AvatarFallback>
-      </Avatar>
-    </SidebarHeader>
-    <SidebarContent>
-      <SidebarGroup v-for="item in data.navMain" :key="item.title">
-        <SidebarGroupLabel v-if="item.title">{{ item.title }}</SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <SidebarMenuItem v-for="childItem in item.items" :key="childItem.title">
-              <SidebarMenuButton as-child :is-active="childItem.isActive">
-                <a :href="childItem.url">{{ childItem.title }}</a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </SidebarContent>
-    <SidebarFooter>
-      <Button
-      size="icon"
-      variant="ghost"
-      @click="toggleDark()"
-    >
-      <Icon v-if="isDark" name="tabler:sun" />
-      <Icon v-else name="tabler:moon" />
-    </Button>
-    </SidebarFooter>
-    <SidebarRail />
-  </Sidebar>
+<Sidebar collapsible="icon">
+          <SidebarHeader>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  size="lg"
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <div class="flex items-center justify-center rounded-lg aspect-square size-8 bg-sidebar-primary text-sidebar-primary-foreground">
+                    <component :is="activeTeam.logo" class="size-4" />
+                  </div>
+                  <div class="grid flex-1 text-sm leading-tight text-left">
+                    <span class="font-semibold truncate">{{ activeTeam.name }}</span>
+                    <span class="text-xs truncate">{{ activeTeam.plan }}</span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Основные</SidebarGroupLabel>
+              <SidebarMenu>
+                <Collapsible
+                  v-for="item in data.navMain"
+                  :key="item.title"
+                  as-child
+                  :default-open="item.isActive"
+                  class="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger as-child>
+                      <SidebarMenuButton :tooltip="item.title">
+                        <Icon :name="item.icon" />
+                        <span>{{ item.title }}</span>
+                        <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        <SidebarMenuSubItem
+                          v-for="subItem in item.items"
+                          :key="subItem.title"
+                        >
+                          <SidebarMenuSubButton as-child>
+                            <NuxtLink :to="subItem.url" active-class="bg-sidebar-accent text-sidebar-accent-foreground">
+                              <span>{{ subItem.title }}</span>
+                            </NuxtLink>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <SidebarMenuButton
+                      size="lg"
+                      class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    >
+                      <Avatar class="w-8 h-8 rounded-lg">
+                        <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
+                        <!-- <AvatarFallback class="rounded-lg">
+                          {{
+                            data.user.name
+                              .slice(0, 1)
+                              .toUpperCase()
+                          }}
+                        </AvatarFallback> -->
+                      </Avatar>
+                      <!-- <div class="grid flex-1 text-sm leading-tight text-left">
+                        <span class="font-semibold truncate">{{ data.user.name }}</span>
+                        <span class="text-xs truncate">{{ data.user.email }}</span>
+                      </div> -->
+                      <ChevronsUpDown class="ml-auto size-4" />
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" :side-offset="4">
+                    <DropdownMenuLabel class="p-0 font-normal">
+                      <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                        <Avatar class="w-8 h-8 rounded-lg">
+                          <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
+                          <!-- <AvatarFallback class="rounded-lg">
+                            {{
+                              data.user.name
+                                .slice(0, 1)
+                                .toUpperCase()
+                            }}
+                          </AvatarFallback> -->
+                        </Avatar>
+                        <!-- <div class="grid flex-1 text-sm leading-tight text-left">
+                          <span class="font-semibold truncate">{{ data.user.name }}</span>
+                          <span class="text-xs truncate">{{ data.user.email }}</span>
+                        </div> -->
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <BadgeCheck />
+                        Account
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <CreditCard />
+                        Billing
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Bell />
+                        Notifications
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <LogOut />
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+          <SidebarRail />
+        </Sidebar>
 </template>
