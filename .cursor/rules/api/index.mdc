@@ -1,0 +1,158 @@
+---
+description: API
+globs:
+alwaysApply: false
+---
+Parsed Endpoints:
+-----------------
+OperationId: useCreateReviewFlow
+Summary: Создание процесса рассмотрения
+-----------------
+OperationId: useListReviewFlows
+Summary: Получение списка процессов рассмотрения
+-----------------
+OperationId: useGetReviewFlow
+Summary: Получение информации о процессе рассмотрения
+-----------------
+OperationId: useUpdateReviewFlow
+Summary: Обновление процесса рассмотрения
+-----------------
+OperationId: useDeleteReviewFlow
+Summary: Удаление процесса рассмотрения
+-----------------
+OperationId: useCreateComment
+Summary: Создание комментария
+-----------------
+OperationId: useListComments
+Summary: Получение списка комментариев
+-----------------
+OperationId: useGetComment
+Summary: Получение информации о комментарии
+-----------------
+OperationId: useUpdateComment
+Summary: Обновление комментария
+-----------------
+OperationId: useDeleteComment
+Summary: Удаление комментария
+-----------------
+OperationId: useUploadFile
+Summary: Загрузка файла
+-----------------
+OperationId: useListFiles
+Summary: Получение списка файлов
+-----------------
+OperationId: useGetFile
+Summary: Получение информации о файле
+-----------------
+OperationId: useUpdateFile
+Summary: Обновление информации о файле
+-----------------
+OperationId: useDeleteFile
+Summary: Удаление файла
+-----------------
+OperationId: useDownloadFile
+Summary: Скачивание файла
+-----------------
+OperationId: useCreateFolder
+Summary: Создание папки
+-----------------
+OperationId: useListFolders
+Summary: Получение списка папок
+-----------------
+OperationId: useGetFolder
+Summary: Получение информации о папке
+-----------------
+OperationId: useUpdateFolder
+Summary: Обновление папки
+-----------------
+OperationId: useDeleteFolder
+Summary: Удаление папки
+-----------------
+OperationId: useGetFolderPath
+Summary: Получение пути к папке
+-----------------
+OperationId: useCreateFileShare
+Summary: Создание общего доступа к файлу
+-----------------
+OperationId: useListFileShares
+Summary: Получение списка общих доступов к файлу
+-----------------
+OperationId: useDeleteFileShare
+Summary: Удаление общего доступа к файлу
+-----------------
+OperationId: useAttachFileToFormField
+Summary: Прикрепление файла к полю формы
+-----------------
+OperationId: useListFormFieldFiles
+Summary: Получение списка файлов, прикрепленных к полю формы
+-----------------
+OperationId: useDetachFileFromFormField
+Summary: Открепление файла от поля формы
+-----------------
+OperationId: useCreateFormTemplateField
+Summary: Создание поля шаблона формы
+-----------------
+OperationId: useListFormTemplateFields
+Summary: Получение списка полей шаблона формы
+-----------------
+OperationId: useGetFormTemplateField
+Summary: Получение информации о поле шаблона формы
+-----------------
+OperationId: useUpdateFormTemplateField
+Summary: Обновление поля шаблона формы
+-----------------
+OperationId: useDeleteFormTemplateField
+Summary: Удаление поля шаблона формы
+-----------------
+OperationId: useCreateFormTemplate
+Summary: Создание шаблона формы
+-----------------
+OperationId: useListFormTemplates
+Summary: Получение списка шаблонов форм
+-----------------
+OperationId: useGetFormTemplate
+Summary: Получение информации о шаблоне формы
+-----------------
+OperationId: useUpdateFormTemplate
+Summary: Обновление шаблона формы
+-----------------
+OperationId: useDeleteFormTemplate
+Summary: Удаление шаблона формы
+-----------------
+OperationId: useCreateForm
+Summary: Создание формы
+-----------------
+OperationId: useListForms
+Summary: Получение списка форм
+-----------------
+OperationId: useGetForm
+Summary: Получение информации о форме
+-----------------
+OperationId: useUpdateForm
+Summary: Обновление формы
+-----------------
+OperationId: useDeleteForm
+Summary: Удаление формы
+-----------------
+OperationId: useCreateFormField
+Summary: Создание поля формы
+-----------------
+OperationId: useListFormFields
+Summary: Получение списка полей формы
+-----------------
+OperationId: useGetFormField
+Summary: Получение информации о поле формы
+-----------------
+OperationId: useUpdateFormField
+Summary: Обновление поля формы
+-----------------
+OperationId: useDeleteFormField
+Summary: Удаление поля формы
+-----------------
+OperationId: useListFormHistory
+Summary: Получение истории формы
+-----------------
+OperationId: useGetFormHistoryRecord
+Summary: Получение записи истории формы
+-----------------
+Total endpoints found: 50

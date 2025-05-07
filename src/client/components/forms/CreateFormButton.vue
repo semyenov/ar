@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useCreateForm } from '@/client/lib/api/default/default';
-import type { FormCreate } from '@/client/lib/api/model';
+import { useCreateForm } from '@/client/api';
+import type { FormCreate } from '@/client/api';
 
 // Default empty form data
 const formData = ref<FormCreate>({

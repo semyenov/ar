@@ -1,0 +1,17 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Inbox Zero AI - Master Rule Index
+
+This document serves as the central index for all active Cursor rules within this repository, organized by category. These rules define processes, structures, and guidelines for development.
+
+## Backend & API
+
+Guidelines for implementing backend logic, APIs, and data persistence.
+
+| Rule File                          | Description                                                 |
+| :--------------------------------- | :---------------------------------------------------------- |
+| @api/index.mdc                 | Guidelines for implementing API       |
+

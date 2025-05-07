@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useListForms } from '@/client/lib/api/default/default';
+import { useListForms } from '@/client/api';
 
 // Use the generated API hook to fetch forms
 const { data: formsResponse, isLoading, error } = useListForms();

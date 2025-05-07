@@ -4746,6 +4746,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-yaml@npm:^4":
+  version: 4.0.9
+  resolution: "@types/js-yaml@npm:4.0.9"
+  checksum: 10c0/24de857aa8d61526bbfbbaa383aa538283ad17363fcd5bb5148e2c7f604547db36646440e739d78241ed008702a8920665d1add5618687b6743858fae00da211
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.11, @types/json-schema@npm:^7.0.15, @types/json-schema@npm:^7.0.4, @types/json-schema@npm:^7.0.7":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -13689,6 +13696,7 @@ __metadata:
     "@tanstack/vue-table": "npm:^8.21.3"
     "@tanstack/vue-virtual": "npm:^3.13.5"
     "@types/eslint": "npm:^9.6.1"
+    "@types/js-yaml": "npm:^4"
     "@viapip/eslint-config": "npm:^0.1.1"
     "@vitest/coverage-v8": "npm:^2.1.9"
     "@vitest/ui": "npm:^2.1.9"
@@ -13704,6 +13712,7 @@ __metadata:
     eslint: "npm:^9.23.0"
     execa: "npm:^9.5.2"
     file-type: "npm:^20.5.0"
+    js-yaml: "npm:^4.1.0"
     nanoid: "npm:^5.1.5"
     nuxt: "npm:^3.16.1"
     nuxt-content-assets: "npm:^1.4.4"
@@ -13720,6 +13729,7 @@ __metadata:
     tailwind-merge: "npm:^2.6.0"
     tailwindcss: "npm:^3.4.17"
     tailwindcss-animate: "npm:^1.0.7"
+    tsx: "npm:^4.19.4"
     typescript: "npm:^5.8.2"
     ufo: "npm:^1.5.4"
     unplugin-vue-router: "npm:^0.10.9"
@@ -17946,6 +17956,22 @@ __metadata:
   bin:
     tsx: dist/cli.mjs
   checksum: 10c0/cacfb4cf1392ae10e8e4fe032ad26ccb07cd8a3b32e5a0da270d9c48d06ee74f743e4a84686cbc9d89b48032d59bbc56cd911e076f53cebe61dc24fa525ff790
+  languageName: node
+  linkType: hard
+
+"tsx@npm:^4.19.4":
+  version: 4.19.4
+  resolution: "tsx@npm:4.19.4"
+  dependencies:
+    esbuild: "npm:~0.25.0"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.5"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10c0/f7b8d44362343fbde1f2ecc9832d243a450e1168dd09702a545ebe5f699aa6912e45b431a54b885466db414cceda48e5067b36d182027c43b2c02a4f99d8721e
   languageName: node
   linkType: hard
 
