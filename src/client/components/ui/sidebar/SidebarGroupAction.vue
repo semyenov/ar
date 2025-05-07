@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/client/lib/utils'
+
 import { Primitive } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & {
+import { cn } from '@/client/lib/utils'
+
+const props = defineProps<{
   class?: HTMLAttributes['class']
-}>()
+} & PrimitiveProps>()
 </script>
 
 <template>

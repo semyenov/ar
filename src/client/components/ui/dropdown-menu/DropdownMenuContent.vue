@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import {
   DropdownMenuContent,
   type DropdownMenuContentEmits,
@@ -9,8 +8,10 @@ import {
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
+import { cn } from '@/client/lib/utils'
+
 const props = withDefaults(
-  defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(),
+  defineProps<{ class?: HTMLAttributes['class'] } & DropdownMenuContentProps>(),
   {
     sideOffset: 4,
   },

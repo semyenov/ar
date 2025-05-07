@@ -10,7 +10,6 @@ const componentsDir = join(clientDir, 'components')
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-08-15',
-
   rootDir,
   serverDir,
   srcDir,
@@ -33,7 +32,7 @@ export default defineNuxtConfig({
 
   dir: {
     public: join(srcDir, 'public'),
-    // plugins: join(srcDir, 'plugins'),
+    plugins: join(clientDir, 'plugins'),
 
     app: join(clientDir, 'app'),
     assets: join(clientDir, 'assets'),
@@ -58,7 +57,10 @@ export default defineNuxtConfig({
       typescriptBundlerResolution: true,
       wasm: true,
       websocket: true,
+      openAPI: true,
+
     },
+
     logging: {
       buildSuccess: true,
       compressedSizes: true,
@@ -84,35 +86,10 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@prisma/nuxt',
-    'better-auth-nuxt',
 
     '@nuxt/icon',
     'nuxt-echarts',
   ],
-
-  betterAuth: {
-    // Configure auth endpoints (default: '/api/auth/**')
-    endpoint: '/api/auth/**',
-
-    // Configure redirect paths
-    redirectOptions: {
-      redirectGuestTo: '/auth/login',
-      redirectUnauthorizedTo: '/401',
-      redirectUserTo: '/',
-    },
-
-    // Configure client and server options
-    options: {
-      client: {
-        basePath: '/api/auth',
-        // Optional: baseURL, disableDefaultFetchPlugins
-      },
-      server: {
-        appName: 'My Nuxt App',
-        // Optional: baseURL, basePath, secret
-      },
-    },
-  },
 
   content: {
     experimental: {

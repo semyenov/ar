@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import { DotFilledIcon } from '@radix-icons/vue'
 import {
   DropdownMenuItemIndicator,
@@ -10,7 +9,9 @@ import {
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }>()
+import { cn } from '@/client/lib/utils'
+
+const props = defineProps<{ class?: HTMLAttributes['class'] } & DropdownMenuRadioItemProps>()
 
 const emits = defineEmits<DropdownMenuRadioItemEmits>()
 

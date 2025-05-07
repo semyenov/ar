@@ -6,7 +6,10 @@ export default config({
     "unicorn/filename-case": [
        "error",
        {
-           "case": "kebabCase",
+           "cases": {
+               "kebabCase": true,
+               "pascalCase": true
+           },
            "ignore": ["src/client/**/*.vue"]
        }
     ]

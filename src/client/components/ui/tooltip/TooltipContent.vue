@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import { TooltipContent, type TooltipContentEmits, type TooltipContentProps, TooltipPortal, useForwardPropsEmits } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
+
+import { cn } from '@/client/lib/utils'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<TooltipContentProps & { class?: HTMLAttributes['class'] }>(), {
+const props = withDefaults(defineProps<{ class?: HTMLAttributes['class'] } & TooltipContentProps>(), {
   sideOffset: 4,
 })
 

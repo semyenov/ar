@@ -5,3 +5,37 @@ pages:
   organizations:
     title: Organizations
     welcome: Welcome to Organizations Page
+  forms:
+    title: Forms
+    welcome: Manage your forms
+common:
+  loading: Loading...
+  error: Error
+  retry: Retry
+  refresh: Refresh
+  all: All
+  view: View
+  edit: Edit
+  delete: Delete
+  open: Open
+forms:
+  title: Forms
+  description: Manage and track your forms
+  noForms: No forms found
+  filterByStatus: Filter by status
+  search: Search forms...
+  showing: Showing
+  of: of
+  perPage: Per page
+  fields:
+    title: Title
+    status: Status
+    createdAt: Created
+    updatedAt: Updated
+    actions: Actions
+  status:
+    draft: Draft
+    underReview: Under Review
+    needsChanges: Needs Changes
+    approved: Approved
+    rejected: Rejected

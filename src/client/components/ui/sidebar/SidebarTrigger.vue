@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/client/lib/utils'
-import { Button } from '@/client/components/ui/button'
+
 import { ViewVerticalIcon } from '@radix-icons/vue'
+
+import { Button } from '@/client/components/ui/button'
+import { cn } from '@/client/lib/utils'
+
 import { useSidebar } from './utils'
 
 const props = defineProps<{

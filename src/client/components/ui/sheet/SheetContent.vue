@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from '@/client/lib/utils'
 import { Cross2Icon } from '@radix-icons/vue'
 import {
   DialogClose,
@@ -11,6 +10,9 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
+
+import { cn } from '@/client/lib/utils'
+
 import { type SheetVariants, sheetVariants } from '.'
 
 interface SheetContentProps extends DialogContentProps {
