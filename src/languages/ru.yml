@@ -14,6 +14,7 @@ pages:
   statuses:
     title: Управление заявками
     welcome: На этой странице вы можете управлять текущими статусами организаций
+
 schemas:
   organizations:
     name: Наименование
@@ -32,6 +33,7 @@ schemas:
     status: Статус  forms:
     title: Формы
     welcome: Управление формами
+
 common:
   loading: Загрузка...
   error: Ошибка
@@ -42,6 +44,7 @@ common:
   edit: Редактировать
   delete: Удалить
   open: Открыть
+
 forms:
   title: Формы
   description: Управление и отслеживание форм
