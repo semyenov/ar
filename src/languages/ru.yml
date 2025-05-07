@@ -30,9 +30,10 @@ schemas:
     last_name: Фамилия
     email: Email
     phone: Телефон
-    status: Статус  forms:
-    title: Формы
-    welcome: Управление формами
+    status: Статус
+    forms:
+      title: Формы
+      welcome: Управление формами
 
 common:
   loading: Загрузка...
