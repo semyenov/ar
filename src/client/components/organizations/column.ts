@@ -37,7 +37,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
     cell: ({ row }) => {
       console.log(row)
       return h('div', { class: 'flex space-x-2' }, [
-        h(NuxtLink, { to: `/organizations/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate font-medium' }, row.getValue('name')),
+        h(NuxtLink, { to: `/organizations/${row.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, row.getValue('name')),
       ])
     },
   },
@@ -47,7 +47,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
 
     cell: ({ row }) => {
       return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('inn')),
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('inn')),
       ])
     },
     enableSorting: false,
@@ -58,7 +58,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
 
     cell: ({ row }) => {
       return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('kpp')),
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('kpp')),
       ])
     },
     enableSorting: false,
@@ -69,7 +69,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
 
     cell: ({ row }) => {
       return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('district')),
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('district')),
       ])
     },
   },
@@ -79,7 +79,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
 
     cell: ({ row }) => {
       return h('div', { class: 'flex space-x-2' }, [
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('address')),
+        h('span', { class: 'max-w-[500px] truncate ' }, row.getValue('address')),
       ])
     },
   },

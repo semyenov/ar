@@ -30,7 +30,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="flex flex-row gap-4 w-full h-full p-4">
+  <div class="flex flex-row w-full h-full gap-4 p-4">
     <div class="flex flex-col gap-4 grow">
       <Card class="!text-left w-full h-fit">
         <CardHeader class="flex flex-row justify-between pb-[12px]">
@@ -187,7 +187,7 @@ const { t } = useI18n();
         <CardContent>
           <div class="flex flex-col gap-4">
             <div v-for="(item, index) in Array(3).fill()" :key="index">
-              <div class="flex flex-row items-center gap-4 justify-between">
+              <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <Avatar class="h-[36px] w-[36px]">
                     <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
@@ -233,7 +233,7 @@ const { t } = useI18n();
         <CardContent>
           <div class="flex flex-col gap-4">
             <Card class="cursor-pointer">
-              <CardHeader class="py-3 px-4 flex flex-row gap-3 items-center">
+              <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
                 <div
                   class="flex h-[32px] w-[32px] items-center justify-center cursor-pointer"
                 >
@@ -247,7 +247,7 @@ const { t } = useI18n();
               </CardHeader></Card
             >
             <Card class="cursor-pointer">
-              <CardHeader class="py-3 px-4 flex flex-row gap-3 items-center">
+              <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
                 <div
                   class="flex h-[32px] w-[32px] items-center justify-center cursor-pointer"
                 >
@@ -261,7 +261,7 @@ const { t } = useI18n();
               </CardHeader></Card
             >
             <Card class="cursor-pointer">
-              <CardHeader class="py-3 px-4 flex flex-row gap-3 items-center">
+              <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
                 <div
                   class="flex h-[32px] w-[32px] items-center justify-center cursor-pointer"
                 >

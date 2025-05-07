@@ -23,7 +23,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="p-4 h-full w-full flex flex-row gap-4">
+  <div class="flex flex-row w-full h-full gap-4 p-4">
     <Card class="!text-left grow h-fit max-w-[890px]">
       <CardHeader class="flex flex-row justify-between pb-[12px]">
         <CardTitle
@@ -32,7 +32,7 @@ const { t } = useI18n();
           </p></CardTitle
         >
       </CardHeader>
-      <CardContent class="pt-3 flex flex-col gap-6">
+      <CardContent class="flex flex-col gap-6 pt-3">
         <div class="flex flex-col gap-1">
           <p class="text-[16px] leading-[20px] font-medium">Profile</p>
           <p class="font-normal text-[14px] leading-[20px] text-[#64748B]">
@@ -80,11 +80,11 @@ const { t } = useI18n();
           </p>
           <Input placeholder="shadcn" />
           <Input placeholder="shadcn" />
-          <Button class="bg-white text-black gap-1 v hover:text w-fit white py-2 px-4"
+          <Button class="gap-1 px-4 py-2 text-black bg-white v hover:text w-fit white"
             ><Icon name="lucide:plus-circle" />Add URL</Button
           >
         </div>
-        <Button class="gap-1 w-fit py-2 px-4"
+        <Button class="gap-1 px-4 py-2 w-fit"
           ><Icon name="lucide:plus-circle" />Update profile</Button
         >
       </CardContent>
@@ -116,7 +116,7 @@ const { t } = useI18n();
         <CardContent>
           <div class="flex flex-col gap-4">
             <div v-for="(item, index) in Array(3).fill()" :key="index">
-              <div class="flex flex-row items-center gap-4 justify-between">
+              <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <div class="flex flex-col">
                     <p class="text-[14px] leading-[20px] font-medium">
@@ -152,10 +152,10 @@ const { t } = useI18n();
           </div>
         </CardContent>
       </Card>
-      <Card class="text-left p-6">
+      <Card class="p-6 text-left">
         <CardContent class="p-0">
           <div class="grid grid-cols-2 gap-6">
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:shield-alert" class="text-[32px] font-normal" />
               </div>
@@ -168,7 +168,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:plus-circle" class="text-[32px] font-normal" />
               </div>
@@ -181,7 +181,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:lock" class="text-[32px] font-normal" />
               </div>
@@ -194,7 +194,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:trash-2" class="text-[32px] font-normal" />
               </div>
