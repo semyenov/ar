@@ -22,6 +22,7 @@
     "@prisma/client": "^6.6.0",
     "@prisma/nuxt": "^0.3.0",
     "@radix-icons/vue": "^1.0.0",
+    "@sozdev/vue-smooth-dnd": "^0.8.1",
     "@tanstack/vue-table": "^8.21.3",
     "@tanstack/vue-virtual": "^3.13.5",
     "@vueuse/core": "^13.1.0",
@@ -37,7 +38,7 @@
     "pathe": "^1.1.2",
     "prisma": "^6.6.0",
     "radix-vue": "^1.9.17",
-    "reka-ui": "^2.2.0",
+    "reka-ui": "^2.2.1",
     "remeda": "^2.21.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
@@ -46,7 +47,9 @@
     "vaul-vue": "^0.2.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vue-tsc": "^2.2.8"
+    "vue-smooth-dnd": "^0.8.1",
+    "vue-tsc": "^2.2.8",
+    "vue3-smooth-dnd": "^0.0.6"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
@@ -66,6 +69,7 @@
     "eslint": "^9.23.0",
     "shadcn-nuxt": "^1.0.3",
     "shadcn-vue": "^1.0.3",
+    "smooth-dnd": "^0.12.1",
     "typescript": "^5.8.2",
     "unplugin-vue-router": "^0.10.9",
     "vite": "^5.4.15",

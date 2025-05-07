@@ -4007,6 +4007,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sozdev/vue-smooth-dnd@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@sozdev/vue-smooth-dnd@npm:0.8.1::__archiveUrl=https%3A%2F%2Fgitea.local%2Fapi%2Fpackages%2Fsozdev%2Fnpm%2F%2540sozdev%252Fvue-smooth-dnd%2F-%2F0.8.1%2Fvue-smooth-dnd-0.8.1.tgz"
+  dependencies:
+    smooth-dnd: "npm:0.12.1"
+    vue: "npm:^3.5.13"
+  checksum: 10c0/aedaf243804ac64e65be68478e2c2c960421210d2191cc37ef9decb2b7e62a2fda510cf1724c9954f0c6c937b039b03aadca39552be9ffcf5ec1095038af812e
+  languageName: node
+  linkType: hard
+
 "@speed-highlight/core@npm:^1.2.7":
   version: 1.2.7
   resolution: "@speed-highlight/core@npm:1.2.7"
@@ -12144,6 +12154,7 @@ __metadata:
     "@prisma/client": "npm:^6.6.0"
     "@prisma/nuxt": "npm:^0.3.0"
     "@radix-icons/vue": "npm:^1.0.0"
+    "@sozdev/vue-smooth-dnd": "npm:^0.8.1"
     "@tanstack/vue-table": "npm:^8.21.3"
     "@tanstack/vue-virtual": "npm:^3.13.5"
     "@types/eslint": "npm:^9.6.1"
@@ -12166,10 +12177,11 @@ __metadata:
     pathe: "npm:^1.1.2"
     prisma: "npm:^6.6.0"
     radix-vue: "npm:^1.9.17"
-    reka-ui: "npm:^2.2.0"
+    reka-ui: "npm:^2.2.1"
     remeda: "npm:^2.21.2"
     shadcn-nuxt: "npm:^1.0.3"
     shadcn-vue: "npm:^1.0.3"
+    smooth-dnd: "npm:^0.12.1"
     tailwind-merge: "npm:^2.6.0"
     tailwindcss: "npm:^3.4.17"
     tailwindcss-animate: "npm:^1.0.7"
@@ -12181,7 +12193,9 @@ __metadata:
     vitest: "npm:^2.1.9"
     vue: "npm:^3.5.13"
     vue-router: "npm:^4.5.0"
+    vue-smooth-dnd: "npm:^0.8.1"
     vue-tsc: "npm:^2.2.8"
+    vue3-smooth-dnd: "npm:^0.0.6"
   languageName: unknown
   linkType: soft
 
@@ -14001,9 +14015,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reka-ui@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "reka-ui@npm:2.2.0"
+"reka-ui@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "reka-ui@npm:2.2.1"
   dependencies:
     "@floating-ui/dom": "npm:^1.6.13"
     "@floating-ui/vue": "npm:^1.1.6"
@@ -14017,7 +14031,7 @@ __metadata:
     ohash: "npm:^2.0.11"
   peerDependencies:
     vue: ">= 3.2.0"
-  checksum: 10c0/11fb0f873d77c9f9589aab0aa1995291d8d2d5b49fb7c17a118376e8f1e461c79972333910dfd47fb890016a7f1956f150565646aa665edc19df9c8ff3becca3
+  checksum: 10c0/0f49e081620808587df7afb3bc5e5c8eb25e772de5054bf382e687a0cc7b39d848c2479dd9d540b498af2eb949d772d08ff43993c851b89001f2edd3c5ade3e6
   languageName: node
   linkType: hard
 
@@ -14886,6 +14900,13 @@ __metadata:
   version: 1.5.0
   resolution: "smob@npm:1.5.0"
   checksum: 10c0/a1067f23265812de8357ed27312101af49b89129eb973e3f26ab5856ea774f88cace13342e66e32470f933ccfa916e0e9d0f7ca8bbd4f92dfab2af45c15956c2
+  languageName: node
+  linkType: hard
+
+"smooth-dnd@npm:0.12.1, smooth-dnd@npm:^0.12.1":
+  version: 0.12.1
+  resolution: "smooth-dnd@npm:0.12.1"
+  checksum: 10c0/0b0fe64501fc91df9ca8f0f74b7e4fbe1f61938a1821a407331789c66ec73c81f92e561c5765d22db3be74a1ed85bffe5d873cd7c6ec93297849779bce41ae70
   languageName: node
   linkType: hard
 
@@ -17249,6 +17270,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-smooth-dnd@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "vue-smooth-dnd@npm:0.8.1"
+  dependencies:
+    smooth-dnd: "npm:0.12.1"
+  checksum: 10c0/7d32d7bfdbd23330e6d14a63271fb9e4c06313adc525372003a52a0c560b2180e97b4824fac17947658dbc816fc4228c924bd4d3868b2f6958bb2ab18a0c0a41
+  languageName: node
+  linkType: hard
+
 "vue-tsc@npm:^2.2.8":
   version: 2.2.8
   resolution: "vue-tsc@npm:2.2.8"
@@ -17260,6 +17290,17 @@ __metadata:
   bin:
     vue-tsc: ./bin/vue-tsc.js
   checksum: 10c0/5b60c6d1602666702d4f7fa9395ab48c554488b47256994cdf0d226801d719abfa4ff981cf58ed11c7280a7ce5054af74a9b9ec5b22df06543e31e7405d06901
+  languageName: node
+  linkType: hard
+
+"vue3-smooth-dnd@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "vue3-smooth-dnd@npm:0.0.6"
+  dependencies:
+    smooth-dnd: "npm:^0.12.1"
+  peerDependencies:
+    vue: ^3.0.11
+  checksum: 10c0/ed651d549f5272e01b639be755dcd6d87ca273d6c068ef87d8f903cff337ae30999481753df72b82a656acfcf0f994215332723ce2b745c0d594858166f623f0
   languageName: node
   linkType: hard
 

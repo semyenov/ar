@@ -29,7 +29,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="flex flex-row gap-4 w-full h-full p-4">
+  <div class="flex flex-row w-full h-full gap-4 p-4">
     <div class="flex flex-col gap-4 grow">
       <Card class="!text-left w-full h-fit">
         <CardHeader class="flex flex-row justify-between pb-[12px]">
@@ -96,10 +96,10 @@ const { t } = useI18n();
           </Accordion>
         </CardContent>
       </Card>
-      <Card class="text-left p-6">
+      <Card class="p-6 text-left">
         <CardContent class="p-0">
           <div class="grid grid-cols-2 gap-6">
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:mail" class="text-[32px] font-normal" />
               </div>
@@ -112,7 +112,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:user-plus" class="text-[32px] font-normal" />
               </div>
@@ -125,7 +125,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:tags" class="text-[32px] font-normal" />
               </div>
@@ -138,7 +138,7 @@ const { t } = useI18n();
                 </p>
               </div>
             </div>
-            <div class="flex flex-row p-4 gap-4 cursor-pointer">
+            <div class="flex flex-row gap-4 p-4 cursor-pointer">
               <div>
                 <Icon name="lucide:archive" class="text-[32px] font-normal" />
               </div>
@@ -181,7 +181,7 @@ const { t } = useI18n();
         <CardContent>
           <div class="flex flex-col gap-4">
             <div v-for="(item, index) in Array(3).fill()" :key="index">
-              <div class="flex flex-row items-center gap-4 justify-between">
+              <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <Avatar class="h-[36px] w-[36px]">
                     <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
@@ -216,7 +216,7 @@ const { t } = useI18n();
                 </div>
               </div>
             </div>
-            <Button class="bg-white text-black gap-1 hover:text-white"
+            <Button class="gap-1 text-black bg-white hover:text-white"
               ><Icon name="lucide:plus-circle" />Добавить пользователя</Button
             >
           </div>
@@ -247,7 +247,7 @@ const { t } = useI18n();
         <CardContent>
           <div class="flex flex-col gap-4">
             <div v-for="(item, index) in Array(3).fill()" :key="index">
-              <div class="flex flex-row items-center gap-4 justify-between">
+              <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <div class="flex flex-col">
                     <p class="text-[14px] leading-[20px] font-medium text-[#020617]">

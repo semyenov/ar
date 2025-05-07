@@ -48,7 +48,7 @@ export const organizationStatuses = [
     icon: 'tabler:question-circle',
   },
   {
-    value: 'in progress',
+    value: 'in_progress',
     label: 'В работе',
     icon: 'tabler:progress',
   },
