@@ -59,7 +59,7 @@ const table = useVueTable({
 
 <template>
    <div class="space-y-4">
-    <DataTableToolbar :table="table" />
+    <slot name="toolbar"><DataTableToolbar :table="table" /></slot>
     <div class="border rounded-md">
       <Table>
         <TableHeader>

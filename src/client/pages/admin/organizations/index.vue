@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { Icon, NuxtLink } from '#components'
-import { useOrgList } from '~/client/api'
+import { useOrgCreate, useOrgList } from '~/client/api'
 // import tasks from '@/client/data/tasks.json'
 import { faker,fakerRU} from '@faker-js/faker';
-import type { ColumnDef } from '@tanstack/vue-table'
 import { organizationStatuses } from '~/client/data/data'
 
 import {columns} from '@/client/components/organizations/column'
 
 // import { columns } from '@/client/components/organizations/column'
-import type { Organization, Task } from '~/client/data/schema'
-import DataTableColumnHeader from '@/client/components/organizations/ColumnHeader.vue'
-import DataTableRowActions from '@/client/components/organizations/RowActions.vue'
-import { Checkbox } from '@/client/components/ui/checkbox'
+import type { Organization } from '~/client/data/schema'
+import { onMounted } from 'vue';
 
 const { t } = useI18n()
 
 definePageMeta({
   // set custom layout
+
   layout: 'admin',
 })
 const data = ref<Organization[]>([])
@@ -59,6 +57,13 @@ async function getData(): Promise<Organization[]> {
 
   return res
 }
+
+async function addOrganization() {
+  const create = await useOrgCreate()
+  console.log(create);
+
+}
+
 
 onMounted(async () => {
 
@@ -209,6 +214,7 @@ async function getDataProblem(): Promise<Organization[]> {
 
 <template>
   <div class="grid grid-cols-12 p-4 space-y-4">
+    <Button variant="destructive" @click="addOrganization">ДОБАВИТЬ ОРГ</Button>
     <Alert class="flex items-start col-span-12 gap-4 p-6">
       <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
       <div class="flex flex-col">

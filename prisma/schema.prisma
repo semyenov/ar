@@ -219,16 +219,16 @@ model FormTemplate {
 }
 
 model FormTemplateField {
-  id           String       @id
-  templateId   String
-  template     FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  name         String
-  type         FieldType
+  id              String       @id
+  templateId      String
+  template        FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  name            String
+  type            FieldType
   validationRules String?
-  defaultValue String?
-  required     Boolean      @default(false)
-  order        Int
-  options      String?
+  defaultValue    String?
+  required        Boolean      @default(false)
+  order           Int
+  options         String?
 
   @@map("form_template_field")
   @@index([templateId])

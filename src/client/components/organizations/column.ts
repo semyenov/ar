@@ -11,18 +11,18 @@ import DataTableRowActions from '@/client/components/organizations/RowActions.vu
 import { Checkbox } from '@/client/components/ui/checkbox'
 
 export const columns = (t:any):ColumnDef<Organization>[] => ([
-  {
-    id: 'select',
-    header: ({ table }) => h(Checkbox, {
-      'modelValue': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-      'onUpdate:modelValue': (value:any)=> table.toggleAllPageRowsSelected(!!value),
-      'ariaLabel': 'Select all',
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => h(Checkbox, {
+  //     'modelValue': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
+  //     'onUpdate:modelValue': (value:any)=> table.toggleAllPageRowsSelected(!!value),
+  //     'ariaLabel': 'Select all',
 
-    }),
-    cell: ({ row }) => h(Checkbox, { 'modelValue': row.getIsSelected(), 'onUpdate:modelValue': (value:any) => row.toggleSelected(!!value), 'ariaLabel': 'Select row',  }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   }),
+  //   cell: ({ row }) => h(Checkbox, { 'modelValue': row.getIsSelected(), 'onUpdate:modelValue': (value:any) => row.toggleSelected(!!value), 'ariaLabel': 'Select row',  }),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   // {
   //   accessorKey: 'id',
   //   header: ({ column }) => h(DataTableColumnHeader, { column, title: t }),
@@ -38,7 +38,7 @@ export const columns = (t:any):ColumnDef<Organization>[] => ([
 
       console.log(row)
       return h('div', { class: 'flex space-x-2' }, [
-        h(NuxtLink, { to: `/organizations/${row.original.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, row.getValue('name')),
+        h(NuxtLink, { to: `/admin/organizations/${row.original.id}` ,class: 'transition hover:text-muted-foreground max-w-[500px] truncate ' }, row.getValue('name')),
       ])
     },
   },

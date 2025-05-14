@@ -5,6 +5,8 @@ import {
 
 const props = defineProps<SidebarProps>()
 
+const { t } = useI18n()
+
 const data = {
   navMain: [
     {
@@ -12,14 +14,13 @@ const data = {
       isActive: true,
       items: [
         {
-          title: 'Организации',
-          url: '/organizations#',
+          title: t('pages.formTemplates.title'),
+          url: '/admin/formTemplates',
         },
-
         {
-          title: 'Статусы',
-          url: '/statuses',
-        },
+          title: t('pages.forms.title'),
+          url: '/admin/forms',
+        }
       ],
       title: 'Главное меню',
       url: '#',
@@ -27,12 +28,16 @@ const data = {
     {
       icon: 'tabler:users',
       items: [
+        {
+          title: t('pages.organizations.title'),
+          url: '/admin/organizations',
+        }  ,
       {
-          title: 'Пользователи',
-          url: '/users',
+          title: t('pages.users.title'),
+          url: '/admin/users',
         },
         {
-          title: 'База данных',
+          title: t('pages.database.title'),
           url: '#',
         },
       ],
@@ -55,33 +60,7 @@ const data = {
   }
 }
 
-const router = useRouter()
 
-const breadcrumbs = computed(() => {
-  const currentPath = router.currentRoute.value.path
-  const paths = currentPath.split('/')
-  const breadcrumbs: any[] = []
-  let path = ''
-  for (const p of paths) {
-    if (!p) {
-      continue
-    }
-    path += `/${p}`
-    const route = router.options.routes.find((route) => {
-      return route.path === path
-    })
-    if (route) {
-      breadcrumbs.push({
-        href: route.path,
-        label: route.name,
-      })
-    }
-  }
-
-  return breadcrumbs.sort((a, b) => {
-    return a.href.length - b.href.length
-  })
-})
 
 const activeTeam = ref({
   logo: 'tabler:database',
@@ -153,8 +132,8 @@ const isDark = useDark()
                   size="lg"
                   class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <div class="flex items-center justify-center rounded-lg aspect-square size-8 bg-sidebar-primary text-sidebar-primary-foreground">
-                    <component :is="activeTeam.logo" class="size-4" />
+                  <div class="flex items-center justify-center rounded-lg aspect-square text-primary">
+                    <Icon :name="activeTeam.logo" class="size-8" />
                   </div>
                   <div class="grid flex-1 text-sm leading-tight text-left">
                     <span class="font-semibold truncate">{{ activeTeam.name }}</span>

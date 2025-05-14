@@ -24,15 +24,15 @@ defineProps<DataTablePaginationProps>()
 <template>
   <div class="flex items-center justify-between py-4">
     <div class="flex-1 text-sm text-muted-foreground">
-      {{ table.getFilteredSelectedRowModel().rows.length }} из
-      {{ table.getFilteredRowModel().rows.length }} строк выбрано
+      <!-- {{ table.getFilteredSelectedRowModel().rows.length }} из
+      {{ table.getFilteredRowModel().rows.length }} строк выбрано -->
     </div>
     <div class="flex items-center space-x-6 lg:space-x-8">
       <div class="flex items-center space-x-2">
-        <p class="text-sm font-medium">
-          Строк на странице
-        </p>
-        <Select
+        <!-- <p class="text-sm font-medium">
+          Строк на странице {{ table.getState().pagination.pageSize }}
+        </p> -->
+        <!-- <Select
           :model-value="`${table.getState().pagination.pageSize}`"
           @update:model-value="(e:any)=>table.setPageSize(e)"
         >
@@ -44,7 +44,7 @@ defineProps<DataTablePaginationProps>()
               {{ pageSize }}
             </SelectItem>
           </SelectContent>
-        </Select>
+        </Select> -->
       </div>
       <div class="flex w-[130px] items-center justify-center text-sm font-medium">
         Страница {{ table.getState().pagination.pageIndex + 1 }} из

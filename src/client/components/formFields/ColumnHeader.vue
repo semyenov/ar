@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/client/components/ui/dropdown-menu'
+import type { FormTemplateField } from '~/client/api'
 // import ArrowDownIcon from '~icons/radix-icons/arrow-down'
 
 // import ArrowUpIcon from '~icons/radix-icons/arrow-up'
@@ -17,7 +18,7 @@ import {
 // import EyeNoneIcon from '~icons/radix-icons/eye-none'
 
 interface DataTableColumnHeaderProps {
-  column: Column<Task, any>
+  column: Column<FormTemplateField, any>
   title: string
 }
 

@@ -53,8 +53,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-12 p-4 space-y-4">
-    <Card class="col-span-12 ">
+  <div class="grid flex-grow grid-cols-12 p-4 space-y-4 overflow-hidden">
+    <Card class="col-span-12 overflow-y-auto">
       <CardHeader>
         <CardTitle class="text-xl">
           {{ t('pages.organizations.title') }}

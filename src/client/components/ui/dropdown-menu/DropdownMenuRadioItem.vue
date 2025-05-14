@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { DotFilledIcon } from '@radix-icons/vue'
 import {
   DropdownMenuItemIndicator,
   DropdownMenuRadioItem,
@@ -8,7 +7,7 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
-
+// import {Icon} from '#components'
 import { cn } from '@/client/lib/utils'
 
 const props = defineProps<{ class?: HTMLAttributes['class'] } & DropdownMenuRadioItemProps>()
@@ -25,16 +24,17 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <DropdownMenuRadioItem
-    v-bind="forwarded"
-    :class="cn(
+
+  <DropdownMenuRadioItem v-bind="forwarded" :class="cn(
       'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       props.class,
-    )"
-  >
+    )">
     <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+
       <DropdownMenuItemIndicator>
-        <DotFilledIcon class="h-4 w-4 fill-current" />
+
+        <Icon name="tabler:check" class="w-4 h-4 fill-current" />
+
       </DropdownMenuItemIndicator>
     </span>
     <slot />

@@ -39,7 +39,7 @@ export default {
           size="sm"
           class="-ml-3 h-8 data-[state=open]:bg-accent"
         >
-          <span class="text-sm">{{ title }}</span>
+          <span>{{ title }}</span>
           <Icon name="tabler:arrow-down" v-if="column.getIsSorted() === 'desc'" class="w-4 h-4 ml-2" />
           <Icon name="tabler:arrow-up" v-else-if=" column.getIsSorted() === 'asc'" class="w-4 h-4 ml-2" />
           <Icon name="tabler:arrows-sort" v-else class="w-4 h-4 ml-2" />
@@ -64,6 +64,6 @@ export default {
   </div>
 
   <div v-else :class="$attrs.class">
-    <span class="text-sm">{{ title }}</span>
+    {{ title }}
   </div>
 </template>

@@ -1,6 +1,32 @@
 <script setup lang="ts">
 
+const router = useRouter()
 
+const breadcrumbs = computed(() => {
+  const currentPath = router.currentRoute.value.path
+  const paths = currentPath.split('/')
+  const breadcrumbs: any[] = []
+  let path = ''
+  for (const p of paths) {
+    if (!p) {
+      continue
+    }
+    path += `/${p}`
+    const route = router.options.routes.find((route) => {
+      return route.path === path
+    })
+    if (route) {
+      breadcrumbs.push({
+        href: route.path,
+        label: route.name,
+      })
+    }
+  }
+
+  return breadcrumbs.sort((a, b) => {
+    return a.href.length - b.href.length
+  })
+})
 
 
 
@@ -21,15 +47,17 @@
             <Separator orientation="vertical" class="h-4 mr-2" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem class="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Регионы
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator class="hidden md:block" />
-                <BreadcrumbItem>
+                <template v-for="b,bi in breadcrumbs">
+                  <BreadcrumbItem class="hidden md:block">
+                    <BreadcrumbLink href="#">
+                      {{b}}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator class="hidden md:block" v-if="bi<breadcrumbs.length-1" />
+                </template>
+                <!-- <BreadcrumbItem>
                   <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
+                </BreadcrumbItem> -->
               </BreadcrumbList>
             </Breadcrumb>
           </header>

@@ -3,6 +3,11 @@ import { useOrgGetActiveMember, useOrgGetFullOrganization, useOrgList } from '~/
 
 const { t } = useI18n();
 const route = useRoute()
+definePageMeta({
+  // set custom layout
+
+  layout: 'admin',
+})
 
 const { data: organization } = await useOrgGetFullOrganization({
   query: {

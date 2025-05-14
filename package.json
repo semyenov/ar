@@ -13,7 +13,11 @@
     "preview": "nuxt preview",
     "typecheck": "vue-tsc --noEmit",
     "api:generate": "orval",
-    "api:watch": "orval --watch"
+    "api:watch": "orval --watch",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:db:push": "prisma db push",
+    "auth:generate": "@better-auth/cli@latest generate"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
@@ -37,6 +41,7 @@
     "croner": "^8.1.2",
     "execa": "^9.5.2",
     "file-type": "^20.5.0",
+    "moment": "^2.30.1",
     "nanoid": "^5.1.5",
     "nuxt": "^3.16.1",
     "nuxt-content-assets": "^1.4.4",
@@ -58,6 +63,7 @@
     "vue3-smooth-dnd": "^0.0.6"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.2.7",
     "@faker-js/faker": "^9.7.0",
     "@iconify-json/tabler": "^1.2.17",
     "@iconify/json": "^2.2.333",

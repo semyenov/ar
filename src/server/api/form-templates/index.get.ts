@@ -59,6 +59,16 @@ export default defineEventHandler(async (event) => {
     // Получение шаблонов форм
     const [formTemplates, total] = await Promise.all([
       prisma.formTemplate.findMany({
+        include: {
+          _count: {
+            select: { forms: true },
+          },
+          fields: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
         orderBy: { updatedAt: 'desc' },
         skip: offset,
         take: limit,

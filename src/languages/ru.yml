@@ -14,6 +14,12 @@ pages:
   statuses:
     title: Управление заявками
     welcome: На этой странице вы можете управлять текущими статусами организаций
+  formTemplates:
+    title: Шаблоны форм
+    description: Доступные шаблоны для заполнения
+  forms:
+    title: Заявки
+    description: Управление заявками и отслеживание текущих изменений
 
 schemas:
   organizations:
@@ -35,6 +41,7 @@ schemas:
       title: Формы
       welcome: Управление формами
 
+
 common:
   loading: Загрузка...
   error: Ошибка
@@ -46,10 +53,42 @@ common:
   delete: Удалить
   open: Открыть
 
+
+
+formTemplates:
+  name: Наименование формы
+  description: Описание
+  createdAt: Создано
+  updatedAt: Обновлено
+  fields: Поля
+  countForms: Количество заполнений
+
+formTemplateFields:
+  name: Название поля
+  type: Тип
+  validationRules: Правила валидации
+  defaultValue: Значение по умолчанию
+  required: Обязательное
+  order: №
+  options: Опции
+
+formFields:
+  name: Название поля
+  type: Тип
+  value: Текущее значение
+  required: Обязательное
+  order: №
+  options: Опции
+
 forms:
-  title: Формы
+  title: Заявка
+  createdAt: Создана
+  updatedAt: Обновлена
+  organization: Организация
+  template: Шаблон
+  executor: Исполнитель
   description: Управление и отслеживание форм
-  noForms: Формы не найдены
+  noForms: Заявки не найдены
   filterByStatus: Фильтр по статусу
   search: Поиск форм...
   showing: Показано
@@ -62,8 +101,9 @@ forms:
     updatedAt: Обновлено
     actions: Действия
   status:
+    title: Статус
     draft: Черновик
-    underReview: На рассмотрении
-    needsChanges: Требует изменений
+    under_review: На рассмотрении
+    needs_changes: Требует заполнения
     approved: Одобрено
     rejected: Отклонено

@@ -9,6 +9,7 @@ import { computed } from 'vue'
 import { priorities, organizationStatuses } from '@/client/data/data'
 import DataTableFacetedFilter from '/client/components/DataTable/FacetedFilter.vue'
 import DataTableViewOptions from '/client/components/DataTable/ViewOptions.vue'
+import { FormStatus } from '~/client/api'
 
 interface DataTableToolbarProps {
   table: Table<TData>
@@ -17,6 +18,19 @@ const { t } = useI18n()
 const props = defineProps<DataTableToolbarProps>()
 
 const isFiltered = computed(() => props.table.getState().columnFilters.length > 0)
+
+const statuses = computed(() => {
+  return Object.keys(FormStatus).map((s) => ({
+    label: t(`forms.status.${s.toLowerCase()}`),
+    value: s,
+  }))
+})
+const templates = computed(() => {
+  return Object.keys(FormStatus).map((s) => ({
+    label: t(`forms.status.${s.toLowerCase()}`),
+    value: s,
+  }))
+})
 </script>
 
 <template>
@@ -32,8 +46,15 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         v-if="table.getColumn('status')"
         :column="table.getColumn('status')"
         :title="t('schemas.organizations.status')"
-        :options="organizationStatuses"
+        :options="statuses"
       />
+      <!-- <DataTableFacetedFilter
+        v-if="table.getColumn('template')"
+        :column="table.getColumn('priority')"
+        title="Priority"
+        :options="priorities"
+      /> -->
+
       <Button
         v-if="isFiltered"
         variant="ghost"
