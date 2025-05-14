@@ -1,28 +1,27 @@
-import authClient from "~/lib/auth-client";
-
+const authClient = useAuth()
 export const {
   changeEmail: useUserChangeEmail,
   changePassword: useUserChangePassword,
   deleteUser: useUserDelete,
   forgetPassword: useUserForgetPassword,
   getSession: useUserGetSession,
-  refreshToken: useUserRefreshToken,
   linkSocial: useUserLinkSocial,
   listAccounts: useUserListAccounts,
   listSessions: useUserListSessions,
+  refreshToken: useUserRefreshToken,
   resetPassword: useUserResetPassword,
-  updateUser: useUserUpdate,
+  revokeOtherSessions: useUserRevokeOtherSessions,
+  revokeSession: useUserRevokeSession,
+  revokeSessions: useUserRevokeSessions,
+  sendVerificationEmail: useUserSendVerificationEmail,
   signIn: useUserSignIn,
   signOut: useUserSignOut,
   signUp: useUserSignUp,
-  revokeOtherSessions: useUserRevokeOtherSessions,
-  revokeSession: useUserRevokeSession,
-  useSession: useUserSession,
-  revokeSessions: useUserRevokeSessions,
-  sendVerificationEmail: useUserSendVerificationEmail,
   unlinkAccount: useUserUnlinkAccount,
+  updateUser: useUserUpdate,
   useActiveMember: useUserActiveMember,
   useActiveOrganization: useUserActiveOrganization,
   useListOrganizations: useUserListOrganizations,
+  useSession: useUserSession,
   verifyEmail: useUserVerifyEmail,
-} = authClient
+} = authClient.client

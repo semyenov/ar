@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import authClient from '~/lib/auth-client'
+const authClient = useAuth()
 
-const { data: session } = await authClient.getSession()
+const { data: session } = await authClient.client.getSession()
 const router = useRouter()
 </script>
 

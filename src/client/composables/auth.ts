@@ -16,6 +16,7 @@ interface RuntimeAuthConfig {
 export function useAuth() {
   const url = useRequestURL()
   const headers = import.meta.server ? useRequestHeaders() : undefined
+  console.log('headers', headers)
 
   const client = useAuthClient(
     url,
@@ -51,6 +52,8 @@ export function useAuth() {
       },
     })
     session.value = data?.session || null
+    console.log('data', data)
+
     user.value = data?.user || null
     sessionFetching.value = false
 

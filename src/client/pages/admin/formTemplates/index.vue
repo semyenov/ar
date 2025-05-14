@@ -2,36 +2,33 @@
 import { Icon, NuxtLink } from '#components'
 import { useListFormTemplates } from '~/client/api'
 // import tasks from '@/client/data/tasks.json'
-
 import { organizationStatuses } from '~/client/data/data'
 
-import {columns} from '@/client/components/formTemplates/column'
+import { columns } from '@/client/components/formTemplates/column'
 
 // import { columns } from '@/client/components/organizations/column'
-
-import { onMounted } from 'vue';
-
+import { onMounted } from 'vue'
 
 const { t } = useI18n()
 
 definePageMeta({
   // set custom layout
-
+  auth: {
+    only: 'user',
+    redirectGuestTo: '/auth/sign-in',
+  },
   layout: 'admin',
 })
-const { data: formsResponse, isLoading, error } = useListFormTemplates();
+const { data: formsResponse, error, isLoading } = useListFormTemplates()
 
 // Computed property to get just the forms array
-const formTemplates = computed(() => formsResponse.value?.items || []);
-
-
-
-
+const formTemplates = computed(() => {
+  return formsResponse.value?.items || []
+})
 </script>
 
 <template>
   <div class="grid grid-cols-12 p-4 space-y-4">
-
     <!-- <Alert class="flex items-start col-span-12 gap-4 p-6">
       <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
       <div class="flex flex-col">

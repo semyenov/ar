@@ -16,6 +16,9 @@ async function handleSignIn() {
     },
   )
 }
+definePageMeta({
+  auth: false,
+})
 </script>
 
 <template>
