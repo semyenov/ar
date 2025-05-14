@@ -1,13 +1,10 @@
 <script lang="ts" setup>
-import authClient from '~/lib/auth-client'
-
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const password = ref('')
-
+const authClient = useAuth()
 async function handleSignUp() {
-
   const user = {
     email: email.value,
     firstName: firstName.value,

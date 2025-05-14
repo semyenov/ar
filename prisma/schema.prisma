@@ -21,6 +21,11 @@ model User {
   members       Member[]
   invitations   Invitation[]
 
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
   @@unique([email])
   @@map("user")
   @@index([email])
@@ -37,6 +42,8 @@ model Session {
   userId               String
   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   activeOrganizationId String?
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")

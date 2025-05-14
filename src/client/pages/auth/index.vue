@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import authClient from '~/lib/auth-client'
-
 definePageMeta({
   layout: 'default',
 })
-
+const authClient = useAuth()
 const features = [
   'Email & Password',
   'Organization | Teams',
@@ -16,7 +14,7 @@ const features = [
   'Rate Limiting',
   'Session Management',
 ]
-const { data: session } = await authClient.getSession()
+const { data: session } = await authClient.client.getSession()
 </script>
 
 <template>

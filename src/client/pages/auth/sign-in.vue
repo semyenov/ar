@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import authClient from '~/lib/auth-client'
-
 const email = ref('')
 const password = ref('')
-
+const authClient = useAuth()
 async function handleSignIn() {
   await authClient.signIn.email(
     {

@@ -14,6 +14,10 @@ export default defineNuxtConfig({
   serverDir,
   srcDir,
 
+  imports: {
+    dirs: [join(clientDir, 'composables')],
+  },
+
   app: {
     layoutTransition: { mode: 'out-in', name: 'page' },
     pageTransition: { mode: 'out-in', name: 'page' },
@@ -31,8 +35,8 @@ export default defineNuxtConfig({
   },
 
   dir: {
-    public: join(srcDir, 'public'),
     plugins: join(clientDir, 'plugins'),
+    public: join(srcDir, 'public'),
 
     app: join(clientDir, 'app'),
     assets: join(clientDir, 'assets'),
@@ -53,11 +57,11 @@ export default defineNuxtConfig({
     experimental: {
       asyncContext: true,
       database: true,
+      openAPI: true,
       tasks: true,
       typescriptBundlerResolution: true,
       wasm: true,
       websocket: true,
-      openAPI: true,
 
     },
 

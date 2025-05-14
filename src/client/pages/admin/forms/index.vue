@@ -3,6 +3,7 @@ import { Icon, NuxtLink } from '#components'
 import { useListForms } from '~/client/api'
 import moment from 'moment';
 
+
 import {columns} from '@/client/components/forms/column'
 import { filter } from 'remeda'
 import { FormStatus } from '@prisma/client'
@@ -19,23 +20,21 @@ definePageMeta({
 })
 const { data: formsResponse, isLoading, error } = useListForms();
 
-const currentTab = ref('under_review')
+const currentTab = ref('all')
 // Computed property to get just the forms array
 const forms = computed(() => formsResponse.value?.items || []);
 const underReview = computed(()=>filter(forms.value, f=>f.status === FormStatus.UNDER_REVIEW))
 
 const criticalDiff = 24
+const criticalDiffMeasure: moment.unitOfTime.Base = 'hours'
 
 const critical = computed(() => filter(forms.value, f => {
   const now = moment().format('YYYY-MM-DD HH:mm:ss')
   const fd = moment(f.updatedAt).format('YYYY-MM-DD HH:mm:ss')
   console.log(now, fd);
-
-  return moment(now).diff(fd, 'hours') > criticalDiff
+  return moment(now).diff(fd, criticalDiffMeasure) > criticalDiff
 }
 ))
-
-
 </script>
 
 <template>
@@ -63,16 +62,15 @@ const critical = computed(() => filter(forms.value, f => {
       <CardContent class="grid gap-4">
         <Tabs v-model="currentTab">
           <TabsList>
-            <TabsTrigger value="under_review">
-              На рассмотрении
-            </TabsTrigger>
             <TabsTrigger value="all">
               Все
+            </TabsTrigger>
+            <TabsTrigger value="under_review">
+              На рассмотрении
             </TabsTrigger>
           </TabsList>
           <TabsContent value="under_review">
             <FormsDataTable :data="underReview" :columns="columns(t)" />
-
           </TabsContent>
           <TabsContent value="all">
             <FormsDataTable :data="forms" :columns="columns(t)" />

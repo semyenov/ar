@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { Icon, NuxtLink } from '#components'
+
 // import tasks from '@/client/data/tasks.json'
-import { faker,fakerRU} from '@faker-js/faker';
 import type { ColumnDef } from '@tanstack/vue-table'
+
+import { faker, fakerRU } from '@faker-js/faker'
 import { userStatuses } from '~/client/data/data'
 
-import {columns} from '@/client/components/users/column'
+import { columns } from '@/client/components/users/column'
 
 // import { columns } from '@/client/components/organizations/column'
-import type { User, Task } from '~/client/data/schema'
+import type { Task, User } from '~/client/data/schema'
+
 import DataTableColumnHeader from '@/client/components/organizations/ColumnHeader.vue'
 import DataTableRowActions from '@/client/components/organizations/RowActions.vue'
 import { Checkbox } from '@/client/components/ui/checkbox'
@@ -21,35 +24,28 @@ definePageMeta({
 })
 const data = ref<User[]>([])
 
-
-
 async function getData(): Promise<User[]> {
-  const res:User[] = []
+  const res: User[] = []
   for (let index = 0; index < 10000; index++) {
     // const n = faker.number.int({ min: 0, max: 6 })
     // console.log(userStatuses[n].value);
 
     res.push({
-      id: faker.string.nanoid(),
-      status: userStatuses[faker.number.int({ min: 0, max: userStatuses.length-1 })].value,
+      email: faker.internet.email(),
       first_name: fakerRU.person.firstName(),
+      id: faker.string.nanoid(),
       last_name: fakerRU.person.lastName(),
-      phone: fakerRU.phone.number({ style:'national'}),
-      email: faker.internet.email()
+      phone: fakerRU.phone.number({ style: 'national' }),
+      status: userStatuses[faker.number.int({ max: userStatuses.length - 1, min: 0 })].value,
     })
   }
+
   return res
 }
 
 onMounted(async () => {
-
   data.value = await getData()
-
-
 })
-
-
-
 </script>
 
 <template>
@@ -57,9 +53,9 @@ onMounted(async () => {
     <Card class="col-span-12 overflow-y-auto">
       <CardHeader>
         <CardTitle class="text-xl">
-          {{ t('pages.organizations.title') }}
+          {{ t('pages.users.title') }}
         </CardTitle>
-        <CardDescription> {{ t('pages.organizations.welcome') }}</CardDescription>
+        <CardDescription> {{ t('pages.users.welcome') }}</CardDescription>
       </CardHeader>
       <CardContent class="grid gap-4">
         <UsersDataTable :data="data" :columns="columns(t)" />
