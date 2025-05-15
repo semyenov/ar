@@ -116,6 +116,7 @@ model Member {
   userId         String
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   role           MemberRole
+  mandate        Mandate       @default(SECOND_MANDATE)
   createdAt      DateTime      @default(now())
   createdForms   Form[]        @relation("FormCreator")
   assignedForms  Form[]        @relation("FormExecutor")
@@ -130,6 +131,7 @@ model Member {
   @@map("member")
   @@index([organizationId])
   @@index([userId])
+  @@index([mandate])
 }
 
 model Invitation {
@@ -172,6 +174,7 @@ model Form {
   title            String
   description      String?
   status           FormStatus    @default(DRAFT)
+  mandate          Mandate       @default(SECOND_MANDATE)
   organizationId   String
   organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   creatorMemberId  String
@@ -191,6 +194,7 @@ model Form {
   @@index([organizationId, status])
   @@index([creatorMemberId])
   @@index([executorMemberId])
+  @@index([mandate])
   @@map("form")
 }
 
@@ -203,18 +207,21 @@ model FormField {
   value           String?
   required        Boolean         @default(false)
   validationRules String?
+  mandate         Mandate         @default(SECOND_MANDATE)
   order           Int
   options         String?
   files           FormFieldFile[]
 
   @@map("form_field")
   @@index([formId])
+  @@index([mandate])
 }
 
 model FormTemplate {
   id             String              @id
   name           String
   description    String?
+  mandate        Mandate             @default(SECOND_MANDATE)
   fields         FormTemplateField[]
   forms          Form[]
   createdAt      DateTime            @default(now())
@@ -223,6 +230,7 @@ model FormTemplate {
   version        Int                 @default(1)
 
   @@map("form_template")
+  @@index([mandate])
 }
 
 model FormTemplateField {
@@ -287,17 +295,31 @@ model Comment {
   member         Member     @relation(fields: [memberId], references: [id])
   content        String
   fieldReference String?
+  mandate        Mandate    @default(SECOND_MANDATE)
   createdAt      DateTime   @default(now())
 
   @@map("comment")
   @@index([reviewFlowId])
   @@index([memberId])
+  @@index([mandate])
 }
 
 enum FileAccess {
   PRIVATE
   ORGANIZATION
   PUBLIC
+}
+
+enum Mandate {
+  FIRST_MANDATE
+  SECOND_MANDATE
+  THIRD_MANDATE
+  FOURTH_MANDATE
+  FIFTH_MANDATE
+  SIXTH_MANDATE
+  SEVENTH_MANDATE
+  EIGHTH_MANDATE
+  NINTH_MANDATE
 }
 
 model File {
@@ -308,6 +330,7 @@ model File {
   mimeType         String
   size             Int
   accessLevel      FileAccess      @default(ORGANIZATION)
+  mandate          Mandate         @default(SECOND_MANDATE)
   description      String?
   organizationId   String
   organization     Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -328,6 +351,7 @@ model File {
   @@index([organizationId])
   @@index([folderId])
   @@index([accessLevel])
+  @@index([mandate])
 }
 
 model FileFolder {

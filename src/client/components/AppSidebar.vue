@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {
-  type SidebarProps,
-} from '@/client/components/ui/sidebar'
+import { type SidebarProps } from '@/client/components/ui/sidebar'
 
+const router = useRouter()
 const props = defineProps<SidebarProps>()
 
 const { t } = useI18n()
@@ -52,7 +51,6 @@ const data = {
       url: '#',
     },
   ],
-
   user: {
     avatar: '/avatars/shadcn.jpg',
     email: 'root@root.ru',
@@ -69,58 +67,7 @@ const activeTeam = ref({
 })
 
 const isDark = useDark()
-  const toggleDark = useToggle(isDark)
-
-// This is sample data.
-// const data = {
-//   navMain: [
-//     // {
-//     //   items: [
-//     //     {
-//     //       title: 'Главная',
-//     //       url: '/',
-//     //     },
-//     //   ],
-//     //   title: 'Getting Started',
-//     //   url: '#',
-//     // },
-//     {
-//       items: [
-//         {
-//           isActive: true,
-//           title: 'Организации',
-//           url: '/organizations#',
-//         },
-
-//         {
-//           title: 'Статусы',
-//           url: '/statuses',
-//         },
-//       ],
-//       title: 'Главное меню',
-//       url: '#',
-//     },
-//     {
-//       items: [
-//       {
-//           title: 'Пользователи',
-//           url: '/users',
-//         },
-//         {
-//           title: 'База данных',
-//           url: '#',
-//         },
-//       ],
-//       title: 'Администрирование',
-//       url: '#',
-//     },
-//   ],
-//   // versions: [
-//   //   '1.0.1',
-//   //   '1.1.0-alpha',
-//   //   '2.0.0-beta1',
-//   // ],
-// }
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
@@ -140,118 +87,99 @@ const isDark = useDark()
                     <span class="text-xs truncate">{{ activeTeam.plan }}</span>
                   </div>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Основные</SidebarGroupLabel>
-              <SidebarMenu>
-                <Collapsible
-                  v-for="item in data.navMain"
-                  :key="item.title"
-                  as-child
-                  :default-open="item.isActive"
-                  class="group/collapsible"
-                >
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger as-child>
-                      <SidebarMenuButton :tooltip="item.title">
-                        <Icon :name="item.icon" />
-                        <span>{{ item.title }}</span>
-                        <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        <SidebarMenuSubItem
-                          v-for="subItem in item.items"
-                          :key="subItem.title"
-                        >
-                          <SidebarMenuSubButton as-child>
-                            <NuxtLink :to="subItem.url" active-class="bg-sidebar-accent text-sidebar-accent-foreground">
-                              <span>{{ subItem.title }}</span>
-                            </NuxtLink>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              </SidebarMenu>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger as-child>
-                    <SidebarMenuButton
-                      size="lg"
-                      class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                    >
-                      <Avatar class="w-8 h-8 rounded-lg">
-                        <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
-                        <!-- <AvatarFallback class="rounded-lg">
-                          {{
-                            data.user.name
-                              .slice(0, 1)
-                              .toUpperCase()
-                          }}
-                        </AvatarFallback> -->
-                      </Avatar>
-                      <!-- <div class="grid flex-1 text-sm leading-tight text-left">
-                        <span class="font-semibold truncate">{{ data.user.name }}</span>
-                        <span class="text-xs truncate">{{ data.user.email }}</span>
-                      </div> -->
-                      <ChevronsUpDown class="ml-auto size-4" />
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" :side-offset="4">
-                    <DropdownMenuLabel class="p-0 font-normal">
-                      <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                        <Avatar class="w-8 h-8 rounded-lg">
-                          <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
-                          <!-- <AvatarFallback class="rounded-lg">
-                            {{
-                              data.user.name
-                                .slice(0, 1)
-                                .toUpperCase()
-                            }}
-                          </AvatarFallback> -->
-                        </Avatar>
-                        <!-- <div class="grid flex-1 text-sm leading-tight text-left">
-                          <span class="font-semibold truncate">{{ data.user.name }}</span>
-                          <span class="text-xs truncate">{{ data.user.email }}</span>
-                        </div> -->
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <BadgeCheck />
-                        Account
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <CreditCard />
-                        Billing
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Bell />
-                        Notifications
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <LogOut />
-                      Log out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarFooter>
-          <SidebarRail />
-        </Sidebar>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  <SidebarMenuSubItem
+                    v-for="subItem in item.items"
+                    :key="subItem.title"
+                  >
+                    <SidebarMenuSubButton as-child>
+                      <NuxtLink
+                        :to="subItem.url"
+                        active-class="bg-sidebar-accent text-sidebar-accent-foreground"
+                      >
+                        <span>{{ subItem.title }}</span>
+                      </NuxtLink>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+
+    <!-- Footer section -->
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <SidebarMenuButton
+                size="lg"
+                class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar class="w-8 h-8 rounded-lg">
+                  <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
+                  <!-- <AvatarFallback class="rounded-lg">
+                    {{ data.user.name.slice(0, 1).toUpperCase() }}
+                  </AvatarFallback> -->
+                </Avatar>
+                <!-- <div class="grid flex-1 text-sm leading-tight text-left">
+                  <span class="font-semibold truncate">{{ data.user.name }}</span>
+                  <span class="text-xs truncate">{{ data.user.email }}</span>
+                </div> -->
+                <ChevronsUpDown class="ml-auto size-4" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+              side="bottom"
+              align="end"
+              :side-offset="4"
+            >
+              <DropdownMenuLabel class="p-0 font-normal">
+                <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <Avatar class="w-8 h-8 rounded-lg">
+                    <!-- <AvatarImage :src="data.user.avatar" :alt="data.user.name" /> -->
+                    <!-- <AvatarFallback class="rounded-lg">
+                      {{ data.user.name.slice(0, 1).toUpperCase() }}
+                    </AvatarFallback> -->
+                  </Avatar>
+                  <!-- <div class="grid flex-1 text-sm leading-tight text-left">
+                    <span class="font-semibold truncate">{{ data.user.name }}</span>
+                    <span class="text-xs truncate">{{ data.user.email }}</span>
+                  </div> -->
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <BadgeCheck />
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CreditCard />
+                  Billing
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Bell />
+                  Notifications
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
+    <SidebarRail />
+  </Sidebar>
 </template>

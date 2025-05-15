@@ -18,6 +18,7 @@ type RemoveMemberParams = {
   targetUserId: string
 } & UserParams
 
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'sqlite',
@@ -33,7 +34,7 @@ export const auth = betterAuth({
         return true
       },
       canInviteUser: async (params: UserParams) => {
-        // Only owners and admins can invite users
+        // Только владельцы и админы могут приглашать пользователей
         const member = await prisma.member.findFirst({
           where: {
             organizationId: params.organizationId,
@@ -44,7 +45,7 @@ export const auth = betterAuth({
         return member?.role === MemberRole.owner || member?.role === MemberRole.admin
       },
       canRemoveMember: async (params: RemoveMemberParams) => {
-        // Owners can remove anyone, admins can remove non-owners/admins
+        // Получаем данные пользователя, который хочет удалить члена
         const member = await prisma.member.findFirst({
           where: {
             organizationId: params.organizationId,
@@ -67,7 +68,7 @@ export const auth = betterAuth({
           return targetMember?.role !== MemberRole.owner && targetMember?.role !== MemberRole.admin
         }
 
-        return false
+        return false;
       },
       onUserJoinOrganization: async (params: UserParams) => {
         // Store the appropriate role in the database
@@ -86,6 +87,19 @@ export const auth = betterAuth({
         maximumTeams: 1, // Optional: limit teams per organization
       },
     }),
+    pluginAdmin({
+      ac,
+      roles: {
+        owner,
+        admin,
+        executor,
+        member
+      }
+    }),
     openAPI(),
   ],
+
+  // Hooks will be implemented separately to handle mandate-related operations
+  // This is a temporary solution to make TypeScript happy
+  hooks: {}
 })

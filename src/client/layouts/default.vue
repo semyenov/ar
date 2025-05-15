@@ -1,54 +1,5 @@
 <script setup lang=ts>
 
-const data = {
-  navMain: [
-    {
-      icon: 'tabler:database',
-      isActive: true,
-      items: [
-        {
-          title: 'Организации',
-          url: '/organizations#',
-        },
-
-        {
-          title: 'Статусы',
-          url: '/statuses',
-        },
-      ],
-      title: 'Главное меню',
-      url: '#',
-    },
-    {
-      icon: 'tabler:users',
-      items: [
-      {
-          title: 'Пользователи',
-          url: '/users',
-        },
-        {
-          title: 'База данных',
-          url: '#',
-        },
-      ],
-      title: 'Администрирование',
-      url: '#',
-    },
-  ],
-  projects: [
-    {
-      icon: 'tabler:frame',
-      name: 'Регионы',
-      url: '#',
-    },
-  ],
-
-  user: {
-    avatar: '/avatars/shadcn.jpg',
-    email: 'root@root.ru',
-    name: 'root',
-  }
-}
 
 const router = useRouter()
 

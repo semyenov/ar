@@ -21,3 +21,18 @@ yarn test            # Run tests (use `vitest run testName` for single test)
 - TypeScript strict mode enabled
 - Follow shadcn-vue component patterns
 - Error handling: centralized in server/errors
+
+## Quality Assurance
+- After any file changes, always run `yarn typecheck` to verify TypeScript correctness
+- Fix any type errors before committing changes
+
+## Documentation
+- Always use Context7 as the primary tool for fetching library documentation
+- Run `mcp__context7__resolve-library-id` followed by `mcp__context7__get-library-docs` for obtaining up-to-date library documentation
+- Only fall back to other documentation sources if Context7 doesn't have the required library
+
+## Project Rules
+- Primary project rules are located in `.cursor/rules/index.mdc` - this file should be consulted first and strictly followed to understand project architecture
+- Additional specialized rules in `.cursor/rules/` directory are optional and referenced as needed
+- The index.mdc file provides an overview of all available rules and serves as the entry point
+- When making significant architectural changes or major code modifications, update the relevant `.cursor/rules/` files to reflect these changes

@@ -1,0 +1,237 @@
+---
+description: Coding standards and conventions used throughout the Alt Regioni project
+globs: ["**/*.ts", "**/*.vue", "**/*.js", ".eslintrc.*", "*.config.*"]
+alwaysApply: false
+---
+# Code Conventions
+
+This rule outlines the coding standards and conventions used throughout the Alt Regioni project.
+
+## General Principles
+
+1. **TypeScript** is used throughout the project with strict mode enabled
+2. **Vue 3 Composition API** with `<script setup>` syntax for components
+3. **ESLint** with @viapip/eslint-config is used for code linting
+4. **2-space indentation** is standard across all files
+
+## File Naming Conventions
+
+1. **Vue Components**: PascalCase (e.g., `Button.vue`, `DataTable.vue`)
+2. **Utility/Helper Files**: kebab-case (e.g., `auth-client.ts`, `utils.ts`)
+3. **API Route Files**: Format of `[method].[endpoint].ts` (e.g., `index.get.ts`, `index.post.ts`)
+4. **Configuration Files**: kebab-case (e.g., `nuxt.config.ts`, `eslint.config.mjs`)
+
+## Import Organization
+
+```typescript
+// External libraries first
+import { ref, computed } from 'vue'
+import { useQuery } from '@tanstack/vue-query'
+import { z } from 'zod'
+
+// Local imports use @/ alias
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/lib/auth-client'
+import type { User } from '@/types'
+```
+
+## Vue Component Structure
+
+```vue
+<script setup lang="ts">
+// Imports
+import { ref, computed } from 'vue'
+import { Button } from '@/components/ui/button'
+
+// Types
+interface Props {
+  title: string
+  variant?: 'default' | 'outline'
+}
+
+// Props with TS interface
+const props = defineProps<Props>()
+
+// Emits with TS declarations
+const emit = defineEmits<{
+  (e: 'update', value: string): void
+  (e: 'delete'): void
+}>()
+
+// Reactive state
+const isOpen = ref(false)
+
+// Computed properties
+const computedValue = computed(() => {
+  return props.title.toUpperCase()
+})
+
+// Methods
+function handleClick() {
+  isOpen.value = !isOpen.value
+  emit('update', computedValue.value)
+}
+</script>
+
+<template>
+  <div class="component-container">
+    <h2 class="text-xl font-semibold">{{ computedValue }}</h2>
+    <Button @click="handleClick" :variant="variant">
+      Toggle
+    </Button>
+  </div>
+</template>
+```
+
+## TypeScript Usage
+
+1. **Type Definitions**
+
+```typescript
+// Explicit typing for variables
+const count = ref<number>(0)
+
+// Interface for objects
+interface User {
+  id: string
+  name: string
+  email: string
+  role: UserRole
+}
+
+// Type for function parameters and returns
+function formatUserName(user: User): string {
+  return `${user.name} <${user.email}>`
+}
+
+// Enums for finite sets of values
+enum UserRole {
+  Admin = 'admin',
+  User = 'user',
+}
+
+// Union types for variants
+type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger'
+```
+
+2. **Generic Types**
+
+```typescript
+// Generic function
+function pickRandomItem<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)]
+}
+
+// Generic components (in .vue files)
+const emit = defineEmits<{
+  (e: 'select', item: T): void
+}>()
+```
+
+## Error Handling
+
+```typescript
+// Try/catch pattern
+try {
+  const result = await api.createUser(userData)
+  return result
+} catch (error) {
+  if (error instanceof ApiError) {
+    // Handle specific error
+    console.error('API Error:', error.message)
+    throw error
+  }
+  // Handle unknown errors
+  console.error('Unknown error:', error)
+  throw new Error('Failed to create user')
+}
+
+// Async/await with error boundaries
+async function fetchData() {
+  try {
+    return await api.getData()
+  } catch (error) {
+    logError(error)
+    return null
+  }
+}
+```
+
+## CSS and Styling
+
+The project uses Tailwind CSS for styling:
+
+```vue
+<template>
+  <div class="flex flex-col p-4 space-y-4 bg-white rounded-lg shadow-sm">
+    <h2 class="text-xl font-semibold text-gray-900">{{ title }}</h2>
+    <p class="text-gray-500">{{ description }}</p>
+    <div class="flex justify-end">
+      <Button variant="primary">Submit</Button>
+    </div>
+  </div>
+</template>
+```
+
+## Data Fetching Pattern
+
+```vue
+<script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
+import { useGetOrganization } from '@/client/api'
+
+const props = defineProps<{
+  id: string
+}>()
+
+// Fetch organization data
+const {
+  data: organization,
+  isLoading,
+  error
+} = useGetOrganization(props.id)
+</script>
+
+<template>
+  <div>
+    <Loading v-if="isLoading" />
+    <ErrorDisplay v-else-if="error" :error="error" />
+    <div v-else-if="organization">
+      <h1>{{ organization.name }}</h1>
+      <!-- Organization details -->
+    </div>
+    <div v-else>No organization found</div>
+  </div>
+</template>
+```
+
+## Comments and Documentation
+
+```typescript
+/**
+ * Creates a new organization with the given data
+ *
+ * @param data Organization creation data
+ * @returns The newly created organization
+ * @throws ApiError if creation fails
+ */
+export async function createOrganization(data: CreateOrganizationInput): Promise<Organization> {
+  // Implementation
+}
+
+// Simple inline comment for implementation details
+const sortedItems = items.sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically
+```
+
+## Best Practices
+
+1. Always use TypeScript types for props, emits, and function parameters
+2. Use Vue 3 Composition API with `<script setup>` syntax
+3. Follow the kebab-case for event names (`@update-name` not `@updateName`)
+4. Use PascalCase for component names
+5. Structure imports with external libraries first, then local imports
+6. Use proper error handling with try/catch for async operations
+7. Use the @/ alias for imports from the src directory
+8. Follow the Tailwind CSS utility-first approach for styling
+9. For API calls, use auto-generated hooks from the API client (see @.cursor/rules/frontend/api_call.mdc)
+10. Keep components focused and single-purpose
