@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const router = useRouter()
 
 const breadcrumbs = computed(() => {
@@ -27,33 +26,29 @@ const breadcrumbs = computed(() => {
     return a.href.length - b.href.length
   })
 })
-
-
-
 </script>
 
 <template>
   <div
     id="__layout"
-    class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white"
+    class="relative flex h-full w-full grow flex-col items-center justify-center dark:text-white"
   >
     <ClientOnly>
-
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">
+          <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger class="-ml-1" />
-            <Separator orientation="vertical" class="h-4 mr-2" />
+            <Separator orientation="vertical" class="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <template v-for="b,bi in breadcrumbs">
+                <template v-for="b, bi in breadcrumbs" :key="b">
                   <BreadcrumbItem class="hidden md:block">
                     <BreadcrumbLink href="#">
-                      {{b}}
+                      {{ b }}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator class="hidden md:block" v-if="bi<breadcrumbs.length-1" />
+                  <BreadcrumbSeparator v-if="bi < breadcrumbs.length - 1" class="hidden md:block" />
                 </template>
                 <!-- <BreadcrumbItem>
                   <BreadcrumbPage>Data Fetching</BreadcrumbPage>

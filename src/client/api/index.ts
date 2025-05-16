@@ -1,3 +1,3 @@
-export * from './generated/model';
-export * from './generated';
-export * from './better';
+export * from './better'
+export * from './generated'
+export * from './generated/model'

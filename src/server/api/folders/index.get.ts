@@ -18,11 +18,26 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
-    organizationId: z.string().min(24).optional(),
-    parentId: z.string().min(24).optional().nullable(),
-    search: z.string().optional(),
-    page: z.coerce.number().int().positive().optional().default(1),
-    limit: z.coerce.number().int().positive().max(100).optional().default(50),
+    limit: z.coerce.number()
+      .int()
+      .positive()
+      .max(100)
+      .optional()
+      .default(50),
+    organizationId: z.string()
+      .min(24)
+      .optional(),
+    page: z.coerce.number()
+      .int()
+      .positive()
+      .optional()
+      .default(1),
+    parentId: z.string()
+      .min(24)
+      .optional()
+      .nullable(),
+    search: z.string()
+      .optional(),
   })
 
   const validationResult = schema.safeParse(query)
@@ -34,7 +49,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { organizationId, parentId, search, page, limit } = validationResult.data
+  const { limit, organizationId, page, parentId, search } = validationResult.data
   const skip = (page - 1) * limit
 
   try {
@@ -58,7 +73,8 @@ export default defineEventHandler(async (event) => {
       }
 
       whereConditions.organizationId = organizationId
-    } else {
+    }
+    else {
       // Если организация не указана, показать папки только из организаций, где пользователь является членом
       whereConditions.organization = {
         members: {
@@ -85,12 +101,10 @@ export default defineEventHandler(async (event) => {
     const [folders, total] = await Promise.all([
       prisma.fileFolder.findMany({
         include: {
-          organization: {
+          _count: {
             select: {
-              id: true,
-              name: true,
-              slug: true,
-              logo: true,
+              children: true,
+              files: true,
             },
           },
           creator: {
@@ -99,12 +113,20 @@ export default defineEventHandler(async (event) => {
               role: true,
               user: {
                 select: {
-                  id: true,
-                  name: true,
                   email: true,
+                  id: true,
                   image: true,
+                  name: true,
                 },
               },
+            },
+          },
+          organization: {
+            select: {
+              id: true,
+              logo: true,
+              name: true,
+              slug: true,
             },
           },
           parent: {
@@ -112,12 +134,6 @@ export default defineEventHandler(async (event) => {
               id: true,
               name: true,
               path: true,
-            },
-          },
-          _count: {
-            select: {
-              children: true,
-              files: true,
             },
           },
         },
@@ -140,8 +156,8 @@ export default defineEventHandler(async (event) => {
         select: {
           id: true,
           name: true,
-          path: true,
           parentId: true,
+          path: true,
         },
         where: { id: parentId },
       })
@@ -150,11 +166,11 @@ export default defineEventHandler(async (event) => {
     return {
       data: folders,
       meta: {
-        page,
         limit,
+        page,
+        parent: parentFolder,
         total,
         totalPages: Math.ceil(total / limit),
-        parent: parentFolder,
       },
     }
   }

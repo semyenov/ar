@@ -1,63 +1,141 @@
-import { createAccessControl } from "better-auth/plugins/access";
-import { adminAc } from "better-auth/plugins/admin/access";
+import { createAccessControl } from 'better-auth/plugins/access'
+import { adminAc } from 'better-auth/plugins/admin/access'
 
 // Расширенное определение разрешений, включая операции с мандатами
-export const statement = {
-    // Стандартные ресурсы
-    project: ["create", "share", "update", "delete"],
-    form: ["create", "update", "delete", "assign"],
-    form_field: ["create", "update", "delete"],
-    form_template: ["create", "update", "delete"],
-    file: ["create", "update", "delete", "download", "share"],
-    file_folder: ["create", "update", "delete"],
-    review_flow: ["create", "update", "close"],
-    comment: ["create", "update", "delete"],
+export const statements = {
+  comment: [
+    'create',
+    'update',
+    'delete',
+  ],
+  file: [
+    'create',
+    'update',
+    'delete',
+    'download',
+    'share',
+  ],
+  file_folder: [
+    'create',
+    'update',
+    'delete',
+  ],
+  form: [
+    'create',
+    'update',
+    'delete',
+    'assign',
+  ],
+  form_field: [
+    'create',
+    'update',
+    'delete',
+  ],
+  form_template: [
+    'create',
+    'update',
+    'delete',
+  ],
 
-    // Организация и пользователи
-    organization: ["create", "update", "delete", "invite", "remove"],
-    member: ["invite", "remove", "update_role"],
-} as const;
+  member: [
+    'invite',
+    'remove',
+    'update_role',
+  ],
+  organization: [
+    'create',
+    'update',
+    'delete',
+    'invite',
+    'remove',
+  ],
 
-export const ac = createAccessControl(statement);
+  review_flow: [
+    'create',
+    'update',
+    'close',
+  ],
+} as const
+
+export const ac = createAccessControl(statements)
 
 // Роль обычного пользователя (член организации)
 export const member = ac.newRole({
-    project: ["create"],
-    form: ["create"],
-    file: ["create", "download", "share"],
-    file_folder: ["create"],
-});
+  file: [
+    'create',
+    'download',
+    'share',
+  ],
+  file_folder: ['create'],
+  form: ['create'],
+})
 
 // Роль исполнителя
 export const executor = ac.newRole({
-    ...member.statements,
-    form: ["create", "update"],
-});
+  ...member.statements,
+  form: ['create', 'update'],
+})
 
 // Роль рецензента
 export const reviewer = ac.newRole({
-    ...executor.statements,
-    form: ["create", "update"],
-    review_flow: ["update", "close"],
-    comment: ["create", "update", "delete"],
-});
+  ...executor.statements,
+  comment: [
+    'create',
+    'update',
+    'delete',
+  ],
+  form: ['create', 'update'],
+  review_flow: ['update', 'close'],
+})
 
 // Роль администратора
 export const admin = ac.newRole({
-    ...adminAc,
-    ...reviewer.statements,
-    project: ["create", "update", "delete", "share"],
-    form: ["create", "update", "delete", "assign"],
-    form_field: ["create", "update", "delete"],
-    form_template: ["create", "update", "delete"],
-    file: ["create", "update", "delete", "download", "share"],
-    file_folder: ["create", "update", "delete"],
-    organization: ["update"],
-    member: ["invite", "remove", "update_role"],
-});
+  ...adminAc,
+  ...reviewer.statements,
+  file: [
+    'create',
+    'update',
+    'delete',
+    'download',
+    'share',
+  ],
+  file_folder: [
+    'create',
+    'update',
+    'delete',
+  ],
+  form: [
+    'create',
+    'update',
+    'delete',
+    'assign',
+  ],
+  form_field: [
+    'create',
+    'update',
+    'delete',
+  ],
+  form_template: [
+    'create',
+    'update',
+    'delete',
+  ],
+  member: [
+    'invite',
+    'remove',
+    'update_role',
+  ],
+  organization: ['update'],
+})
 
 // Роль владельца организации
 export const owner = ac.newRole({
-    ...admin.statements,
-    organization: ["create", "update", "delete", "invite", "remove"],
-});
+  ...admin.statements,
+  organization: [
+    'create',
+    'update',
+    'delete',
+    'invite',
+    'remove',
+  ],
+})

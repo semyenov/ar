@@ -18,7 +18,6 @@ type RemoveMemberParams = {
   targetUserId: string
 } & UserParams
 
-
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'sqlite',
@@ -30,7 +29,7 @@ export const auth = betterAuth({
     pluginAdmin(),
     organization({
       ac,
-      allowUserToCreateOrganization(user) {
+      allowUserToCreateOrganization(_user) {
         return true
       },
       canInviteUser: async (params: UserParams) => {
@@ -68,9 +67,9 @@ export const auth = betterAuth({
           return targetMember?.role !== MemberRole.owner && targetMember?.role !== MemberRole.admin
         }
 
-        return false;
+        return false
       },
-      onUserJoinOrganization: async (params: UserParams) => {
+      onUserJoinOrganization: async (_userparams: UserParams) => {
         // Store the appropriate role in the database
         // Default to 'member' role
         return { role: 'member' }
@@ -90,16 +89,12 @@ export const auth = betterAuth({
     pluginAdmin({
       ac,
       roles: {
-        owner,
         admin,
         executor,
-        member
-      }
+        member,
+        owner,
+      },
     }),
     openAPI(),
   ],
-
-  // Hooks will be implemented separately to handle mandate-related operations
-  // This is a temporary solution to make TypeScript happy
-  hooks: {}
 })
