@@ -1,17 +1,56 @@
 ---
-description:
+description: Central index for all Cursor rules in the Alt Regioni project
 globs:
 alwaysApply: true
 ---
-# Inbox Zero AI - Master Rule Index
+# Alt Regioni - Rule Index
 
-This document serves as the central index for all active Cursor rules within this repository, organized by category. These rules define processes, structures, and guidelines for development.
+This document serves as the central index for all Cursor rules within this repository, providing AI agents with a comprehensive overview of the project structure and development guidelines.
 
-## Backend & API
+## Project Structure
 
-Guidelines for implementing backend logic, APIs, and data persistence.
+| Rule File | Description |
+|:----------|:------------|
+| @project-structure.mdc | Detailed explanation of project directory structure and organization |
+| @code-conventions.mdc | Coding standards and conventions used throughout the project |
+| @frontend/component-patterns.mdc | UI component patterns and best practices |
 
-| Rule File                          | Description                                                 |
-| :--------------------------------- | :---------------------------------------------------------- |
-| @api/index.mdc                 | Guidelines for implementing API       |
+## Architecture & Data Models
 
+| Rule File | Description |
+|:----------|:------------|
+| @data-models.mdc | Database schema and data relationships |
+| @auth-system.mdc | Authentication and authorization system |
+
+## Frontend Development
+
+| Rule File | Description |
+|:----------|:------------|
+| @frontend/i18n-guidelines.mdc | Internationalization implementation details |
+| @frontend/api_call.mdc | API call patterns and conventions |
+
+## Development Workflow
+
+| Rule File | Description |
+|:----------|:------------|
+| @development-setup.mdc | Environment setup and development workflow |
+
+## Technology Stack
+
+The project uses the following primary technologies:
+
+- **Frontend**: Vue 3 with Composition API, Nuxt 3, TypeScript
+- **UI**: Tailwind CSS with shadcn-vue components
+- **State Management**: Vue Query (TanStack)
+- **Backend**: Nuxt API routes, Prisma ORM
+- **Database**: SQL (via Prisma)
+- **API Client Generation**: Orval with OpenAPI
+- **Authentication**: Custom auth system
+- **Internationalization**: i18n with English and Russian support
+
+## Recommended Rules for Common Tasks
+- For understanding project structure: Start with @project-structure.mdc
+- For component development: Review @frontend/component-patterns.mdc
+- For backend work: Check @data-models.mdc
+- For authentication features: Refer to @auth-system.mdc
+- For making API calls: See @frontend/api_call.mdc

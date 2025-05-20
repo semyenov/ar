@@ -1,0 +1,94 @@
+---
+description: Describes the project structure and organization for easier AI navigation
+globs: ["**/*.ts", "**/*.vue", "**/*.js", "**/*.json", "prisma/schema.prisma"]
+alwaysApply: false
+---
+# Project Structure
+
+This rule outlines the structure of the Alt Regioni project to help AI tools navigate and understand the codebase organization.
+
+## Directory Structure Overview
+
+- `/src`: Main source code directory
+  - `/client`: Frontend Nuxt.js application
+  - `/server`: Backend API endpoints and services
+  - `/content`: Content files (markdown, etc.)
+  - `/image`: Image processing functionality
+  - `/lib`: Shared libraries and utilities
+  - `/languages`: Internationalization files
+  - `/public`: Static public assets
+
+## Client Structure
+
+The client-side application uses Nuxt.js with Vue 3 and TypeScript:
+
+- `/src/client/app`: Main application component
+- `/src/client/assets`: Static assets (CSS, images)
+- `/src/client/components`: Vue components
+  - `/ui`: Shadcn UI components
+  - `/organizations`: Organization-related components
+  - `/users`: User-related components
+  - `/forms`: Form-related components
+  - `/DataTable`: Data table components
+- `/src/client/layouts`: Layout components (admin, default)
+- `/src/client/pages`: Page components
+  - `/auth`: Authentication pages
+  - `/organizations`: Organization pages
+  - `/users`: User pages
+- `/src/client/plugins`: Nuxt plugins
+- `/src/client/lib`: Client-side utilities
+- `/src/client/api`: API client code
+  - `/better`: Improved API client modules
+  - `/generated`: Auto-generated API clients
+  - `/mutator`: API mutation utilities
+
+## Server Structure
+
+The server-side code follows a REST API structure:
+
+- `/src/server/api`: API endpoint handlers
+  - `/auth`: Authentication endpoints
+  - `/comments`: Comment management endpoints
+  - `/files`: File management endpoints
+  - `/folders`: Folder management endpoints
+  - `/forms`: Form management endpoints
+  - `/form-templates`: Form template endpoints
+  - `/form-fields`: Form field endpoints
+  - `/review-flows`: Review flow endpoints
+  - `/file-shares`: File sharing endpoints
+- `/src/server/errors`: Centralized error handling
+
+## Shared Libraries
+
+- `/src/lib`: Shared utilities used by both client and server
+  - `/auth.ts`: Authentication utilities server client Prisma
+  - `/auth-client.ts`: Client-side authentication utilities
+  - `/permissions.ts`: Permission management system
+  - `/prisma.ts`: Prisma ORM client setup
+  - `/utils.ts`: General utility functions
+
+## Database
+
+- `/prisma`: Prisma ORM configuration
+  - `/schema.prisma`: Database schema definition
+  - `/migrations`: Database migrations
+
+## Configuration Files
+
+- `nuxt.config.ts`: Nuxt.js configuration
+- `tailwind.config.js`: Tailwind CSS configuration
+- `tsconfig.json`: TypeScript configuration
+- `i18n.config.ts`: Internationalization configuration
+- `eslint.config.mjs`: ESLint configuration
+- `components.json`: Component configuration (shadcn)
+- `orval.config.ts`: Orval API client generation configuration
+- `openapi.yaml`: OpenAPI specification
+
+## Development Practices
+
+1. The project uses Vue 3 Composition API with `<script setup lang="ts">` syntax
+2. Component files use PascalCase (.vue files)
+3. Utility files use kebab-case
+4. The project follows shadcn-vue component patterns
+5. Typescript strict mode is enabled
+6. Error handling is centralized in server/errors

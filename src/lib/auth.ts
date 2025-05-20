@@ -29,11 +29,11 @@ export const auth = betterAuth({
     pluginAdmin(),
     organization({
       ac,
-      allowUserToCreateOrganization(user) {
+      allowUserToCreateOrganization(_user) {
         return true
       },
       canInviteUser: async (params: UserParams) => {
-        // Only owners and admins can invite users
+        // Только владельцы и админы могут приглашать пользователей
         const member = await prisma.member.findFirst({
           where: {
             organizationId: params.organizationId,
@@ -44,7 +44,7 @@ export const auth = betterAuth({
         return member?.role === MemberRole.owner || member?.role === MemberRole.admin
       },
       canRemoveMember: async (params: RemoveMemberParams) => {
-        // Owners can remove anyone, admins can remove non-owners/admins
+        // Получаем данные пользователя, который хочет удалить члена
         const member = await prisma.member.findFirst({
           where: {
             organizationId: params.organizationId,
@@ -69,7 +69,7 @@ export const auth = betterAuth({
 
         return false
       },
-      onUserJoinOrganization: async (params: UserParams) => {
+      onUserJoinOrganization: async (_userparams: UserParams) => {
         // Store the appropriate role in the database
         // Default to 'member' role
         return { role: 'member' }
@@ -85,6 +85,15 @@ export const auth = betterAuth({
       //   enabled: true,
       //   maximumTeams: 1, // Optional: limit teams per organization
       // },
+    }),
+    pluginAdmin({
+      ac,
+      roles: {
+        admin,
+        executor,
+        member,
+        owner,
+      },
     }),
     openAPI(),
   ],

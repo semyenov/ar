@@ -1,0 +1,112 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Cursor Rules Guide
+
+## Introduction
+
+Cursor Rules are a powerful feature that help the AI better understand your codebase structure, conventions, and best practices. They allow you to provide documentation that the AI can reference when assisting you with coding tasks, making its responses more accurate and aligned with your project's specific requirements.
+
+## Creating Cursor Rules
+
+### File Location and Format
+
+1. All Cursor Rules should be stored in the `.cursor/rules` directory.
+2. Rule files must have a `.mdc` extension (e.g., `api-conventions.mdc`).
+3. Rules use Markdown format with special Cursor-specific extensions.
+
+### Rule Structure
+
+A typical Cursor Rule file includes:
+
+1. **Title**: Clear, descriptive heading that indicates the rule's purpose.
+2. **Description**: Brief explanation of what the rule covers.
+3. **Content**: Detailed information, guidelines, or conventions.
+
+### Referencing Files
+
+To reference specific files in your codebase:
+
+```
+@filename.ext
+```
+
+Where the path is relative to the workspace root.
+
+### Examples
+
+```markdown
+# API Conventions
+
+This rule describes how APIs should be structured in our application.
+
+The main API entrypoint is @api/index.ts, which exports all API functions.
+
+## Guidelines
+
+1. All API functions should be async
+2. Error handling should use try/catch with custom error classes
+3. API responses should follow the standard response format
+```
+
+## Using Cursor Rules
+
+### Naming Conventions
+
+- Use descriptive filenames that indicate the rule's purpose.
+- For general categories, prefix with @ (e.g., `@api-standards.mdc`).
+- For specific components or features, use the component/feature name.
+
+### Cross-Referencing
+
+You can reference other rules within a rule:
+
+```
+See also: @Component Standards
+```
+
+### Rule Categories
+
+Organize rules into categories for better organization:
+
+1. **Architecture Rules**: Overall application structure
+2. **Coding Standards**: Style guides and conventions
+3. **Component Guidelines**: UI component creation rules
+4. **API Standards**: Backend and API guidelines
+5. **Testing Requirements**: Testing practices
+
+## Best Practices
+
+1. **Keep Rules Concise**: Focus on specific aspects rather than creating overly broad rules.
+2. **Update Regularly**: Maintain rules as your codebase evolves.
+3. **Be Specific**: Include concrete examples and clear guidelines.
+4. **Use Code Snippets**: Show examples of both correct and incorrect implementations.
+5. **Reference Actual Files**: Link to real files in your codebase as examples.
+6. **Include Rationale**: Explain why certain conventions exist.
+
+## Rule Maintenance
+
+When editing existing rules:
+1. Only edit the actual content after any metadata.
+2. Never modify the metadata section.
+3. Keep formatting consistent with existing rules.
+
+## Advanced Features
+
+### Glob Patterns
+
+You can specify which files a rule applies to using glob patterns in the rule's metadata.
+
+### Rule Priorities
+
+When multiple rules might apply, you can set priorities to indicate which rules take precedence.
+
+## Troubleshooting
+
+If the AI isn't correctly following your rules:
+1. Check rule naming and file location
+2. Ensure proper Markdown formatting
+3. Be explicit about conventions
+4. Reference actual code examples

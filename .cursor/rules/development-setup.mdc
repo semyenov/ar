@@ -1,0 +1,158 @@
+---
+description: Environment setup and development workflow for Alt Regioni
+globs: ["package.json", "nuxt.config.ts", "*.config.*"]
+alwaysApply: false
+---
+# Development Setup
+
+This rule outlines the environment setup and development workflow for the Alt Regioni project.
+
+## Environment Setup
+
+### Prerequisites
+
+- Node.js (v18+)
+- Yarn package manager
+- Git
+
+### Initial Setup
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+yarn install
+```
+
+3. Set up environment variables:
+
+```bash
+cp .env.example .env
+```
+
+4. Initialize the database:
+
+```bash
+yarn prisma migrate dev
+```
+
+## Development Commands
+
+The following commands are available for development:
+
+```bash
+# Start development server
+yarn dev
+
+# Build for production
+yarn build
+
+# Run ESLint with auto-fix
+yarn lint
+
+# Run Vue TypeScript checking
+yarn typecheck
+
+# Run tests
+yarn test
+
+# Run specific test
+yarn test path/to/test
+
+# Generate Prisma client
+yarn prisma generate
+
+# Run database migrations
+yarn prisma migrate dev
+```
+
+## Architecture Overview
+
+1. **Frontend**: Vue 3 with Nuxt 3
+2. **API**: Nuxt API routes
+3. **Database**: SQL via Prisma ORM
+4. **Authentication**: Custom auth system
+
+## Project Structure
+
+See @project-structure.mdc for detailed project structure information.
+
+## Development Workflow
+
+### Feature Development Process
+
+1. Create a new branch from `dev`
+2. Implement the feature
+3. Run tests and linting
+4. Create a PR to `dev`
+5. After review, merge to `dev`
+6. Periodically, `dev` is merged to `master` for releases
+
+### API Development
+
+1. Update OpenAPI schema in `openapi.yaml`
+2. Run orval generation to update API clients
+3. Implement API endpoints in `src/server/api`
+4. Use the generated client in the frontend
+
+### Component Development
+
+1. Follow shadcn-vue patterns for UI components
+2. Use the Composition API with `<script setup>`
+3. Maintain proper TypeScript types for all props and events
+
+## Configuration Files
+
+- `nuxt.config.ts`: Nuxt.js configuration
+- `tailwind.config.js`: Tailwind CSS configuration
+- `eslint.config.mjs`: ESLint configuration
+- `tsconfig.json`: TypeScript configuration
+- `prisma/schema.prisma`: Database schema
+- `orval.config.ts`: API client generation configuration
+
+## ESLint Configuration
+
+The project uses ESLint with the @viapip/eslint-config preset. This enforces:
+
+- TypeScript standards
+- Vue 3 best practices
+- Import sorting
+- Code style consistency
+
+## Database Workflow
+
+1. Modify the Prisma schema in `prisma/schema.prisma`
+2. Generate a migration:
+
+```bash
+yarn prisma migrate dev --name describe_your_changes
+```
+
+3. Apply the migration to your local database:
+
+```bash
+yarn prisma migrate dev
+```
+
+4. Generate Prisma client:
+
+```bash
+yarn prisma generate
+```
+
+## Deployment
+
+Deployment is handled via CI/CD pipeline:
+
+1. Merge to `master` triggers a build
+2. Tests and linting are run
+3. If successful, the application is deployed
+4. Database migrations are run automatically
+
+## Best Practices
+
+1. **Testing**: Write tests for all new features
+2. **Type Safety**: Maintain TypeScript types for all code
+3. **Performance**: Optimize components and queries for performance
+4. **Security**: Follow security best practices for authentication and data access
+5. **Accessibility**: Ensure components are accessible

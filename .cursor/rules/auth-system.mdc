@@ -1,0 +1,234 @@
+---
+description: Authentication and authorization system in the Alt Regioni project
+globs: ["src/lib/auth.ts", "src/lib/auth-client.ts", "src/lib/permissions.ts", "src/lib/mandate.ts", "src/lib/mandate-middleware.ts", "src/server/api/auth/**/*.ts", "src/client/pages/auth/**/*.vue"]
+alwaysApply: false
+---
+# Authentication and Authorization System
+
+This rule describes the authentication and authorization system used in the Alt Regioni project.
+
+## Authentication Architecture
+
+The project uses "better-auth" library with Prisma adapter for authentication. The main auth configuration is in `src/lib/auth.ts`:
+
+```typescript
+// src/lib/auth.ts
+import { Mandate, MemberRole, PrismaClient } from '@prisma/client'
+import { betterAuth } from 'better-auth'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { openAPI, organization, admin } from 'better-auth/plugins'
+import { ac, owner, admin as adminRole, reviewer, executor, member } from './permissions'
+import { getDefaultMandateForRole } from './permissions'
+import { hasMandate } from './mandate'
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: 'sqlite',
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
+  plugins: [
+    organization({
+      // Organization plugin configuration with mandate support
+    }),
+    admin({
+      ac,
+      roles: {
+        owner,
+        admin: adminRole,
+        reviewer,
+        executor,
+        member
+      }
+    }),
+    openAPI(),
+  ]
+})
+```
+
+## Mandate-Based Authorization System
+
+The project implements a mandate-based access control system that extends traditional role-based access control:
+
+1. **Mandate Hierarchy**: Nine levels of mandate from `FIRST_MANDATE` to `NINTH_MANDATE`
+2. **Role-Mandate Mapping**: Each role has a default mandate level
+   - Owner: `NINTH_MANDATE`
+   - Admin: `SIXTH_MANDATE`
+   - Reviewer: `FOURTH_MANDATE`
+   - Executor: `THIRD_MANDATE`
+   - Member: `SECOND_MANDATE`
+
+3. **Mandate Validation Functions**:
+   - `hasMandate`: Checks if user's mandate is sufficient for a resource
+   - `canModifyWithMandate`: Verifies modification permissions
+   - `canChangeMandate`: Controls mandate upgrade/downgrade permissions
+   - `filterByMandate`: Filters collections based on mandate levels
+   - `buildMandateQuery`: Creates database queries with mandate restrictions
+
+## Database Schema for Authentication
+
+The authentication system relies on these primary models:
+
+1. **User** - Core user identity
+2. **Account** - Authentication methods (credentials, OAuth providers)
+3. **Session** - Active user sessions
+4. **Member** - User's membership, role and mandate in an organization
+5. **Invitation** - Invitations to join organizations
+
+## Authentication Flows
+
+### Registration
+
+```
+1. User submits registration form with email and password
+2. Server validates the data
+3. If email doesn't exist, creates new User and Account records
+4. Returns a session token
+```
+
+### Login
+
+```
+1. User submits login form with email and password
+2. Server validates credentials against Account record
+3. If valid, creates a new Session record
+4. Returns a session token for subsequent requests
+```
+
+## Client-Side Authentication
+
+The client uses "better-auth/vue" for authentication, configured in `src/lib/auth-client.ts`:
+
+```typescript
+// src/lib/auth-client.ts
+import { organizationClient } from 'better-auth/client/plugins'
+import { createAuthClient } from 'better-auth/vue'
+
+export const authClient = createAuthClient({
+  plugins: [organizationClient()]
+})
+```
+
+## User Roles and Permissions
+
+The system defines roles in the `MemberRole` enum:
+
+```typescript
+enum MemberRole {
+  owner     // Full access to organization
+  admin     // Administrative access
+  reviewer  // Can review forms
+  executor  // Can execute form tasks
+  member    // Basic member access
+}
+```
+
+Permissions are managed through the access control system in `src/lib/permissions.ts`:
+
+```typescript
+// src/lib/permissions.ts
+import { createAccessControl } from "better-auth/plugins/access";
+
+export const ac = createAccessControl(statement);
+
+// Define each role with specific permissions
+export const member = ac.newRole({
+  project: ["create"],
+  form: ["create"],
+  file: ["create", "download", "share"],
+  file_folder: ["create"],
+  mandate: ["view"], // Can only view mandates
+});
+
+// Additional roles with escalating permissions...
+```
+
+## Mandate Middleware
+
+The project implements middleware functions to enforce mandate rules:
+
+1. **getUserMandate**: Retrieves user's mandate from session
+2. **mandateCheck**: Validates minimum required mandate level
+3. **resourceMandateCheck**: Checks access to resources with specific mandates
+4. **mandateChangeCheck**: Validates mandate change permissions
+5. **addMandateToContext**: Adds mandate information to request context
+
+```typescript
+// Example middleware usage
+export function mandateCheck(requiredMandate: Mandate): EventHandler {
+  return defineEventHandler(async (event) => {
+    const userMandate = await getUserMandate(event);
+    
+    if (!userMandate) {
+      return createError({
+        statusCode: 401,
+        message: 'Unauthorized: User mandate not found',
+      });
+    }
+    
+    if (!hasMandate(userMandate, requiredMandate)) {
+      return createError({
+        statusCode: 403,
+        message: 'Forbidden: Insufficient mandate level',
+      });
+    }
+  });
+}
+```
+
+## Organization Access Control
+
+The organization plugin adds organization-based access control with mandate support:
+
+1. **Membership Management**:
+   - Users are assigned roles and mandates in organizations
+   - Invitation system for adding users to organizations
+
+2. **Mandate-Based Rules**:
+   - Rules for who can invite users based on mandate level
+   - Rules for who can remove members based on mandate comparison
+   - Rules for who can create/edit/delete organization resources
+
+Example mandate check:
+
+```typescript
+// Checks if a user can remove a member based on mandates
+if (member?.mandate && targetMember?.mandate) {
+  return hasMandate(member.mandate, targetMember.mandate);
+}
+```
+
+## Resource Mandate Filtering
+
+Resources like forms, files, and comments can be filtered by mandate:
+
+```typescript
+// Filter resources by user's mandate level
+export function filterByMandate<T extends { mandate: Mandate }>(
+  items: T[], 
+  userMandate: Mandate
+): T[] {
+  return items.filter(item => hasMandate(userMandate, item.mandate));
+}
+```
+
+## API Integration
+
+The authentication system integrates with API requests:
+
+1. **Request Authentication**:
+   - Session tokens are sent with API requests
+   - Auth client handles token refresh
+
+2. **Mandate Checks**:
+   - API endpoints use mandate middleware
+   - Resources are filtered by user's mandate level
+
+## Best Practices
+
+1. **Always check mandates** before performing sensitive operations
+2. **Scope queries by mandate and organization** to ensure data isolation
+3. **Use the authClient** for all auth-related operations
+4. **Check user mandates** for UI rendering and permission-based features
+5. **Keep sensitive operations server-side** with proper validation

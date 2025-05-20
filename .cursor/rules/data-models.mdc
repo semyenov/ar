@@ -1,0 +1,286 @@
+---
+description: Database schema and data relationships in Alt Regioni
+globs: ["prisma/schema.prisma", "src/server/api/**/*.ts"]
+alwaysApply: false
+---
+# Data Models
+
+This rule describes the database schema and data relationships in the Alt Regioni project. The project uses Prisma ORM with a SQL database.
+
+## Core Models
+
+### User
+
+Users of the application.
+
+```prisma
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  members       Member[]
+  invitations   Invitation[]
+}
+```
+
+### Organization
+
+Organizations that users can be part of.
+
+```prisma
+model Organization {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  logo        String?
+  metadata    Json?
+  members     Member[]
+  invitations Invitation[]
+  forms       Form[]
+  files       File[]
+  folders     FileFolder[]
+  reviewFlows ReviewFlow[]
+}
+```
+
+### Member
+
+Represents a user's membership in an organization with a specific role.
+
+```prisma
+model Member {
+  id             String     @id @default(cuid())
+  organizationId String
+  userId         String
+  role           MemberRole @default(member)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdForms   Form[]     @relation("FormCreator")
+  assignedForms  Form[]     @relation("FormExecutor")
+  comments       Comment[]
+  formHistory    FormHistory[]
+  uploadedFiles  File[]
+  sharedFiles    FileShare[]
+  createdFolders FileFolder[]
+}
+
+enum MemberRole {
+  owner
+  admin
+  reviewer
+  executor
+  member
+}
+```
+
+### Form
+
+Forms that can be created, filled, and reviewed.
+
+```prisma
+model Form {
+  id               String     @id @default(cuid())
+  organizationId   String
+  creatorMemberId  String
+  executorMemberId String?
+  templateId       String?
+  reviewFlowId     String?
+  title            String
+  description      String?
+  status           FormStatus @default(DRAFT)
+  version          Int        @default(1)
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator          Member     @relation("FormCreator", fields: [creatorMemberId], references: [id], onDelete: Cascade)
+  executor         Member?    @relation("FormExecutor", fields: [executorMemberId], references: [id])
+  template         FormTemplate? @relation(fields: [templateId], references: [id])
+  reviewFlow       ReviewFlow? @relation(fields: [reviewFlowId], references: [id])
+  fields           FormField[]
+  history          FormHistory[]
+}
+
+enum FormStatus {
+  DRAFT
+  UNDER_REVIEW
+  NEEDS_CHANGES
+  APPROVED
+  REJECTED
+}
+```
+
+### File
+
+Files uploaded to the system.
+
+```prisma
+model File {
+  id             String     @id @default(cuid())
+  organizationId String
+  uploaderId     String
+  folderId       String?
+  filename       String
+  originalName   String
+  path           String
+  mimeType       String
+  size           Int
+  accessLevel    FileAccess @default(ORGANIZATION)
+  version        Int        @default(1)
+  lastModifiedAt DateTime   @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploader       Member     @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+  folder         FileFolder? @relation(fields: [folderId], references: [id])
+  formFields     FormFieldFile[]
+  sharedWith     FileShare[]
+}
+
+enum FileAccess {
+  PRIVATE
+  ORGANIZATION
+  PUBLIC
+}
+```
+
+## Supporting Models
+
+### FormField
+
+Fields within a form.
+
+```prisma
+model FormField {
+  id           String    @id @default(cuid())
+  formId       String
+  templateFieldId String?
+  label        String
+  type         FieldType
+  required     Boolean   @default(false)
+  order        Int
+  options      Json?
+  value        String?
+  form         Form      @relation(fields: [formId], references: [id], onDelete: Cascade)
+  templateField FormTemplateField? @relation(fields: [templateFieldId], references: [id])
+  files        FormFieldFile[]
+}
+
+enum FieldType {
+  TEXT
+  TEXTAREA
+  NUMBER
+  DATE
+  SELECT
+  CHECKBOX
+  RADIO
+  FILE
+}
+```
+
+### FormTemplate
+
+Templates for creating standardized forms.
+
+```prisma
+model FormTemplate {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  fields       FormTemplateField[]
+  forms        Form[]
+}
+```
+
+### FileFolder
+
+Hierarchical folder structure for files.
+
+```prisma
+model FileFolder {
+  id             String     @id @default(cuid())
+  organizationId String
+  creatorId      String
+  parentId       String?
+  name           String
+  path           String
+  version        Int        @default(1)
+  lastModifiedAt DateTime   @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator        Member     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  parent         FileFolder? @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children       FileFolder[] @relation("FolderHierarchy")
+  files          File[]
+}
+```
+
+### ReviewFlow
+
+Represents a review process for forms.
+
+```prisma
+model ReviewFlow {
+  id             String           @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  status         ReviewFlowStatus @default(OPEN)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  forms          Form[]
+  comments       Comment[]
+}
+
+enum ReviewFlowStatus {
+  OPEN
+  CLOSED
+}
+```
+
+## Relationships Overview
+
+1. **User to Organization** (Many-to-Many)
+   - A user can be a member of multiple organizations
+   - An organization can have multiple users as members
+   - The Member model serves as the join table with additional role information
+
+2. **Organization to Form** (One-to-Many)
+   - An organization can have multiple forms
+   - Each form belongs to a single organization
+
+3. **Form to FormField** (One-to-Many)
+   - A form can have multiple fields
+   - Each field belongs to a single form
+
+4. **Organization to File** (One-to-Many)
+   - An organization can have multiple files
+   - Each file belongs to a single organization
+
+5. **FileFolder Hierarchy** (Self-Relation)
+   - A folder can have a parent folder
+   - A folder can have multiple child folders
+
+6. **Form to ReviewFlow** (Many-to-One)
+   - Multiple forms can be part of a single review flow
+   - Each form can have at most one review flow
+
+## Permission System
+
+The permission system is built around the Member model's role field:
+
+- **owner**: Full access to the organization
+- **admin**: Administrative access to manage the organization
+- **reviewer**: Can review forms and provide feedback
+- **executor**: Can fill out assigned forms
+- **member**: Basic access to organization resources
+
+File permissions are controlled through the accessLevel field:
+
+- **PRIVATE**: Only accessible to the uploader
+- **ORGANIZATION**: Accessible to all members of the organization
+- **PUBLIC**: Accessible to anyone with the link
+
+## Data Access Patterns
+
+1. **Organization-Scoped Data**: Most queries filter by organizationId
+2. **Role-Based Access**: Permissions are checked based on the user's role in the organization
+3. **Version Control**: Forms, folders, and files track version numbers
+4. **Hierarchical Data**: Folders support parent-child relationships

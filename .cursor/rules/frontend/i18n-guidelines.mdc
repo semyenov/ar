@@ -1,0 +1,209 @@
+---
+description: Internationalization implementation details and guidelines
+globs: ["src/languages/*.yml", "i18n.config.ts", "src/client/**/*.vue"]
+alwaysApply: false
+---
+# Internationalization Guidelines
+
+This rule describes the internationalization (i18n) system implementation in the Alt Regioni project.
+
+## Setup and Configuration
+
+The project uses `@nuxtjs/i18n` module with the following configuration in `i18n.config.ts`:
+
+```typescript
+// i18n.config.ts
+export default defineI18nConfig(() => ({
+  legacy: false,
+  locale: 'ru',
+  fallbackLocale: 'en',
+  availableLocales: ['ru', 'en'],
+  pluralRules: {
+    ru: (choice, choicesLength) => {
+      // Russian pluralization rules
+      if (choice === 0) {
+        return 0;
+      }
+
+      const teen = choice > 10 && choice < 20;
+      const endsWithOne = choice % 10 === 1;
+
+      if (!teen && endsWithOne) {
+        return 1;
+      }
+      if (!teen && choice % 10 >= 2 && choice % 10 <= 4) {
+        return 2;
+      }
+      return 3;
+    }
+  }
+}))
+```
+
+## Translation Files
+
+Translation files are stored in YAML format in the `src/languages/` directory:
+
+- `en.yml`: English translations
+- `ru.yml`: Russian translations (default)
+
+### Structure Example
+
+```yaml
+# src/languages/en.yml
+common:
+  buttons:
+    save: Save
+    cancel: Cancel
+    delete: Delete
+
+pages:
+  dashboard:
+    title: Dashboard
+    welcome: Welcome, {name}!
+
+forms:
+  validation:
+    required: This field is required
+    email: Please enter a valid email address
+```
+
+## Using Translations
+
+### In Vue Components
+
+The `useI18n()` composable provides access to translation functions:
+
+```vue
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+// Access i18n functions
+const { t, locale, availableLocales } = useI18n()
+
+// Use in methods
+function showGreeting(name: string) {
+  return t('pages.dashboard.welcome', { name })
+}
+</script>
+
+<template>
+  <div>
+    <!-- Basic translation -->
+    <h1>{{ t('pages.dashboard.title') }}</h1>
+
+    <!-- With parameters -->
+    <p>{{ t('pages.dashboard.welcome', { name: user.name }) }}</p>
+
+    <!-- In attributes -->
+    <input :placeholder="t('forms.search')" />
+
+    <!-- Component props -->
+    <Button :label="t('common.buttons.save')" />
+  </div>
+</template>
+```
+
+### Pluralization
+
+For pluralized content, use the plural syntax:
+
+```vue
+<template>
+  <p>{{ t('items.count', count) }}</p>
+</template>
+```
+
+Translation file:
+
+```yaml
+# ru.yml
+items:
+  # Russian requires multiple plural forms
+  count: '{count} элемент | {count} элемента | {count} элементов'
+
+# en.yml
+items:
+  count: '{count} item | {count} items'
+```
+
+## Date and Number Formatting
+
+### Date Formatting
+
+Use the browser's built-in `Intl.DateTimeFormat` with the current locale:
+
+```typescript
+function formatDate(date: Date | string): string {
+  const d = date instanceof Date ? date : new Date(date)
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(d)
+}
+```
+
+### Number Formatting
+
+Use `Intl.NumberFormat` for formatting numbers:
+
+```typescript
+function formatNumber(num: number): string {
+  return new Intl.NumberFormat(locale.value).format(num)
+}
+```
+
+## Translation Guidelines
+
+1. **Key Structure**:
+   - Use hierarchical keys with dot notation
+   - Group by feature area (e.g., `forms.`, `navigation.`)
+   - Use lowercase and camelCase for multi-word keys
+
+2. **Naming Conventions**:
+   - Be descriptive but concise
+   - Include context in key names when necessary
+   - Use common prefixes for similar items
+
+3. **Variables**:
+   - Use curly braces for variables: `{variableName}`
+   - Keep variable names consistent across translations
+
+4. **Maintaining Translations**:
+   - Add new translations to all language files
+   - Keep key structure identical across language files
+   - Document context for ambiguous phrases
+
+## UI Considerations
+
+1. **Text Expansion**:
+   - Russian text is often ~30% longer than English
+   - Design UI to accommodate text expansion
+   - Use flexible layouts that adapt to text length
+
+2. **RTL Support**:
+   - While not currently needed, maintain CSS that can support RTL languages
+   - Use logical properties (start/end) instead of directional (left/right)
+
+3. **Font Support**:
+   - Ensure fonts support all required characters (Cyrillic for Russian)
+
+## Best Practices
+
+1. **Never Hardcode Strings**:
+   - Always use the `t()` function for user-visible text
+   - Include comments for translators when context is not obvious
+
+2. **Test All Languages**:
+   - Review UI in all supported languages
+   - Check for layout issues caused by text expansion
+   - Verify pluralization rules work correctly
+
+3. **Consistent Usage**:
+   - Use the same key for the same concept across the application
+   - Reuse common strings like button labels and validation messages
+
+4. **Organize by Domain**:
+   - Group related translations logically
+   - Separate frontend-specific from backend-specific translations

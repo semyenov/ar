@@ -4,7 +4,7 @@ import type {
 } from '@/client/components/ui/sidebar'
 
 const props = defineProps<SidebarProps>()
-
+const router = useRouter()
 const { t } = useI18n()
 
 const data = {
@@ -52,7 +52,6 @@ const data = {
       url: '#',
     },
   ],
-
   user: {
     avatar: '/avatars/shadcn.jpg',
     email: 'root@root.ru',

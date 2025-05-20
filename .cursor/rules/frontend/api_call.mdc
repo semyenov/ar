@@ -1,6 +1,6 @@
 ---
 description: API, import functions and types from path '@/client/api'
-globs:
+globs: ["src/client/**/*.ts", "src/client/**/*.vue"]
 alwaysApply: false
 ---
 Parsed Endpoints:

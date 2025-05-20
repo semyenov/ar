@@ -34,4 +34,4 @@ queries/*.query.ts
 # Orval
 src/client/api/generated/*
 
-**/.claude/settings.local.json
+**/.claude/*
