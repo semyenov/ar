@@ -1,8 +1,9 @@
+import type { FieldType } from '@prisma/client'
+
 import { auth } from '~/lib/auth'
-import { generateId } from '~/lib/utils'
 import prisma from '~/lib/prisma'
+import { generateId } from '~/lib/utils'
 import { z } from 'zod'
-import { FieldType } from '@prisma/client'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -27,8 +28,6 @@ export default defineEventHandler(async (event) => {
       .optional(),
   })
 
-
-
   const validationResult = schema.safeParse(body)
   if (!validationResult.success) {
     throw createError({
@@ -40,11 +39,10 @@ export default defineEventHandler(async (event) => {
 
   const { data } = validationResult
 
-
   const formTemplateField = await prisma.formTemplateField.findUnique({
     where: {
-      id: data.formTemplateFieldId
-    }
+      id: data.formTemplateFieldId,
+    },
   })
 
   if (!formTemplateField) {
@@ -54,24 +52,23 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-
   try {
     // Проверка существования формы
     const form = await prisma.form.findUnique({
-      where: {
-        id: data.formId
-      },
       include: {
         organization: {
           include: {
             members: {
               where: {
-                userId: session.user.id
-              }
-            }
-          }
-        }
-      }
+                userId: session.user.id,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        id: data.formId,
+      },
     })
 
     if (!form) {
@@ -82,10 +79,11 @@ export default defineEventHandler(async (event) => {
     }
 
     // Проверка доступа пользователя
-    const userMember = form.organization.members.find(member =>
-      member.role === 'admin' || member.role === 'owner' ||
-      (member.role === 'executor' && form.executorMemberId === member.id) ||
-      form.creatorMemberId === member.id
+    const userMember = form.organization.members.find((member) => {
+      return member.role === 'admin' || member.role === 'owner'
+        || (member.role === 'executor' && form.executorMemberId === member.id)
+        || form.creatorMemberId === member.id
+    },
     )
 
     if (!userMember) {
@@ -103,19 +101,17 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-
-
     // Создание поля формы
     const formField = await prisma.formField.create({
       data: {
         formId: data.formId,
         id: generateId(),
         name: formTemplateField.name,
-        type: formTemplateField.type,
+        options: formTemplateField.options,
         order: formTemplateField.order,
         required: formTemplateField.required,
+        type: formTemplateField.type,
         validationRules: formTemplateField.validationRules,
-        options: formTemplateField.options,
         value: convertValueForType(formTemplateField.type, data.value),
       },
     })
@@ -157,9 +153,7 @@ export default defineEventHandler(async (event) => {
   }
 })
 
-
 function convertValueForType(type: FieldType, value?: string) {
-
   return JSON.stringify(value)
   // switch (type) {
   //   case 'NUMBER':

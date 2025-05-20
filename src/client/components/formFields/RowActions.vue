@@ -1,51 +1,105 @@
 <script setup lang="ts">
-import type { Row } from '@tanstack/vue-table'
-import type { Task } from '@/client/data/schema'
-import { computed } from 'vue'
 // import DotsHorizontalIcon from '~icons/radix-icons/dots-horizontal'
+import { useQueryClient } from '@tanstack/vue-query'
+import { createComment, type FormField, FormFieldStatus, getFormField, updateFormField, useCreateComment, useListFormFields, useUpdateFormField } from '~/client/api'
 
-import { labels } from '@/client/data/data'
-import { taskSchema } from '@/client/data/schema'
+const props = defineProps({
 
-interface DataTableRowActionsProps {
-  row: Row<Task>
+  reviewFlowId: {
+    required: true,
+    type: String,
+  },
+  row: {
+    required: true,
+    type: Object as PropType<FormField>,
+  },
+})
+
+const queryClient = useQueryClient()
+const { mutateAsync } = useUpdateFormField({
+  mutation: {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['form-fields', { formId: props.row.formId }],
+      })
+    },
+  },
+}, queryClient)
+
+async function handleApply() {
+  await mutateAsync({
+    data: { status: FormFieldStatus.APPROVED },
+    id: props.row.id,
+  })
+  // emits('apply', props.row.id)
 }
-const props = defineProps<DataTableRowActionsProps>()
+async function onSubmit(values: any) {
+  console.log(values)
+  await createComment({
+    content: values.comment,
+    formFieldId: props.row.id,
+    reviewFlowId: props.reviewFlowId,
+  })
+    .then((res) => {
+      if (res) {
+        mutateAsync({
+          data: { status: FormFieldStatus.REJECTED },
+          id: props.row.id,
+        })
+      }
+    })
 
-const task = computed(() => taskSchema.parse(props.row.original))
+  // await mutateAsync({
+  //   data: { status: FormFieldStatus.REJECTED },
+  //   id: props.row.original.id,
+  // })
+  // emits('reject', values)
+}
 </script>
 
 <template>
-  <DropdownMenu>
-    <DropdownMenuTrigger as-child>
-      <Button
-        variant="ghost"
-        class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-      >
-        <Icon name="tabler:dots" class="w-4 h-4" />
-        <span class="sr-only">Open menu</span>
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="w-[160px]">
-      <DropdownMenuItem>Edit</DropdownMenuItem>
-      <DropdownMenuItem>Make a copy</DropdownMenuItem>
-      <DropdownMenuItem>Favorite</DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuSub>
-        <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-        <DropdownMenuSubContent>
-          <DropdownMenuRadioGroup :value="task.label">
-            <DropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
-              {{ label.label }}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuSubContent>
-      </DropdownMenuSub>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        Delete
-        <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
+  <div class="flex items-center justify-end gap-2">
+    <Button
+      v-if="row.status !== FormFieldStatus.APPROVED" variant="default" class="bg-emerald-700 hover:bg-emerald-500"
+      @click="handleApply"
+    >
+      <Icon name="tabler:check" class="size-4" />
+      <span>Принять</span>
+    </Button>
+    <Form v-slot="{ handleSubmit }" as="" keep-values>
+      <Dialog>
+        <DialogTrigger as-child>
+          <Button variant="default" class="bg-muted text-foreground hover:bg-secondary">
+            <Icon name="tabler:bubble-text" class="size-4" />
+            <span>Отклонить</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent class="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Отклонить и оставить комментарий</DialogTitle>
+            <DialogDescription>
+              Комментарий будет доступен пользователю при заполнении заявки
+            </DialogDescription>
+          </DialogHeader>
+          <form id="dialogForm" @submit="handleSubmit($event, onSubmit)">
+            <FormField v-slot="{ componentField }" name="comment">
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Введите текст комментария" v-bind="componentField" />
+                </FormControl>
+              </FormItem>
+            </FormField>
+          </form>
+          <DialogFooter>
+            <DialogClose as-child>
+              <Button type="submit" form="dialogForm">
+                Применить
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </Form>
+  </div>
 </template>

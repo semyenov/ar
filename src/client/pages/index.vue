@@ -7,7 +7,7 @@ definePageMeta({
     redirectGuestTo: '/auth/sign-in',
     redirectUserTo: '/dashboard',
   },
-  layout: 'default',
+  layout: 'user',
 
 })
 </script>

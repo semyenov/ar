@@ -3,6 +3,7 @@ import type {
   InferSessionFromClient,
   InferUserFromClient,
 } from 'better-auth/client'
+import type { Organization } from 'better-auth/plugins'
 import type { RouteLocationRaw } from 'vue-router'
 
 import { useAuthClient } from '~/lib/auth-client'
@@ -23,11 +24,17 @@ export function useAuth() {
     headers,
   )
 
+  type FullOrganization = ReturnType<typeof client.organization.setActive>
+
   const options = defu(useRuntimeConfig().public.auth as Partial<RuntimeAuthConfig>, {
     redirectAdminTo: '/',
     redirectGuestTo: '/',
     redirectUserTo: '/',
   })
+  const activeOrganization = useState<null | Organization>('auth:activeOrganization', () => {
+    return null
+  })
+
   const session = useState<InferSessionFromClient<ClientOptions> | null>('auth:session', () => {
     return null
   })
@@ -39,6 +46,16 @@ export function useAuth() {
     : useState('auth:sessionFetching', () => {
         return false
       })
+
+  const useActiveOrganization = async (id: string) => {
+    if (activeOrganization.value?.id === id) {
+      return activeOrganization
+    }
+    const { data } = await client.organization.setActive({ organizationId: id })
+    activeOrganization.value = data
+
+    return activeOrganization
+  }
 
   const fetchSession = async () => {
     if (sessionFetching.value) {
@@ -70,6 +87,7 @@ export function useAuth() {
   }
 
   return {
+    activeOrganization,
     client,
     fetchSession,
     loggedIn: computed(() => {
@@ -89,6 +107,7 @@ export function useAuth() {
       return res
     },
     signUp: client.signUp,
+    useActiveOrganization,
     user,
   }
 }

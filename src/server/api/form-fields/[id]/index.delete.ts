@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
-import { generateId } from '~/lib/utils'
 import prisma from '~/lib/prisma'
+import { generateId } from '~/lib/utils'
 
 export default defineEventHandler(async (event) => {
   // Проверка авторизации пользователя
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
 
     // Проверка прав на удаление
     const canDelete
-      = membership.role === 'ADMIN'
+      = membership.role === 'owner'
         || formField.form.creatorMemberId === membership.id
         || (formField.form.executorMemberId === membership.id && ['DRAFT', 'NEEDS_CHANGES'].includes(formField.form.status))
 

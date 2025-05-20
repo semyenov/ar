@@ -1,31 +1,27 @@
-
-export const customInstance = <T>(
-  config: any,
-  options?: any
-): Promise<T> => {
+export function customInstance<T>(config: any, options?: any): Promise<T> {
   const defaultOptions = {
     baseURL: '/api',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     async onRequest({ options }: { options: any }) {
-      const token = localStorage.getItem('auth.token');
+      const token = localStorage.getItem('auth.token')
       if (token) {
         // Handle Authorization header properly
-        options.headers = options.headers || {};
+        options.headers ||= {}
         options.headers = {
           ...options.headers,
-          Authorization: `Bearer ${token}`
-        };
+          Authorization: `Bearer ${token}`,
+        }
       }
     },
     async onResponseError({ response }: { response: any }) {
       if (response.status === 401) {
         // Unauthorized - redirect to login
-        window.location.href = '/auth/sign-in';
+        window.location.href = '/auth/sign-in'
       }
-    }
-  };
+    },
+  }
 
   return $fetch(config.url, {
     method: config.method,
@@ -33,6 +29,6 @@ export const customInstance = <T>(
     body: config.data,
     ...config.params && { query: config.params },
     ...defaultOptions,
-    ...options
-  });
-};
+    ...options,
+  })
+}

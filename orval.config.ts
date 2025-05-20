@@ -1,37 +1,40 @@
-import { defineConfig } from 'orval';
+import { defineConfig } from 'orval'
 
 export default defineConfig({
   altRegioni: {
+    hooks: {
+      afterAllFilesWrite: 'prettier --write',
+    },
     input: {
       target: './openapi.yaml',
     },
     output: {
-      mode: 'split',
-      target: './src/client/api/generated/index.ts',
       client: 'vue-query',
-      namingConvention: 'kebab-case',
-      tslint: true,
       indexFiles: true,
-      tsconfig: './tsconfig.json',
+      mode: 'split',
+      namingConvention: 'kebab-case',
       override: {
-        mutator: {
-          path: 'src/client/api/mutator/instance.ts',
-          name: 'customInstance',
-        },
+
         enumGenerationType: 'const',
+        mutator: {
+          name: 'customInstance',
+          path: 'src/client/api/mutator/instance.ts',
+        },
         query: {
-          useQuery: true,
-          useInfinite: true,
-          useInfiniteQueryParam: 'limit',
           options: {
             staleTime: 10000,
           },
+          signal: true,
+          useInfinite: true,
+          useInfiniteQueryParam: 'limit',
+          useMutation: true,
+          useQuery: true,
         },
       },
       schemas: './src/client/api/generated/model',
-    },
-    hooks: {
-      afterAllFilesWrite: 'prettier --write',
+      target: './src/client/api/generated/index.ts',
+      tsconfig: './tsconfig.json',
+      tslint: true,
     },
   },
-});
+})

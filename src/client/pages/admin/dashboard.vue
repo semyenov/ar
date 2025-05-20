@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const authClient = useAuth()
 definePageMeta({
   auth: {
     only: 'admin',
@@ -8,6 +7,7 @@ definePageMeta({
   },
   layout: 'admin',
 })
+const authClient = useAuth()
 const { data: session } = await authClient.client.getSession()
 const router = useRouter()
 </script>

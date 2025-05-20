@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TValue">
-import { getCoreRowModel, getPaginationRowModel, useVueTable, type ColumnDef } from '@tanstack/vue-table'
-import type { Form } from '~/client/api';
+import type { Form } from '~/client/api'
 
+import { type ColumnDef, getCoreRowModel, getPaginationRowModel, useVueTable } from '@tanstack/vue-table'
 
 const props = defineProps<{
   columns: ColumnDef<Form, TValue>[]
@@ -21,9 +21,9 @@ const table = useVueTable({
 </script>
 
 <template>
-  <DataTable :data="data" :columns="columns" >
+  <DataTable :data="data" :columns="columns">
     <template #toolbar>
-      <FormsToolbar :table="table"/>
+      <FormsDataTableToolbar :table="table" />
     </template>
   </DataTable>
 </template>

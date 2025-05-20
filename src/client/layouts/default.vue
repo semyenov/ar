@@ -85,7 +85,28 @@ const breadcrumbs = computed(() => {
 
 const authClient = useAuth()
 const listOrganizations = authClient.client.useListOrganizations()
+const { user } = authClient
 
+const fallback = computed(() => {
+  return user.value
+    ? user.value.name.split(' ')
+        .map((w) => {
+          return w[0]
+        })
+        .join('')
+        .toUpperCase()
+    : '?'
+},
+)
+// function logOut() {
+//   await authClient.signOut({
+//     fetchOptions: {
+//       onSuccess: () => {
+//         router.push('/login') // redirect to login page
+//       },
+//     },
+//   })
+// }
 // const listOrganizations = await authClient.client.organization.list()
 // await authClient.client.organization.setActive({ organizationId: listOrganizations.value.data![0].id })
 </script>
@@ -93,44 +114,7 @@ const listOrganizations = authClient.client.useListOrganizations()
 <template>
   <div id="__layout" class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white">
     <ClientOnly>
-      <SidebarProvider>
-        <!-- <AppSidebar /> -->
-        <SidebarInset>
-          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">
-            <!-- <SidebarTrigger class="-ml-1" /> -->
-            <!-- <Separator orientation="vertical" class="h-4 mr-2" /> -->
-            <Breadcrumb>
-              <BreadcrumbList>
-                <template v-for="b, bi in breadcrumbs" :key="b.href">
-                  <BreadcrumbItem class="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      {{ b }}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator v-if="bi < breadcrumbs.length - 1" class="hidden md:block" />
-                </template>
-                <!-- <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem> -->
-              </BreadcrumbList>
-            </Breadcrumb>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a fruit" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem v-for="(item, index) in listOrganizations.data" :key="index" :value="item.id">
-                    {{ item.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </header>
-          <slot />
-        </SidebarInset>
-      </SidebarProvider>
+      <slot />
     </ClientOnly>
   </div>
 </template>

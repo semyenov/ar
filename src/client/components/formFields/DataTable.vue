@@ -1,7 +1,6 @@
 <script setup lang="ts" generic=" TValue">
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { FormField } from '~/client/api';
-
+import type { FormField } from '~/client/api'
 
 const props = defineProps<{
   columns: ColumnDef<FormField, TValue>[]

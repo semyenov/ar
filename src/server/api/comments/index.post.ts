@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
-import { generateId } from '~/lib/utils'
 import prisma from '~/lib/prisma'
+import { generateId } from '~/lib/utils'
 import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
@@ -20,9 +20,11 @@ export default defineEventHandler(async (event) => {
 
   // Проверка данных запроса
   const schema = z.object({
+    content: z.string()
+      .min(1),
+    formFieldId: z.string()
+      .optional(),
     reviewFlowId: z.string(),
-    content: z.string().min(1),
-    fieldReference: z.string().optional(),
   })
 
   const validationResult = schema.safeParse(body)
@@ -83,23 +85,28 @@ export default defineEventHandler(async (event) => {
     // Создание комментария
     const comment = await prisma.comment.create({
       data: {
-        id: generateId(),
-        reviewFlowId: data.reviewFlowId,
-        memberId: reviewFlow.organization.members[0].id,
         content: data.content,
-        fieldReference: data.fieldReference,
+        formFieldId: data.formFieldId,
+        id: generateId(),
+        memberId: reviewFlow.organization.members[0].id,
+        reviewFlowId: data.reviewFlowId,
       },
       include: {
+        formField: {
+          select: {
+            id: true,
+          },
+        },
         member: {
           select: {
             id: true,
             role: true,
             user: {
               select: {
-                id: true,
-                name: true,
                 email: true,
+                id: true,
                 image: true,
+                name: true,
               },
             },
           },
@@ -110,8 +117,8 @@ export default defineEventHandler(async (event) => {
     // Обновление времени последнего изменения процесса рассмотрения
     await prisma.reviewFlow.update({
       data: {
-        updatedAt: new Date(),
         lastModifiedBy: session.user.id,
+        updatedAt: new Date(),
         version: { increment: 1 },
       },
       where: { id: data.reviewFlowId },

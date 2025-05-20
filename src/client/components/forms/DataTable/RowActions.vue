@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
-import type { Task } from '@/client/data/schema'
+
 import { computed } from 'vue'
 // import DotsHorizontalIcon from '~icons/radix-icons/dots-horizontal'
 
-import { labels } from '@/client/data/data'
-import { taskSchema } from '@/client/data/schema'
+import type { Form } from '~/client/api'
 
 interface DataTableRowActionsProps {
-  row: Row<Task>
+  row: Row<Form>
 }
 const props = defineProps<DataTableRowActionsProps>()
 
-const task = computed(() => taskSchema.parse(props.row.original))
+// const task = computed(() => taskSchema.parse(props.row.original))
 </script>
 
 <template>
@@ -34,11 +33,11 @@ const task = computed(() => taskSchema.parse(props.row.original))
       <DropdownMenuSub>
         <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
         <DropdownMenuSubContent>
-          <DropdownMenuRadioGroup :value="task.label">
+          <!-- <DropdownMenuRadioGroup :value="task.label">
             <DropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
               {{ label.label }}
             </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
+          </DropdownMenuRadioGroup> -->
         </DropdownMenuSubContent>
       </DropdownMenuSub>
       <DropdownMenuSeparator />

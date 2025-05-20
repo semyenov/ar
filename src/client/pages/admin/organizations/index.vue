@@ -64,10 +64,10 @@ async function getData(): Promise<Organization[]> {
   return res
 }
 
-async function addOrganization() {
-  const create = await useOrgCreate()
-  console.log(create)
-}
+// async function addOrganization() {
+//   const create = await useOrgCreate()
+//   console.log(create)
+// }
 
 onMounted(async () => {
   data.value = await getData()
@@ -216,9 +216,9 @@ async function getDataProblem(): Promise<Organization[]> {
 
 <template>
   <div class="grid grid-cols-12 p-4 space-y-4">
-    <Button variant="destructive" @click="addOrganization">
+    <!-- <Button variant="destructive" @click="addOrganization">
       ДОБАВИТЬ ОРГ
-    </Button>
+    </Button> -->
     <Alert class="flex items-start col-span-12 gap-4 p-6">
       <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
       <div class="flex flex-col">

@@ -18,9 +18,18 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const schema = z.object({
+    limit: z.coerce.number()
+      .int()
+      .positive()
+      .max(100)
+      .optional()
+      .default(50),
+    page: z.coerce.number()
+      .int()
+      .positive()
+      .optional()
+      .default(1),
     reviewFlowId: z.string(),
-    page: z.coerce.number().int().positive().optional().default(1),
-    limit: z.coerce.number().int().positive().max(100).optional().default(50),
   })
 
   const validationResult = schema.safeParse(query)
@@ -32,7 +41,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { reviewFlowId, page, limit } = validationResult.data
+  const { limit, page, reviewFlowId } = validationResult.data
   const skip = (page - 1) * limit
 
   try {
@@ -74,16 +83,21 @@ export default defineEventHandler(async (event) => {
     const [comments, total] = await Promise.all([
       prisma.comment.findMany({
         include: {
+          formField: {
+            select: {
+              id: true,
+            },
+          },
           member: {
             select: {
               id: true,
               role: true,
               user: {
                 select: {
-                  id: true,
-                  name: true,
                   email: true,
+                  id: true,
                   image: true,
+                  name: true,
                 },
               },
             },
@@ -104,8 +118,8 @@ export default defineEventHandler(async (event) => {
     return {
       data: comments,
       meta: {
-        page,
         limit,
+        page,
         total,
         totalPages: Math.ceil(total / limit),
       },

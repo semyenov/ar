@@ -184,7 +184,7 @@ const { t } = useI18n();
               <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <Avatar class="h-[36px] w-[36px]">
-                    <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
+                    <AvatarImage src="https://yt3.googleusercontent.com/QviY7Il35MHsXsmV6knCYYPcPuQ9LZXy7e16bVm62K5ejz6gTuzYN-2CseY8gA0-Y3R-mhePxQE=s900-c-k-c0x00ffffff-no-rj" alt="@unovue" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col">

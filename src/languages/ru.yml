@@ -106,3 +106,10 @@ forms:
     rejected: Отклонено
   critical:
     hours: часов
+
+members:
+  roles:
+    owner: Администратор
+    reviewer: Оператор ОИВ/ОМСУ
+    executor: Ответственный
+    member: Наблюдатель

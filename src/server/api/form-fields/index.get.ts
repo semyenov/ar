@@ -70,6 +70,24 @@ export default defineEventHandler(async (event) => {
     const [formFields, total] = await Promise.all([
       prisma.formField.findMany({
         include: {
+          comments: {
+            include: {
+              member: {
+                select: {
+                  id: true,
+                  role: true,
+                  user: {
+                    select: {
+                      email: true,
+                      id: true,
+                      image: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           files: {
             include: {
               file: {

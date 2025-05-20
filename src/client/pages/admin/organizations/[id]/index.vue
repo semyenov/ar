@@ -49,9 +49,7 @@ console.log(organization)
               </p>
             </div>
           </div>
-          <div
-            class="flex items-center justify-center p-2 rounded-full cursor-pointer bg-slate-100"
-          >
+          <div class="flex items-center justify-center p-2 rounded-full cursor-pointer bg-slate-100">
             <Icon name="lucide:clipboard-edit" class="w-4 h-4" />
           </div>
         </CardHeader>
@@ -64,9 +62,7 @@ console.log(organization)
             </CardTitle>
           </div>
 
-          <div
-            class="flex items-center justify-center p-2 rounded-full cursor-pointer bg-slate-100"
-          >
+          <div class="flex items-center justify-center p-2 rounded-full cursor-pointer bg-slate-100">
             <Icon name="lucide:clipboard-edit" class="w-4 h-4" />
           </div>
         </CardHeader>
@@ -103,7 +99,9 @@ console.log(organization)
                         </p>
                       </TableCell>
                       <TableCell>
-                        <UsersHoverCard :user="{ id: 1, first_name: 'Бобр', last_name: 'Курвович', email: 'text@example.com', phone: '+7(123)456-78-90' }" />
+                        <UsersHoverCard
+                          :user="{ id: 1, first_name: 'Бобр', last_name: 'Курвович', email: 'text@example.com', phone: '+7(123)456-78-90' }"
+                        />
                         <!-- <div class="flex flex-col">
                           <p
                             class="text-sm font-medium"
@@ -132,14 +130,10 @@ console.log(organization)
                       </TableCell>
                       <TableCell>
                         <div class="flex flex-col">
-                          <p
-                            class="text-sm font-medium"
-                          >
+                          <p class="text-sm font-medium">
                             Operator 1
                           </p>
-                          <p
-                            class="text-sm text-muted-foreground"
-                          >
+                          <p class="text-sm text-muted-foreground">
                             m@example.com
                           </p>
                         </div>
@@ -172,9 +166,7 @@ console.log(organization)
               </CardDescription>
             </div>
           </div>
-          <div
-            class="flex items-center justify-center w-8 h-8 p-2 cursor-pointer"
-          >
+          <div class="flex items-center justify-center w-8 h-8 p-2 cursor-pointer">
             <Icon name="lucide:users" class="text-muted-foreground " />
           </div>
         </CardHeader>
@@ -184,7 +176,10 @@ console.log(organization)
               <div class="flex flex-row items-center justify-between gap-4">
                 <div class="flex flex-row items-center gap-3">
                   <Avatar class="h-9 w-9">
-                    <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
+                    <AvatarImage
+                      src="https://yt3.googleusercontent.com/QviY7Il35MHsXsmV6knCYYPcPuQ9LZXy7e16bVm62K5ejz6gTuzYN-2CseY8gA0-Y3R-mhePxQE=s900-c-k-c0x00ffffff-no-rj"
+                      alt="@unovue"
+                    />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col">
@@ -220,9 +215,7 @@ console.log(organization)
               </CardDescription>
             </div>
           </div>
-          <div
-            class="flex items-center justify-center w-8 h-8 p-2 cursor-pointer"
-          >
+          <div class="flex items-center justify-center w-8 h-8 p-2 cursor-pointer">
             <Icon name="lucide:message-circle-question" class="text-muted-foreground " />
           </div>
         </CardHeader>
@@ -230,9 +223,7 @@ console.log(organization)
           <div class="flex flex-col gap-4">
             <Card class="transition cursor-pointer hover:bg-accent">
               <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
-                <div
-                  class="flex items-center justify-center w-8 h-8 cursor-pointer"
-                >
+                <div class="flex items-center justify-center w-8 h-8 cursor-pointer">
                   <Icon name="lucide:file-badge" class="text-2xl" />
                 </div>
                 <p class="text-sm ">
@@ -242,9 +233,7 @@ console.log(organization)
             </Card>
             <Card class="transition cursor-pointer hover:bg-accent">
               <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
-                <div
-                  class="flex items-center justify-center w-8 h-8 cursor-pointer"
-                >
+                <div class="flex items-center justify-center w-8 h-8 cursor-pointer">
                   <Icon name="lucide:list" class="text-2xl" />
                 </div>
                 <p class="text-sm ">
@@ -254,9 +243,7 @@ console.log(organization)
             </Card>
             <Card class="transition cursor-pointer hover:bg-accent">
               <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
-                <div
-                  class="flex items-center justify-center w-8 h-8 cursor-pointer"
-                >
+                <div class="flex items-center justify-center w-8 h-8 cursor-pointer">
                   <Icon name="lucide:file-down" class="text-2xl" />
                 </div>
                 <p class="text-sm ">

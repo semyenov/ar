@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/vue-table'
-import { Button } from '@/client/components/ui/button'
 
 import {
   FlexRender,
@@ -12,7 +11,9 @@ import {
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+import { valueUpdater } from '~/client/lib/utils'
 
+import { Button } from '@/client/components/ui/button'
 import {
   Table,
   TableBody,
@@ -21,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/client/components/ui/table'
-import { valueUpdater } from '~/client/lib/utils';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -34,32 +34,53 @@ const columnVisibility = ref<VisibilityState>({})
 const rowSelection = ref({})
 
 const table = useVueTable({
-  get data() { return props.data },
-  get columns() { return props.columns },
-  state: {
-    get sorting() { return sorting.value },
-    get columnFilters() { return columnFilters.value },
-    get columnVisibility() { return columnVisibility.value },
-    get rowSelection() { return rowSelection.value },
+  get columns() {
+    return props.columns
+  },
+  get data() {
+    return props.data
   },
   enableRowSelection: true,
-  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
+  getFacetedRowModel: getFacetedRowModel(),
+  getFacetedUniqueValues: getFacetedUniqueValues(),
   getFilteredRowModel: getFilteredRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
+  onColumnFiltersChange: (updaterOrValue) => {
+    return valueUpdater(updaterOrValue, columnFilters)
+  },
+  onColumnVisibilityChange: (updaterOrValue) => {
+    return valueUpdater(updaterOrValue, columnVisibility)
+  },
+  onRowSelectionChange: (updaterOrValue) => {
+    return valueUpdater(updaterOrValue, rowSelection)
+  },
+  onSortingChange: (updaterOrValue) => {
+    return valueUpdater(updaterOrValue, sorting)
+  },
+  state: {
+    get columnFilters() {
+      return columnFilters.value
+    },
+    get columnVisibility() {
+      return columnVisibility.value
+    },
+    get rowSelection() {
+      return rowSelection.value
+    },
+    get sorting() {
+      return sorting.value
+    },
+  },
 })
-
 </script>
 
 <template>
-   <div class="space-y-4">
-    <slot name="toolbar"><DataTableToolbar :table="table" /></slot>
+  <div class="space-y-4">
+    <slot name="toolbar">
+      <DataTableToolbar :table="table" />
+    </slot>
     <div class="border rounded-md">
       <Table>
         <TableHeader>
@@ -76,7 +97,6 @@ const table = useVueTable({
               :key="row.id"
               :data-state="row.getIsSelected() && 'selected'"
             >
-
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
@@ -95,6 +115,8 @@ const table = useVueTable({
       </Table>
     </div>
 
-    <DataTablePagination :table="table" />
+    <slot name="pagination">
+      <DataTablePagination :table="table" />
+    </slot>
   </div>
 </template>

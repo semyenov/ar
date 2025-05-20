@@ -5,7 +5,7 @@ import { useListForms } from '~/client/api'
 import moment from 'moment'
 import { filter } from 'remeda'
 
-import { columns } from '@/client/components/forms/column'
+import { columns } from '@/client/components/forms/DataTable/column'
 
 const { t } = useI18n()
 

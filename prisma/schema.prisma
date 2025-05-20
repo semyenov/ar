@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -27,8 +26,8 @@ model User {
   banExpires DateTime?
 
   @@unique([email])
-  @@map("user")
   @@index([email])
+  @@map("user")
 }
 
 model Session {
@@ -46,8 +45,8 @@ model Session {
   impersonatedBy String?
 
   @@unique([token])
-  @@map("session")
   @@index([userId])
+  @@map("session")
 }
 
 model Account {
@@ -66,8 +65,8 @@ model Account {
   createdAt             DateTime
   updatedAt             DateTime
 
-  @@map("account")
   @@index([userId])
+  @@map("account")
 }
 
 model Verification {
@@ -96,9 +95,9 @@ model Organization {
   reviewFlows ReviewFlow[]
 
   @@unique([slug])
-  @@map("organization")
   @@index([name])
   @@index([slug])
+  @@map("organization")
 }
 
 enum MemberRole {
@@ -127,9 +126,9 @@ model Member {
   lastModifiedBy String?
   version        Int           @default(1)
 
-  @@map("member")
   @@index([organizationId])
   @@index([userId])
+  @@map("member")
 }
 
 model Invitation {
@@ -143,9 +142,9 @@ model Invitation {
   inviterId      String
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
-  @@map("invitation")
   @@index([organizationId])
   @@index([email])
+  @@map("invitation")
 }
 
 enum FormStatus {
@@ -188,10 +187,17 @@ model Form {
   lastModifiedBy   String?
   version          Int           @default(1)
 
-  @@index([organizationId, status])
+  @@index([status])
+  @@index([organizationId])
   @@index([creatorMemberId])
   @@index([executorMemberId])
   @@map("form")
+}
+
+enum FormFieldStatus {
+  DRAFT
+  REJECTED
+  APPROVED
 }
 
 model FormField {
@@ -206,9 +212,12 @@ model FormField {
   order           Int
   options         String?
   files           FormFieldFile[]
+  comments        Comment[]
+  status          FormFieldStatus @default(DRAFT)
 
-  @@map("form_field")
   @@index([formId])
+  @@index([status])
+  @@map("form_field")
 }
 
 model FormTemplate {
@@ -237,8 +246,8 @@ model FormTemplateField {
   order           Int
   options         String?
 
-  @@map("form_template_field")
   @@index([templateId])
+  @@map("form_template_field")
 }
 
 model FormHistory {
@@ -251,9 +260,9 @@ model FormHistory {
   data      String?
   createdAt DateTime   @default(now())
 
-  @@map("form_history")
   @@index([formId])
   @@index([memberId])
+  @@map("form_history")
 }
 
 enum ReviewFlowStatus {
@@ -274,24 +283,26 @@ model ReviewFlow {
   lastModifiedBy String?
   version        Int              @default(1)
 
-  @@map("review_flow")
   @@index([organizationId])
   @@index([status])
+  @@map("review_flow")
 }
 
 model Comment {
-  id             String     @id
-  reviewFlowId   String
-  reviewFlow     ReviewFlow @relation(fields: [reviewFlowId], references: [id], onDelete: Cascade)
-  memberId       String
-  member         Member     @relation(fields: [memberId], references: [id])
-  content        String
-  fieldReference String?
-  createdAt      DateTime   @default(now())
+  id           String     @id
+  reviewFlowId String
+  reviewFlow   ReviewFlow @relation(fields: [reviewFlowId], references: [id], onDelete: Cascade)
+  memberId     String
+  member       Member     @relation(fields: [memberId], references: [id])
+  content      String
+  formFieldId  String?
+  formField    FormField? @relation(fields: [formFieldId], references: [id])
+  createdAt    DateTime   @default(now())
 
-  @@map("comment")
+  @@index([formFieldId])
   @@index([reviewFlowId])
   @@index([memberId])
+  @@map("comment")
 }
 
 enum FileAccess {
@@ -324,10 +335,10 @@ model File {
   lastModifiedBy   String?
   version          Int             @default(1)
 
-  @@map("file")
   @@index([organizationId])
   @@index([folderId])
   @@index([accessLevel])
+  @@map("file")
 }
 
 model FileFolder {
@@ -349,10 +360,10 @@ model FileFolder {
   lastModifiedBy  String?
   version         Int          @default(1)
 
-  @@map("file_folder")
   @@index([organizationId])
   @@index([parentId])
   @@index([level])
+  @@map("file_folder")
 }
 
 model FileShare {
@@ -364,9 +375,9 @@ model FileShare {
   createdAt DateTime  @default(now())
   expiresAt DateTime?
 
-  @@map("file_share")
   @@index([fileId])
   @@index([memberId])
+  @@map("file_share")
 }
 
 model FormFieldFile {
@@ -376,7 +387,7 @@ model FormFieldFile {
   fileId      String
   file        File      @relation(fields: [fileId], references: [id], onDelete: Cascade)
 
-  @@map("form_field_file")
   @@index([formFieldId])
   @@index([fileId])
+  @@map("form_field_file")
 }

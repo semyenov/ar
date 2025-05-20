@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
-import { generateId } from '~/lib/utils'
 import prisma from '~/lib/prisma'
+import { generateId } from '~/lib/utils'
 import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
@@ -97,8 +97,10 @@ export default defineEventHandler(async (event) => {
 
     // Проверка прав на изменение статуса формы
     if (data.status && data.status !== form.status) {
-      // Администраторы и рецензенты могут менять статус формы
-      if (currentMember.role !== 'ADMIN' && currentMember.role !== 'REVIEWER') {
+      console.log(currentMember)
+
+      // Администраторы, рецензенты и заполнители могут менять статус формы
+      if (currentMember.role !== 'owner' && currentMember.role !== 'executor' && currentMember.role !== 'reviewer') {
         throw createError({
           message: 'You do not have permission to change the form status',
           statusCode: 403,

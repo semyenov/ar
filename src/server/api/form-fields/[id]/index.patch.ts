@@ -1,6 +1,6 @@
 import { auth } from '~/lib/auth'
-import { generateId } from '~/lib/utils'
 import prisma from '~/lib/prisma'
+import { generateId } from '~/lib/utils'
 import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
@@ -39,6 +39,12 @@ export default defineEventHandler(async (event) => {
       .positive()
       .optional(),
     required: z.boolean()
+      .optional(),
+    status: z.enum([
+      'DRAFT',
+      'REJECTED',
+      'APPROVED',
+    ])
       .optional(),
     validationRules: z.string()
       .optional(),
@@ -99,7 +105,7 @@ export default defineEventHandler(async (event) => {
 
     // Проверка прав на редактирование
     const canEdit
-      = membership.role === 'ADMIN'
+      = membership.role === 'owner'
         || formField.form.creatorMemberId === membership.id
         || (formField.form.executorMemberId === membership.id && ['DRAFT', 'NEEDS_CHANGES'].includes(formField.form.status))
 
@@ -119,6 +125,7 @@ export default defineEventHandler(async (event) => {
           options: data.options,
           order: data.order,
           required: data.required,
+          status: data.status,
           validationRules: data.validationRules,
           value: data.value,
         },

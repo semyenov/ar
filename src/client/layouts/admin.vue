@@ -26,15 +26,27 @@ const breadcrumbs = computed(() => {
     return a.href.length - b.href.length
   })
 })
+
+const { client, useActiveOrganization, user } = useAuth()
+const listOrganizations = client.useListOrganizations()
+
+const fallback = computed(() => {
+  return user.value
+    ? user.value.name.split(' ')
+        .map((w) => {
+          return w[0]
+        })
+        .join('')
+        .toUpperCase()
+    : '?'
+},
+)
 // const authClient = useAuth()
 // const listOrganizations = authClient.client.useListOrganizations()
 </script>
 
 <template>
-  <div
-    id="__layout"
-    class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white"
-  >
+  <div id="__layout" class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white">
     <ClientOnly>
       <SidebarProvider>
         <AppSidebar />
@@ -57,6 +69,26 @@ const breadcrumbs = computed(() => {
                 </BreadcrumbItem> -->
               </BreadcrumbList>
             </Breadcrumb>
+            <DropdownMenu>
+              <DropdownMenuTrigger class="ml-auto">
+                <Avatar>
+                  <AvatarFallback>{{ fallback }}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Аккаунт</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Профиль</DropdownMenuItem>
+                <DropdownMenuItem
+                  @click="async () => {
+                    await client.signOut()
+                    router.push('/auth/sign-in')
+                  }"
+                >
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <!-- {{ listOrganizations.data }} -->
           </header>
           <slot />

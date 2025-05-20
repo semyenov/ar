@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'default',
+  layout: 'user',
 })
 const authClient = useAuth()
 const features = [
