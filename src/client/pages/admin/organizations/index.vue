@@ -2,42 +2,48 @@
 import { Icon, NuxtLink } from '#components'
 import { useOrgCreate, useOrgList } from '~/client/api'
 // import tasks from '@/client/data/tasks.json'
-import { faker,fakerRU} from '@faker-js/faker';
+import { faker, fakerRU } from '@faker-js/faker'
 import { organizationStatuses } from '~/client/data/data'
 
-import {columns} from '@/client/components/organizations/column'
+import { columns } from '@/client/components/organizations/column'
 
 // import { columns } from '@/client/components/organizations/column'
 import type { Organization } from '~/client/data/schema'
-import { onMounted } from 'vue';
+
+import { onMounted } from 'vue'
 
 const { t } = useI18n()
 
 definePageMeta({
   // set custom layout
-
+  auth: {
+    only: 'admin',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
   layout: 'admin',
 })
 const data = ref<Organization[]>([])
 const dataProblem = ref<Organization[]>([])
 
-
 async function getData(): Promise<Organization[]> {
-  const res:Organization[] = []
+  const res: Organization[] = []
 
   const { data: organizations } = await useOrgList()
-  if (!organizations) return []
+  if (!organizations) {
+    return []
+  }
 
   for (const org of organizations) {
     res.push({
+      address: '',
+      district: fakerRU.location.state(),
       id: org.id,
-      status: organizationStatuses[faker.number.int({ min: 0, max: organizationStatuses.length-1 })].value,
-      name: org.name,
       inn: faker.string.numeric(10),
       kpp: faker.string.numeric(8),
-      district: fakerRU.location.state(),
+      name: org.name,
       slug: org.slug,
-      address: ''
+      status: organizationStatuses[faker.number.int({ max: organizationStatuses.length - 1, min: 0 })].value,
     })
   }
   // for (let index = 0; index < 10000; index++) {
@@ -60,16 +66,12 @@ async function getData(): Promise<Organization[]> {
 
 async function addOrganization() {
   const create = await useOrgCreate()
-  console.log(create);
-
+  console.log(create)
 }
 
-
 onMounted(async () => {
-
   data.value = await getData()
   dataProblem.value = await getDataProblem()
-
 })
 // const columns: ColumnDef<Organization>[] = [
 //   {
@@ -191,38 +193,44 @@ onMounted(async () => {
 // ]
 
 async function getDataProblem(): Promise<Organization[]> {
-  const res:Organization[] = []
+  const res: Organization[] = []
   for (let index = 0; index < 15; index++) {
     // const n = faker.number.int({ min: 0, max: 6 })
     // console.log(organizationStatuses[n].value);
 
     res.push({
+      address: '',
+      district: fakerRU.location.state(),
       id: faker.string.nanoid(),
-      status: organizationStatuses[faker.number.int({ min: 0, max: organizationStatuses.length-1 })].value,
-      name: fakerRU.company.name(),
       inn: faker.string.numeric(10),
       kpp: faker.string.numeric(8),
-      district: fakerRU.location.state(),
+      name: fakerRU.company.name(),
       slug: faker.string.nanoid(),
-      address: ''
+      status: organizationStatuses[faker.number.int({ max: organizationStatuses.length - 1, min: 0 })].value,
     })
   }
+
   return res
 }
-
 </script>
 
 <template>
   <div class="grid grid-cols-12 p-4 space-y-4">
-    <Button variant="destructive" @click="addOrganization">ДОБАВИТЬ ОРГ</Button>
+    <Button variant="destructive" @click="addOrganization">
+      ДОБАВИТЬ ОРГ
+    </Button>
     <Alert class="flex items-start col-span-12 gap-4 p-6">
       <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
       <div class="flex flex-col">
-        <AlertTitle class="text-base">Внимание</AlertTitle>
+        <AlertTitle class="text-base">
+          Внимание
+        </AlertTitle>
         <AlertDescription class="text-muted-foreground">
-          Обнаружено {{dataProblem.length}} организаций без пользователя. Рекомендуется назначить пользователей, прежде чем продолжать работу.
+          Обнаружено {{ dataProblem.length }} организаций без пользователя. Рекомендуется назначить пользователей, прежде чем продолжать работу.
         </AlertDescription>
-        <NuxtLink class="flex items-center gap-2 mt-2" to="/organizations/problems">Перейти к редактированию <Icon name="tabler:arrow-narrow-right"/></NuxtLink>
+        <NuxtLink class="flex items-center gap-2 mt-2" to="/organizations/problems">
+          Перейти к редактированию <Icon name="tabler:arrow-narrow-right" />
+        </NuxtLink>
       </div>
     </Alert>
     <Card class="col-span-12 ">

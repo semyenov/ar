@@ -41,7 +41,6 @@ schemas:
       title: Формы
       welcome: Управление формами
 
-
 common:
   loading: Загрузка...
   error: Ошибка
@@ -53,15 +52,13 @@ common:
   delete: Удалить
   open: Открыть
 
-
-
 formTemplates:
   name: Наименование формы
   description: Описание
   createdAt: Создано
   updatedAt: Обновлено
   fields: Поля
-  countForms: Количество заполнений
+  countForms: Количество заявок
 
 formTemplateFields:
   name: Название поля
@@ -107,3 +104,5 @@ forms:
     needs_changes: Требует заполнения
     approved: Одобрено
     rejected: Отклонено
+  critical:
+    hours: часов

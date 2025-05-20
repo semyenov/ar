@@ -80,11 +80,11 @@ export const auth = betterAuth({
         member,
         owner,
       },
-      teams: {
-        allowRemovingAllTeams: false, // Optional: prevent removing the last team
-        enabled: true,
-        maximumTeams: 1, // Optional: limit teams per organization
-      },
+      // teams: {
+      //   allowRemovingAllTeams: false, // Optional: prevent removing the last team
+      //   enabled: true,
+      //   maximumTeams: 1, // Optional: limit teams per organization
+      // },
     }),
     openAPI(),
   ],

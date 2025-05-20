@@ -5,7 +5,7 @@ const authClient = useAuth()
 async function handleSignIn() {
   await authClient.signIn.email(
     {
-      callbackURL: '/auth/dashboard',
+      callbackURL: '/dashboard',
       email: email.value,
       password: password.value,
     },

@@ -14,8 +14,9 @@ const { t } = useI18n()
 definePageMeta({
   // set custom layout
   auth: {
-    only: 'user',
+    only: 'admin',
     redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
   },
   layout: 'admin',
 })

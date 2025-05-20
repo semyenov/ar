@@ -1,12 +1,12 @@
 <script setup lang="ts">
 const { t } = useI18n()
 definePageMeta({
-  // auth: {
-  //   only: 'guest',
-  //   redirectGuestTo: '/auth/sign-in',
-  //   redirectUserTo: '/admin/formsTemplates',
-  // },
-  // set custom layout
+  auth: {
+    only: 'guest',
+    redirectAdminTo: '/admin/dashboard',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
   layout: 'default',
 
 })

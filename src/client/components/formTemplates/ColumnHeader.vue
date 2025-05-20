@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
+
 import type { Task } from '@/client/data/schema'
-import { cn } from '@/lib/utils'
+
 import { Button } from '@/client/components/ui/button'
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/client/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 // import ArrowDownIcon from '~icons/radix-icons/arrow-down'
 
 // import ArrowUpIcon from '~icons/radix-icons/arrow-up'
@@ -34,15 +36,11 @@ export default {
   <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
-        <Button
-          variant="ghost"
-          size="sm"
-          class="-ml-3 h-8 data-[state=open]:bg-accent"
-        >
-          <span>{{ title }}</span>
-          <Icon name="tabler:arrow-down" v-if="column.getIsSorted() === 'desc'" class="w-4 h-4 ml-2" />
-          <Icon name="tabler:arrow-up" v-else-if=" column.getIsSorted() === 'asc'" class="w-4 h-4 ml-2" />
-          <Icon name="tabler:arrows-sort" v-else class="w-4 h-4 ml-2" />
+        <Button variant="ghost" size="sm" class="-ml-3 h-8 data-[state=open]:bg-accent">
+          <span class="text-sm">{{ title }}</span>
+          <Icon v-if="column.getIsSorted() === 'desc'" name="tabler:arrow-down" class="w-4 h-4 ml-2" />
+          <Icon v-else-if=" column.getIsSorted() === 'asc'" name="tabler:arrow-up" class="w-4 h-4 ml-2" />
+          <Icon v-else name="tabler:arrows-sort" class="w-4 h-4 ml-2" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">

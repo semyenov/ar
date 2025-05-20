@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { useOrgGetActiveMember, useOrgGetFullOrganization, useOrgList } from '~/client/api'
 
-const { t } = useI18n();
+const { t } = useI18n()
 const route = useRoute()
 definePageMeta({
   // set custom layout
-
+  auth: {
+    only: 'admin',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
   layout: 'admin',
 })
 
 const { data: organization } = await useOrgGetFullOrganization({
   query: {
-    organizationId: route.params.id as string
-  }
+    organizationId: route.params.id as string,
+  },
 })
-
 
 console.log(organization)
 </script>
@@ -27,8 +30,8 @@ console.log(organization)
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <CardTitle class="text-2xl">
-                  {{ organization?.name }}
-                </CardTitle>
+                {{ organization?.name }}
+              </CardTitle>
               <CardDescription>
                 <div class="flex flex-row items-center gap-2">
                   <Icon name="lucide:map-pin" class="w-5 h-5" />
@@ -41,7 +44,9 @@ console.log(organization)
             </div>
             <div class="flex flex-row items-center gap-4">
               <Progress :model-value="75" />
-              <p class="text-base text-">75%</p>
+              <p class="text-base text-">
+                75%
+              </p>
             </div>
           </div>
           <div
@@ -55,8 +60,8 @@ console.log(organization)
         <CardHeader class="flex flex-row items-center justify-between pb-3">
           <div class="flex flex-col gap-2">
             <CardTitle>
-                Текущий статус
-              </CardTitle>
+              Текущий статус
+            </CardTitle>
           </div>
 
           <div
@@ -71,19 +76,23 @@ console.log(organization)
           </p>
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger
-                ><p class="font-medium ">
+              <AccordionTrigger>
+                <p class="font-medium ">
                   История изменений
-                </p></AccordionTrigger
-              >
+                </p>
+              </AccordionTrigger>
               <AccordionContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead class="w-40"> Дата/время </TableHead>
+                      <TableHead class="w-40">
+                        Дата/время
+                      </TableHead>
                       <TableHead>Пользователь</TableHead>
                       <TableHead>Комментарий</TableHead>
-                      <TableHead class="text-right"> Статус </TableHead>
+                      <TableHead class="text-right">
+                        Статус
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -94,7 +103,7 @@ console.log(organization)
                         </p>
                       </TableCell>
                       <TableCell>
-                        <UsersHoverCard :user="{id:1,first_name:'Бобр',last_name:'Курвович',email:'text@example.com',phone:'+7(123)456-78-90'}"></UsersHoverCard>
+                        <UsersHoverCard :user="{ id: 1, first_name: 'Бобр', last_name: 'Курвович', email: 'text@example.com', phone: '+7(123)456-78-90' }" />
                         <!-- <div class="flex flex-col">
                           <p
                             class="text-sm font-medium"
@@ -110,7 +119,9 @@ console.log(organization)
                       </TableCell>
                       <TableCell>Ну вы, конечно, животные</TableCell>
                       <TableCell class="text-right">
-                        <Badge class="bg-rose-700">Заявка не одобрена</Badge>
+                        <Badge class="bg-rose-700">
+                          Заявка не одобрена
+                        </Badge>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -154,12 +165,10 @@ console.log(organization)
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <CardTitle>
-                  Пользователи
-                </CardTitle>
+                Пользователи
+              </CardTitle>
               <CardDescription>
-
-                  Invite your team members to collaborate.
-
+                Invite your team members to collaborate.
               </CardDescription>
             </div>
           </div>
@@ -179,7 +188,9 @@ console.log(organization)
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col">
-                    <p class="text-sm font-medium">{{ item.user.name }}</p>
+                    <p class="text-sm font-medium">
+                      {{ item.user.name }}
+                    </p>
                     <p class="font-normal text-sm  text-[#64748B]">
                       {{ item.user.email }}
                     </p>
@@ -197,11 +208,11 @@ console.log(organization)
         <CardHeader class="flex flex-row justify-between">
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
-              <CardTitle
-                ><p class="font-semibold ">
+              <CardTitle>
+                <p class="font-semibold ">
                   Справочная информация
-                </p></CardTitle
-              >
+                </p>
+              </CardTitle>
               <CardDescription>
                 <p class="text-sm font-normal">
                   Invite your team members to collaborate.
@@ -225,9 +236,10 @@ console.log(organization)
                   <Icon name="lucide:file-badge" class="text-2xl" />
                 </div>
                 <p class="text-sm ">
-                    Нормативно правовые акты
-                  </p>
-              </CardHeader></Card>
+                  Нормативно правовые акты
+                </p>
+              </CardHeader>
+            </Card>
             <Card class="transition cursor-pointer hover:bg-accent">
               <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
                 <div
@@ -236,9 +248,10 @@ console.log(organization)
                   <Icon name="lucide:list" class="text-2xl" />
                 </div>
                 <p class="text-sm ">
-                    Перечень дефицитных ВУС
-                  </p>
-              </CardHeader></Card>
+                  Перечень дефицитных ВУС
+                </p>
+              </CardHeader>
+            </Card>
             <Card class="transition cursor-pointer hover:bg-accent">
               <CardHeader class="flex flex-row items-center gap-3 px-4 py-3">
                 <div
@@ -247,9 +260,10 @@ console.log(organization)
                   <Icon name="lucide:file-down" class="text-2xl" />
                 </div>
                 <p class="text-sm ">
-                    Образцы форм и документов
-                  </p>
-              </CardHeader></Card>
+                  Образцы форм и документов
+                </p>
+              </CardHeader>
+            </Card>
           </div>
         </CardContent>
       </Card>

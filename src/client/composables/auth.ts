@@ -9,6 +9,7 @@ import { useAuthClient } from '~/lib/auth-client'
 import { defu } from 'defu'
 
 interface RuntimeAuthConfig {
+  redirectAdminTo: RouteLocationRaw | string
   redirectGuestTo: RouteLocationRaw | string
   redirectUserTo: RouteLocationRaw | string
 }
@@ -23,6 +24,7 @@ export function useAuth() {
   )
 
   const options = defu(useRuntimeConfig().public.auth as Partial<RuntimeAuthConfig>, {
+    redirectAdminTo: '/',
     redirectGuestTo: '/',
     redirectUserTo: '/',
   })

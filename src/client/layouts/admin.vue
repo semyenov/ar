@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const router = useRouter()
 
 const breadcrumbs = computed(() => {
@@ -27,9 +26,8 @@ const breadcrumbs = computed(() => {
     return a.href.length - b.href.length
   })
 })
-
-
-
+// const authClient = useAuth()
+// const listOrganizations = authClient.client.useListOrganizations()
 </script>
 
 <template>
@@ -38,7 +36,6 @@ const breadcrumbs = computed(() => {
     class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white"
   >
     <ClientOnly>
-
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
@@ -47,19 +44,20 @@ const breadcrumbs = computed(() => {
             <Separator orientation="vertical" class="h-4 mr-2" />
             <Breadcrumb>
               <BreadcrumbList>
-                <template v-for="b,bi in breadcrumbs">
+                <template v-for="b, bi in breadcrumbs" :key="b.href">
                   <BreadcrumbItem class="hidden md:block">
                     <BreadcrumbLink href="#">
-                      {{b}}
+                      {{ b }}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator class="hidden md:block" v-if="bi<breadcrumbs.length-1" />
+                  <BreadcrumbSeparator v-if="bi < breadcrumbs.length - 1" class="hidden md:block" />
                 </template>
                 <!-- <BreadcrumbItem>
                   <BreadcrumbPage>Data Fetching</BreadcrumbPage>
                 </BreadcrumbItem> -->
               </BreadcrumbList>
             </Breadcrumb>
+            <!-- {{ listOrganizations.data }} -->
           </header>
           <slot />
         </SidebarInset>

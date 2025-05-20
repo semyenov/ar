@@ -1,6 +1,13 @@
 <script setup lang="ts">
 const authClient = useAuth()
-
+definePageMeta({
+  auth: {
+    only: 'admin',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
+  layout: 'admin',
+})
 const { data: session } = await authClient.client.getSession()
 const router = useRouter()
 </script>
@@ -10,7 +17,7 @@ const router = useRouter()
     <Card class="w-[350px]">
       <CardHeader>
         <CardTitle>
-          User
+          ADMIIIIIIIN
         </CardTitle>
       </CardHeader>
       <CardContent>

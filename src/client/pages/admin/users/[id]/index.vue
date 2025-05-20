@@ -6,9 +6,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/client/components/ui/card";
-import { Separator } from "@/client/components/ui/separator";
-import { Input } from "@/client/components/ui/input";
+} from '@/client/components/ui/card'
+import { Input } from '@/client/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -17,9 +16,20 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/client/components/ui/select";
-import { Textarea } from "@/client/components/ui/textarea";
-const { t } = useI18n();
+} from '@/client/components/ui/select'
+import { Separator } from '@/client/components/ui/separator'
+import { Textarea } from '@/client/components/ui/textarea'
+
+const { t } = useI18n()
+definePageMeta({
+  // set custom layout
+  auth: {
+    only: 'admin',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
+  layout: 'admin',
+})
 </script>
 
 <template>
@@ -27,47 +37,57 @@ const { t } = useI18n();
     <Card class="!text-left grow h-fit max-w-[890px]">
       <CardHeader class="flex flex-row justify-between pb-[12px]">
         <CardTitle class="text-2xl ">
-            Иванов Бобр Курвович
+          Иванов Бобр Курвович
         </CardTitle>
       </CardHeader>
       <CardContent class="flex flex-col gap-6 pt-3">
         <div class="flex flex-col gap-1">
-          <p class="font-medium ">Профиль</p>
+          <p class="font-medium ">
+            Профиль
+          </p>
           <p class="text-sm text-muted-foreground">
             Основная информация о пользователе
           </p>
         </div>
         <Separator />
         <div class="flex flex-col gap-1.5">
-          <p class="font-medium ">Имя</p>
+          <p class="font-medium ">
+            Имя
+          </p>
           <Input placeholder="Имя" />
           <!-- <p class="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p> -->
         </div>
         <div class="flex flex-col gap-1.5">
-          <p class="font-medium ">Фамилия</p>
+          <p class="font-medium ">
+            Фамилия
+          </p>
           <Input placeholder="Фамилия" />
           <!-- <p class="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p> -->
         </div>
         <div class="flex flex-col gap-1.5">
-          <p class="font-medium ">Отчество</p>
+          <p class="font-medium ">
+            Отчество
+          </p>
           <Input placeholder="Отчество" />
           <!-- <p class="text-sm text-muted-foreground">
             This is how others will see you on the site.
           </p> -->
         </div>
         <div class="flex flex-col gap-1.5">
-          <p class="font-medium ">Email</p>
+          <p class="font-medium ">
+            Email
+          </p>
           <Input placeholder="Электронная почта" />
-
         </div>
         <div class="flex flex-col gap-1.5">
-          <p class="font-medium ">Телефон</p>
+          <p class="font-medium ">
+            Телефон
+          </p>
           <Input placeholder="Телефон" />
-
         </div>
         <!-- <div class="flex flex-col gap-1.5">
           <p class="text-[14px] leading-[14px] font-medium">Bio</p>
@@ -88,11 +108,11 @@ const { t } = useI18n();
         <CardHeader class="flex flex-row justify-between">
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
-              <CardTitle
-                ><p class="text-[16px] leading-[24px] font-semibold">
+              <CardTitle>
+                <p class="text-[16px] leading-[24px] font-semibold">
                   Организации
-                </p></CardTitle
-              >
+                </p>
+              </CardTitle>
               <CardDescription>
                 <p class="text-[14px]  ">
                   Invite your team members to collaborate.
@@ -127,9 +147,15 @@ const { t } = useI18n();
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="apple"> Оператор ОИВ/ОМСУ </SelectItem>
-                        <SelectItem value="apple"> Сотрудник организации </SelectItem>
-                        <SelectItem value="apple"> Оператор КМП </SelectItem>
+                        <SelectItem value="apple">
+                          Оператор ОИВ/ОМСУ
+                        </SelectItem>
+                        <SelectItem value="apple">
+                          Сотрудник организации
+                        </SelectItem>
+                        <SelectItem value="apple">
+                          Оператор КМП
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

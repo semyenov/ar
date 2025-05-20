@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { Icon, NuxtLink } from '#components'
-
 // import tasks from '@/client/data/tasks.json'
-import type { ColumnDef } from '@tanstack/vue-table'
 
 import { faker, fakerRU } from '@faker-js/faker'
 import { userStatuses } from '~/client/data/data'
@@ -10,16 +7,17 @@ import { userStatuses } from '~/client/data/data'
 import { columns } from '@/client/components/users/column'
 
 // import { columns } from '@/client/components/organizations/column'
-import type { Task, User } from '~/client/data/schema'
-
-import DataTableColumnHeader from '@/client/components/organizations/ColumnHeader.vue'
-import DataTableRowActions from '@/client/components/organizations/RowActions.vue'
-import { Checkbox } from '@/client/components/ui/checkbox'
+import type { User } from '~/client/data/schema'
 
 const { t } = useI18n()
 
 definePageMeta({
   // set custom layout
+  auth: {
+    only: 'admin',
+    redirectGuestTo: '/auth/sign-in',
+    redirectUserTo: '/dashboard',
+  },
   layout: 'admin',
 })
 const data = ref<User[]>([])

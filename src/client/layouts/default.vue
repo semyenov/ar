@@ -1,5 +1,4 @@
 <script setup lang=ts>
-
 const data = {
   navMain: [
     {
@@ -22,7 +21,7 @@ const data = {
     {
       icon: 'tabler:users',
       items: [
-      {
+        {
           title: 'Пользователи',
           url: '/users',
         },
@@ -47,7 +46,7 @@ const data = {
     avatar: '/avatars/shadcn.jpg',
     email: 'root@root.ru',
     name: 'root',
-  }
+  },
 }
 
 const router = useRouter()
@@ -78,27 +77,63 @@ const breadcrumbs = computed(() => {
   })
 })
 
-const activeTeam = ref({
-  logo: 'tabler:database',
-  name: 'Регионы',
-  plan: 'Созвездие',
-})
+// const activeTeam = ref({
+//   logo: 'tabler:database',
+//   name: 'Регионы',
+//   plan: 'Созвездие',
+// })
+
+const authClient = useAuth()
+const listOrganizations = authClient.client.useListOrganizations()
+
+// const listOrganizations = await authClient.client.organization.list()
+// await authClient.client.organization.setActive({ organizationId: listOrganizations.value.data![0].id })
 </script>
 
 <template>
-  <div class="w-full h-full">
-  <ClientOnly>
-      <div class="flex flex-col flex-1 gap-4 p-4 pt-0">
-        <slot />
-        <!-- <div class="grid gap-4 auto-rows-min md:grid-cols-3">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" /> -->
-      </div>
+  <div id="__layout" class="relative flex flex-col items-center justify-center w-full h-full grow dark:text-white">
+    <ClientOnly>
+      <SidebarProvider>
+        <!-- <AppSidebar /> -->
+        <SidebarInset>
+          <header class="flex items-center h-16 gap-2 px-4 border-b shrink-0">
+            <!-- <SidebarTrigger class="-ml-1" /> -->
+            <!-- <Separator orientation="vertical" class="h-4 mr-2" /> -->
+            <Breadcrumb>
+              <BreadcrumbList>
+                <template v-for="b, bi in breadcrumbs" :key="b.href">
+                  <BreadcrumbItem class="hidden md:block">
+                    <BreadcrumbLink href="#">
+                      {{ b }}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator v-if="bi < breadcrumbs.length - 1" class="hidden md:block" />
+                </template>
+                <!-- <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem> -->
+              </BreadcrumbList>
+            </Breadcrumb>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Fruits</SelectLabel>
+                  <SelectItem v-for="(item, index) in listOrganizations.data" :key="index" :value="item.id">
+                    {{ item.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </header>
+          <slot />
+        </SidebarInset>
+      </SidebarProvider>
     </ClientOnly>
   </div>
 </template>
+
 <style>
 </style>
