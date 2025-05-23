@@ -4,15 +4,24 @@ import { join, resolve } from 'pathe'
 // src dir
 const rootDir = resolve(__dirname)
 const srcDir = join(rootDir, 'src')
+
 const clientDir = join(srcDir, 'client')
 const serverDir = join(srcDir, 'server')
+
 const componentsDir = join(clientDir, 'components')
+const appDir = join(clientDir, 'app')
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-08-15',
   rootDir,
   serverDir,
   srcDir,
+
+  appDir,
+
+  runtimeConfig: {
+    dbUrl: 'postgresql://postgres:postgres@localhost:5432/dev',
+  },
 
   imports: {
     dirs: [join(clientDir, 'composables')],
@@ -93,7 +102,19 @@ export default defineNuxtConfig({
 
     '@nuxt/icon',
     'nuxt-echarts',
+    '@rstore/nuxt-drizzle',
   ],
+
+  rstoreDrizzle: {
+    drizzleImport: {
+      default: {
+        from: './src/server/utils/drizzle.ts',
+        name: 'useDrizzle',
+      },
+      from: './src/server/utils/drizzle.ts',
+      name: 'useDrizzle',
+    },
+  },
 
   content: {
     experimental: {

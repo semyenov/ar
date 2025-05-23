@@ -2,8 +2,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator drizzle {
+  provider = "prisma-generator-drizzle"
+  output   = "../src/server/drizzle/schema.ts"
+}
+
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
