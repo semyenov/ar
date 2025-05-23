@@ -2,7 +2,7 @@
 import { type FormHistory, useGetFormField, useListFormFields } from '~/client/api'
 
 const props = defineProps<{ row: FormHistory }>()
-const { t } = useI18n()
+const { d, t } = useI18n()
 const { data: fields } = useListFormFields({ formId: props.row.formId })
 
 const comment = computed(() => {
@@ -12,15 +12,15 @@ const comment = computed(() => {
   const data = JSON.parse(props.row.data)
 
   if (data && data.action === 'update_field') {
-    if (data.changes.value) {
-      const field = fields.value?.items.find((field) => {
-        return field.id === data.fieldId
-      })
+    const field = fields.value?.items.find((field) => {
+      return field.id === data.fieldId
+    })
 
-      return `Новое значение поля ${field?.name}: ${data.changes.value}`
-    }
     if (data.changes.status) {
-      return `Изменен статус поля: ${data.changes.status}`
+      return `Изменен статус поля ${field?.name}: ${data.changes.status}`
+    }
+    if (data.changes.value) {
+      return `Новое значение поля ${field?.name}: ${data.changes.value}`
     }
   }
 
@@ -33,7 +33,7 @@ const comment = computed(() => {
   <TableRow>
     <TableCell class="font-medium">
       <p class="font-normal text-[14px] leading-[24px] text-[#020617]">
-        {{ row.createdAt }}
+        {{ d(row.createdAt, 'long') }}
       </p>
     </TableCell>
     <TableCell>

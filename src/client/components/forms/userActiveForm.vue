@@ -58,9 +58,15 @@ const forms = computed(() => {
             <!-- <p class="text-xl font-bold text-muted-foreground">
               {{ f.status }}
             </p> -->
-            <Button
+            <!-- <Button
               :disabled="f.status !== FormStatus.DRAFT && f.status !== FormStatus.NEEDS_CHANGES"
 
+              @click="$router.push(`/forms/${f.id}`)"
+            >
+              <Icon name="lucide:clipboard-edit" />
+              <span>Редактировать</span>
+            </Button> -->
+            <Button
               @click="$router.push(`/forms/${f.id}`)"
             >
               <Icon name="lucide:clipboard-edit" />

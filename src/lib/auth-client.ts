@@ -1,7 +1,7 @@
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 
-import { ac, admin, executor, member, owner } from './permissions'
+import { adminPermissions, organizationsPermissions } from './permissions'
 
 export function useAuthClient(url: URL, headers?: Record<string, string>) {
   return createAuthClient({
@@ -11,15 +11,9 @@ export function useAuthClient(url: URL, headers?: Record<string, string>) {
     },
     plugins: [
       organizationClient({
-        ac,
-        roles: {
-          admin,
-          executor,
-          member,
-          owner,
-        },
+        ...organizationsPermissions,
       }),
-      adminClient({}),
+      adminClient({ ...adminPermissions }),
     ],
   })
 }

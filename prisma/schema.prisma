@@ -115,7 +115,6 @@ model Member {
   userId         String
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   role           MemberRole
-  mandate        Mandate       @default(SECOND_MANDATE)
   createdAt      DateTime      @default(now())
   createdForms   Form[]        @relation("FormCreator")
   assignedForms  Form[]        @relation("FormExecutor")
@@ -172,7 +171,6 @@ model Form {
   title            String
   description      String?
   status           FormStatus    @default(DRAFT)
-  mandate          Mandate       @default(SECOND_MANDATE)
   organizationId   String
   organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   creatorMemberId  String
@@ -193,7 +191,6 @@ model Form {
   @@index([organizationId])
   @@index([creatorMemberId])
   @@index([executorMemberId])
-  @@index([mandate])
   @@map("form")
 }
 
@@ -212,7 +209,6 @@ model FormField {
   value           String?
   required        Boolean         @default(false)
   validationRules String?
-  mandate         Mandate         @default(SECOND_MANDATE)
   order           Int
   options         String?
   files           FormFieldFile[]
@@ -228,7 +224,6 @@ model FormTemplate {
   id             String              @id
   name           String
   description    String?
-  mandate        Mandate             @default(SECOND_MANDATE)
   fields         FormTemplateField[]
   forms          Form[]
   createdAt      DateTime            @default(now())
@@ -237,7 +232,6 @@ model FormTemplate {
   version        Int                 @default(1)
 
   @@map("form_template")
-  @@index([mandate])
 }
 
 model FormTemplateField {
@@ -337,7 +331,6 @@ model File {
   mimeType         String
   size             Int
   accessLevel      FileAccess      @default(ORGANIZATION)
-  mandate          Mandate         @default(SECOND_MANDATE)
   description      String?
   organizationId   String
   organization     Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)

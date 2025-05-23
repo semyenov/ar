@@ -1,7 +1,7 @@
-import type { Member, Organization } from '@prisma/client'
+import type { Organization } from '@prisma/client'
 import type { ColumnDef } from '@tanstack/vue-table'
 
-import { Icon, NuxtLink } from '#components'
+import { Icon, NuxtLink, UsersHoverCard } from '#components'
 import { type Form, type FormExecutor, FormStatus, type FormTemplate, useUserListAccounts } from '~/client/api'
 
 import DataTableColumnHeader from '@/client/components/forms/DataTable/ColumnHeader.vue'
@@ -85,11 +85,10 @@ export function columns(t: any): ColumnDef<Form>[] {
       },
 
       cell: ({ row }) => {
-        const executor = row.getValue('executor') as Member
+        const executor = row.getValue('executor')
+        console.log(executor)
 
-        return h(NuxtLink, { class: 'transition hover:text-muted-foreground hover:underline max-w-[500px] truncate ', to: `/admin/users/${executor.id}` }, () => {
-          return [h('span', executor.id)]
-        })
+        return h(UsersHoverCard, { class: 'transition hover:text-muted-foreground hover:underline max-w-[500px] truncate ', member: executor })
       },
     },
     {

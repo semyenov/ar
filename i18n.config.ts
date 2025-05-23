@@ -1,6 +1,22 @@
 export default defineI18nConfig(() => {
   return {
     availableLocales: ['ru', 'en'],
+    datetimeFormats: {
+      ru: {
+        long: {
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        },
+        short: {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        },
+      },
+    },
     defaultLocale: 'ru',
     fallbackLocale: 'en',
     legacy: false,

@@ -1,13 +1,9 @@
 <script setup lang="ts">
 // import tasks from '@/client/data/tasks.json'
 
-import { faker, fakerRU } from '@faker-js/faker'
-import { userStatuses } from '~/client/data/data'
-
-import { columns } from '@/client/components/users/column'
+import { columns } from '@/client/components/users/DataTable/column'
 
 // import { columns } from '@/client/components/organizations/column'
-import type { User } from '~/client/data/schema'
 
 const { t } = useI18n()
 
@@ -20,29 +16,30 @@ definePageMeta({
   },
   layout: 'admin',
 })
-const data = ref<User[]>([])
+const authClient = useAuth()
+const data = ref()
 
-async function getData(): Promise<User[]> {
-  const res: User[] = []
-  for (let index = 0; index < 10000; index++) {
-    // const n = faker.number.int({ min: 0, max: 6 })
-    // console.log(userStatuses[n].value);
+// async function getData(): Promise<User[]> {
+//   const res: User[] = []
+//   for (let index = 0; index < 10000; index++) {
+//     // const n = faker.number.int({ min: 0, max: 6 })
+//     // console.log(userStatuses[n].value);
 
-    res.push({
-      email: faker.internet.email(),
-      first_name: fakerRU.person.firstName(),
-      id: faker.string.nanoid(),
-      last_name: fakerRU.person.lastName(),
-      phone: fakerRU.phone.number({ style: 'national' }),
-      status: userStatuses[faker.number.int({ max: userStatuses.length - 1, min: 0 })].value,
-    })
-  }
+//     res.push({
+//       email: faker.internet.email(),
+//       first_name: fakerRU.person.firstName(),
+//       id: faker.string.nanoid(),
+//       last_name: fakerRU.person.lastName(),
+//       phone: fakerRU.phone.number({ style: 'national' }),
+//       status: userStatuses[faker.number.int({ max: userStatuses.length - 1, min: 0 })].value,
+//     })
+//   }
 
-  return res
-}
+//   return res
+// }
 
 onMounted(async () => {
-  data.value = await getData()
+  data.value = (await authClient.client.admin.listUsers({ query: { limit: 1000 } })).data
 })
 </script>
 
@@ -55,8 +52,9 @@ onMounted(async () => {
         </CardTitle>
         <CardDescription> {{ t('pages.users.welcome') }}</CardDescription>
       </CardHeader>
-      <CardContent class="grid gap-4">
-        <UsersDataTable :data="data" :columns="columns(t)" />
+      <CardContent v-if="data" class="grid gap-4">
+        {{ data.users }}
+        <UsersDataTable :data="data.users" :columns="columns(t)" />
       </CardContent>
     </Card>
     <!-- <Card class="col-span-4">

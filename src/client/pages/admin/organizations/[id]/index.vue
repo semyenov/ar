@@ -100,7 +100,7 @@ console.log(organization)
                       </TableCell>
                       <TableCell>
                         <UsersHoverCard
-                          :user="{ id: 1, first_name: 'Бобр', last_name: 'Курвович', email: 'text@example.com', phone: '+7(123)456-78-90' }"
+                          :member="{ id: 1, first_name: 'Бобр', last_name: 'Курвович', email: 'text@example.com', phone: '+7(123)456-78-90' }"
                         />
                         <!-- <div class="flex flex-col">
                           <p

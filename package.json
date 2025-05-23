@@ -36,7 +36,7 @@
     "@tanstack/vue-table": "^8.21.3",
     "@tanstack/vue-virtual": "^3.13.5",
     "@vee-validate/zod": "^4.15.0",
-    "@vueuse/core": "^13.1.0",
+    "@vueuse/core": "^13.2.0",
     "axios": "^1.9.0",
     "better-auth": "^1.2.7",
     "better-auth-nuxt": "^0.0.8",

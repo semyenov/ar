@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { CheckboxRootEmits, CheckboxRootProps } from 'reka-ui'
-import { cn } from '@/client/lib/utils'
+
 import { CheckboxIndicator, CheckboxRoot, useForwardPropsEmits } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<CheckboxRootProps & { class?: HTMLAttributes['class'] }>()
+import { cn } from '@/client/lib/utils'
+
+const props = defineProps<{ class?: HTMLAttributes['class'] } & CheckboxRootProps>()
 const emits = defineEmits<CheckboxRootEmits>()
 
 const delegatedProps = computed(() => {
@@ -25,7 +27,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   >
     <CheckboxIndicator class="flex items-center justify-center w-full h-full text-current">
       <slot>
-        <Icon name="tabler:check" class="w-4 h-4 shrink-0 "  />
+        <Icon name="tabler:check" class="w-4 h-4 shrink-0 " />
       </slot>
     </CheckboxIndicator>
   </CheckboxRoot>

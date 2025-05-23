@@ -91,6 +91,7 @@ forms:
   showing: Показано
   of: из
   perPage: На странице
+  back: Назад
   fields:
     title: Название
     status: Статус

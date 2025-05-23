@@ -72,6 +72,10 @@ export default {
           'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
           'ring': 'hsl(var(--sidebar-ring))',
         },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+          foreground: 'hsl(var(--warning-foreground))',
+        },
       },
       keyframes: {
         'accordion-down': {

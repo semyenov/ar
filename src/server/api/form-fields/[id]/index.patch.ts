@@ -107,7 +107,11 @@ export default defineEventHandler(async (event) => {
     const canEdit
       = membership.role === 'owner'
         || formField.form.creatorMemberId === membership.id
-        || (formField.form.executorMemberId === membership.id && ['DRAFT', 'NEEDS_CHANGES'].includes(formField.form.status))
+        || (formField.form.executorMemberId === membership.id && [
+          'DRAFT',
+          'NEEDS_CHANGES',
+          'UNDER_REVIEW',
+        ].includes(formField.form.status))
 
     if (!canEdit) {
       throw createError({

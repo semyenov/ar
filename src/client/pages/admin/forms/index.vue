@@ -51,26 +51,29 @@ const critical = computed(() => {
 <template>
   <div class="grid grid-cols-12 p-4 space-y-4">
     <!-- {{ critical }} -->
-    <Alert v-if="critical.length > 0" class="flex items-start self-start col-span-12 gap-4 p-6">
-      <Icon name="tabler:alert-triangle" class="w-8 h-8 text-destructive" />
+    <Alert v-if="critical.length > 0" class="flex items-start self-start col-span-6 gap-4 p-6">
+      <Icon name="tabler:alert-triangle" class="w-8 h-8 text-warning" />
       <div class="flex flex-col">
         <AlertTitle class="text-base">
           Внимание
         </AlertTitle>
-        <AlertDescription class="text-muted-foreground">
-          Обнаружено {{ critical.length }} нерассмотренная заявка старше {{ criticalDiff }} {{ t(`forms.critical.${criticalDiffMeasure}`) }}
+        <AlertDescription class="text-sm text-muted-foreground">
+          {{ critical.length }} нерассмотренная заявка старше {{ criticalDiff }} {{ t(`forms.critical.${criticalDiffMeasure}`) }}
         </AlertDescription>
-        <NuxtLink class="flex items-center gap-2 mt-2" to="/organizations/problems">
+        <!-- <NuxtLink class="flex items-center gap-2 mt-2" to="/organizations/problems">
           Перейти к редактированию
           <Icon name="tabler:arrow-narrow-right" />
-        </NuxtLink>
+        </NuxtLink> -->
       </div>
     </Alert>
     <Card class="flex-grow col-span-12 overflow-hidden">
       <CardHeader>
-        <CardTitle class="text-xl">
-          {{ t('pages.forms.title') }}
-        </CardTitle>
+        <div class="flex items-center justify-between">
+          <CardTitle class="text-xl">
+            {{ t('pages.forms.title') }}
+          </CardTitle>
+          <FormsCreateFormDialog />
+        </div>
         <CardDescription> {{ t('pages.forms.description') }}</CardDescription>
       </CardHeader>
       <CardContent class="grid gap-4">

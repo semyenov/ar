@@ -4,7 +4,7 @@ import type { FormStatus } from '~/client/api'
 const props = defineProps({
   status: {
     required: true,
-    type: Object as PropType<FormStatus>,
+    type: String as PropType<FormStatus>,
   },
 })
 const { t } = useI18n()
